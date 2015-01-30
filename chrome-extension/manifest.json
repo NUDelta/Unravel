@@ -1,0 +1,35 @@
+{
+  "name": "Δ DOM",
+  "version": "0.1",
+  "description": "Track changes in the dom",
+  "minimum_chrome_version": "22.0",
+  "manifest_version": 2,
+  "devtools_page": "devtools.html",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file://*/*"
+      ],
+      "js": [
+        "js/lib/jquery.js",
+        "js/lib/underscore-min.js",
+        "contentscript.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    "js/lib/*",
+    "js/backboneAgent/*"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "tabs"
+  ]
+}
