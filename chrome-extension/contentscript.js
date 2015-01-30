@@ -66,7 +66,7 @@ function startObserving() {
       data: serializedMutations
     });
 
-    console.log(JSON.stringify(serializedMutations));
+    //console.log(JSON.stringify(serializedMutations));
     //console.log("Δ DOM: ", serializedMutations);
   });
 
