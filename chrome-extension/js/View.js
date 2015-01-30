@@ -2,35 +2,75 @@ define([
   "backbone",
   "underscore",
   "jquery",
+  "datatables",
   "handlebars",
-  "text!templates/view.html",
-  "text!templates/table-row.html"
-], function (Backbone, _, $, Handlebars, viewTemplate, rowTemplate) {
+  "text!templates/view.html"
+], function (Backbone, _, $, datatables, Handlebars, viewTemplate) {
   return Backbone.View.extend({
     template: Handlebars.compile(viewTemplate),
-    rowTemplate: Handlebars.compile(rowTemplate),
 
     events: {
-      "click #clear": "clearTable"
+      "click #clear": "clearTable",
+      "click #reduce": "reduceTable"
     },
 
     currentSelector: "",
 
     elementMap: {},
 
+    dataTable: null,
+
+    allMutations: [],
+
     initialize: function (options) {
-      console.log("Delta View initialized.")
+      console.log("Delta View initialized.");
     },
 
     render: function () {
       this.$el.html(this.template());
-      $(function () {
-        $("table").resizableColumns({});
-      });
+      this.dataTable = this.$("table").DataTable();
+      if (mockData) {
+        this.handleMutations(mockData);
+      }
     },
 
     clearTable: function () {
-      this.$("#mutationWrapper").empty();
+      this.dataTable.row().remove().draw(false);
+      this.allMutations = [];
+    },
+
+    reduceTable: function () {
+      var reduceObj = {};
+      _(this.allMutations).each(function (mutation) {
+        var id = (mutation.selector || '1') +
+          (mutation.attributeName || '2') +
+          (mutation.oldValue || '3') +
+          (mutation.type || '4');
+        if (reduceObj[id]) {
+          reduceObj[id].count += 1
+        } else {
+          reduceObj[id] = {
+            count: 1,
+            mutation: mutation
+          }
+        }
+      });
+
+      this.clearTable();
+
+      var entries = _(reduceObj).values();
+      _(entries).each(function (entry) {
+        this.dataTable.row.add([
+            "(" + entry.count + ") " + entry.mutation.selector,
+            entry.mutation.attributeName || '',
+            entry.mutation.oldValue || '',
+            entry.mutation.type || ''
+            //mutation.previousSibling
+            //mutation.nextSibling
+          ]
+        );
+      }, this);
+      this.dataTable.draw()
     },
 
     elementSelected: function (htmlString) {
@@ -41,7 +81,9 @@ define([
         this.$("#changeList").empty();
       }
 
-      this.$("#tagTitle").text(" | Selected Element: " + this.currentSelector);
+      //this.$("#tagTitle").text(" | Selected Element: " + this.currentSelector);
+
+      this.dataTable.column().search(this.currentSelector).draw();
     },
 
     parseSelector: function (htmlString) {
@@ -72,20 +114,25 @@ define([
     },
 
     storeMutation: function (mutation) {
-      //todo here
+      this.allMutations.push(mutation)
     },
 
     handleMutations: function (mutations) {
-      var that = this;
-      var displayableMutations = _(mutations).map(function (mutation) {
-        mutation.selector = that.parseSelector(mutation.target);
+      _(mutations).map(function (mutation) {
+        mutation.selector = this.parseSelector(mutation.target);
         this.storeMutation(mutation);
-        return mutation;
+        this.dataTable.row.add([
+            mutation.selector || '',
+            mutation.attributeName || '',
+            mutation.oldValue || '',
+            mutation.type || ''
+            //mutation.target
+            //mutation.previousSibling
+            //mutation.nextSibling
+          ]
+        );
       }, this);
-
-      this.$("#mutationWrapper").append(this.rowTemplate({
-        mutations: displayableMutations
-      }));
+      this.dataTable.draw()
     }
   });
 });

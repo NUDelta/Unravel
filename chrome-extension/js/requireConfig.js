@@ -9,7 +9,8 @@ require.config({
     text: './lib/text',
     bootstrap: './lib/bootstrap.min',
     handlebars_original: './lib/handlebars',
-    handlebars: './lib/handlebars-blocks'
+    handlebars: './lib/handlebars-blocks',
+    datatables: "lib/jquery.dataTables.min"
   },
   // non-amd library loaders
   shim: {

@@ -4,7 +4,7 @@ var name = "Δ DOM";
 chrome.devtools.panels.elements.createSidebarPane(name,
   function (sidebar) {
     sidebar.setPage("panel.html");
-    sidebar.setHeight("500px");
+    sidebar.setHeight("600px");
   });
 
 chrome.devtools.panels.create(name, "img/panel.png", "panel.html");

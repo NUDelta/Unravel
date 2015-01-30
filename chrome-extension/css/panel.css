@@ -163,3 +163,7 @@ body {
 .appComponentActions table {
   margin-bottom: 0;
 }
+
+table{
+  height: 300px;
+}
