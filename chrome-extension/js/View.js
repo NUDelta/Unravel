@@ -10,11 +10,13 @@ define([
     template: Handlebars.compile(viewTemplate),
 
     events: {
+      "click #start": "start",
+      "click #stop": "stop",
       "click #clear": "clearTable",
       "click #reduce": "reduceTable"
     },
 
-    currentSelector: "",
+    currentPath: "",
 
     elementMap: {},
 
@@ -34,6 +36,14 @@ define([
       }
     },
 
+    start: function () {
+      chrome.devtools.inspectedWindow.eval("startObserving('" + this.currentPath + "')", {useContentScriptContext: true});
+    },
+
+    stop: function () {
+      chrome.devtools.inspectedWindow.eval("stopObserving()", {useContentScriptContext: true});
+    },
+
     clearTable: function () {
       this.dataTable.row().remove().draw(false);
       this.allMutations = [];
@@ -42,10 +52,10 @@ define([
     reduceTable: function () {
       var reduceObj = {};
       _(this.allMutations).each(function (mutation) {
-        var id = (mutation.selector || '1') +
-          (mutation.attributeName || '2') +
-          (mutation.oldValue || '3') +
-          (mutation.type || '4');
+        var id = (mutation.selector || 'none');
+        //(mutation.attributeName || '2') +
+        //(mutation.oldValue || '3') +
+        //(mutation.type || '4');
         if (reduceObj[id]) {
           reduceObj[id].count += 1
         } else {
@@ -61,29 +71,24 @@ define([
       var entries = _(reduceObj).values();
       _(entries).each(function (entry) {
         this.dataTable.row.add([
-            "(" + entry.count + ") " + entry.mutation.selector,
-            entry.mutation.attributeName || '',
-            entry.mutation.oldValue || '',
-            entry.mutation.type || ''
-            //mutation.previousSibling
-            //mutation.nextSibling
-          ]
-        );
+          "(" + entry.count + ") " + entry.mutation.selector,
+          entry.mutation.attributeName || '',
+          entry.mutation.oldValue || '',
+          entry.mutation.type || ''
+          //mutation.previousSibling
+          //mutation.nextSibling
+        ]);
       }, this);
       this.dataTable.draw()
     },
 
-    elementSelected: function (htmlString) {
-      var newSelector = this.parseSelector(htmlString);
-
-      if (this.currentSelector != newSelector) {
-        this.currentSelector = newSelector;
-        this.$("#changeList").empty();
+    elementSelected: function (cssPath) {
+      if (this.currentPath != cssPath) {
+        this.currentPath = cssPath;
       }
+      this.$("#tagTitle").text("Selected Element: " + cssPath);
 
-      //this.$("#tagTitle").text(" | Selected Element: " + this.currentSelector);
-
-      this.dataTable.column().search(this.currentSelector).draw();
+      //this.dataTable.column().search(this.currentSelector).draw();
     },
 
     parseSelector: function (htmlString) {

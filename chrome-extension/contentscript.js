@@ -2,6 +2,24 @@
  This script is added to the actual web page. Debug is available.
  */
 
+jQuery.fn.getPath = function () {
+  if (this.length != 1) throw 'Requires one element.';
+  var path, node = this;
+  while (node.length) {
+    var realNode = node[0], name = realNode.localName;
+    if (!name) break;
+    name = name.toLowerCase();
+    var parent = node.parent();
+    var siblings = parent.children(name);
+    if (siblings.length > 1) {
+      name += ':eq(' + siblings.index(realNode) + ')';
+    }
+    path = name + (path ? '>' + path : '');
+    node = parent;
+  }
+  return path;
+};
+
 
 // Receives messages from the inspected page and redirects them to the background,
 // building up the first step towards the communication between the backbone agent and the panel.
@@ -27,12 +45,12 @@ function selectedElement(el) {
   chrome.extension.sendMessage({
     target: "page",
     name: "elementSelected",
-    data: el && el.outerHTML ? el.outerHTML : ""
+    data: $(el).getPath()
   });
 }
 
 var observer;
-function startObserving() {
+function startObserving(cssPath) {
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
   if (observer && observer.disconnect) {
@@ -70,7 +88,12 @@ function startObserving() {
     //console.log("Δ DOM: ", serializedMutations);
   });
 
-  observer.observe(document, {
+  var $el = $(cssPath), observable = document;
+  if ($el.length > 0) {
+    observable = $el;
+  }
+
+  observer.observe(observable[0], {
     subtree: true,
     attributes: true,
     childList: true,
@@ -84,5 +107,3 @@ function startObserving() {
 function stopObserving() {
   observer.disconnect();
 }
-
-startObserving();

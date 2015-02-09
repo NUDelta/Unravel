@@ -15,8 +15,8 @@ define(["backbone", "View"],
         this.homeView.render();
         document.body.appendChild(this.homeView.el);
 
-        this.on("elementSelectChange", function (html) {
-          this.homeView.elementSelected(html);
+        this.on("elementSelectChange", function (cssPath) {
+          this.homeView.elementSelected(cssPath);
         }, this);
 
         this.on("mutation", function (mutations) {

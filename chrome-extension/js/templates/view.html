@@ -1,32 +1,40 @@
-<div class="row">
-  <div class="col-xs-3">
-    <h4>Dom Change Events <span id="tagTitle"></span></h4>
-  </div>
-  <div class="col-xs-1" style="margin-top:.6em">
-    <button id="clear" type="button" class="btn btn-default btn-xs" aria-label="Left Align">
-      Reset
-    </button>
-  </div>
-  <div class="col-xs-1" style="margin-top:.6em">
-    <button id="reduce" type="button" class="btn btn-default btn-xs" aria-label="Left Align">
-      Reduce
-    </button>
-  </div>
-  <div class="col-xs-3">
-  </div>
-</div>
 
-<table class="display" cellspacing="0">
-  <thead>
-  <tr>
-    <th>Node Selector</th>
-    <th>Name</th>
-    <th>Old Value</th>
-    <th>Type</th>
-    <!--<th>Target</th>-->
-    <!--<th>Previous Sibling</th>-->
-    <!--<th>Next Sibling</th>-->
-  </tr>
-  </thead>
-  <tbody id="mutationWrapper"></tbody>
-</table>
+<html>
+  <body>
+    <div class="row">
+      <div class="col-xs-3">
+        <h4>Dom Change Events </h4>
+      </div>
+      <div style="margin-top:.6em" class="col-xs-1">
+        <button id="start" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Start</button>
+      </div>
+      <div style="margin-top:.6em" class="col-xs-1">
+        <button id="stop" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Stop</button>
+      </div>
+      <div style="margin-top:.6em" class="col-xs-1">
+        <button id="clear" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Reset</button>
+      </div>
+      <div style="margin-top:.6em" class="col-xs-1">
+        <button id="reduce" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Reduce</button>
+      </div>
+      <div class="col-xs-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12"><span id="tagTitle" style="margin-left: .5em;"></span></div>
+    </div>
+    <table cellspacing="0" class="display">
+      <thead>
+        <tr>
+          <th>Node Selector</th>
+          <th>Name</th>
+          <th>Old Value</th>
+          <th>Type</th>
+          <!-- <th>Target</th>-->
+          <!-- <th>Previous Sibling</th>-->
+          <!-- <th>Next Sibling</th>-->
+        </tr>
+      </thead>
+      <tbody id="mutationWrapper"></tbody>
+    </table>
+  </body>
+</html>

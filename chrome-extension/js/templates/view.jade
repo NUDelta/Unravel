@@ -1,0 +1,35 @@
+html
+  body
+    .row
+      .col-xs-3
+        h4
+          | Dom Change Events 
+      .col-xs-1(style='margin-top:.6em')
+        button#start.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
+          | Start
+      .col-xs-1(style='margin-top:.6em')
+        button#stop.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
+          | Stop
+      .col-xs-1(style='margin-top:.6em')
+        button#clear.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
+          | Reset
+      .col-xs-1(style='margin-top:.6em')
+        button#reduce.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
+          | Reduce
+      .col-xs-3
+    .row
+      .col-xs-12
+        span#tagTitle(style="margin-left: .5em;")
+    table.display(cellspacing='0')
+      thead
+        tr
+          th Node Selector
+          th Name
+          th Old Value
+          th Type
+
+
+          // <th>Target</th>
+          // <th>Previous Sibling</th>
+          // <th>Next Sibling</th>
+      tbody#mutationWrapper
