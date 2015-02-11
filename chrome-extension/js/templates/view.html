@@ -17,24 +17,38 @@
       <div style="margin-top:.6em" class="col-xs-1">
         <button id="reduce" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Reduce</button>
       </div>
-      <div class="col-xs-3"></div>
+      <div style="margin-top:.6em" class="col-xs-1">
+        <button id="detect" type="button" aria-label="Left Align" class="btn btn-default btn-xs">Detect</button>
+      </div>
+      <div class="col-xs-2"></div>
+    </div>
+    <div class="row">
+      <div id="libResults" style="display: none;" class="col-xs-12">
+        <h4>Libraries Detected</h4>
+        <ul id="libResults"></ul>
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-12"><span id="tagTitle" style="margin-left: .5em;"></span></div>
     </div>
-    <table cellspacing="0" class="display">
-      <thead>
-        <tr>
-          <th>Node Selector</th>
-          <th>Name</th>
-          <th>Old Value</th>
-          <th>Type</th>
-          <!-- <th>Target</th>-->
-          <!-- <th>Previous Sibling</th>-->
-          <!-- <th>Next Sibling</th>-->
-        </tr>
-      </thead>
-      <tbody id="mutationWrapper"></tbody>
-    </table>
+    <div class="row">
+      <div class="col-xs-12">
+        <table cellspacing="0" class="display">
+          <thead>
+            <tr>
+              <th>DOM Path</th>
+              <th>Selector</th>
+              <th>Name</th>
+              <th>Old Value</th>
+              <th>Type</th>
+              <!-- <th>Target</th>-->
+              <!-- <th>Previous Sibling</th>-->
+              <!-- <th>Next Sibling</th>-->
+            </tr>
+          </thead>
+          <tbody id="mutationWrapper"></tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

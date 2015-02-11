@@ -13,7 +13,8 @@ define([
       "click #start": "start",
       "click #stop": "stop",
       "click #clear": "clearTable",
-      "click #reduce": "reduceTable"
+      "click #reduce": "reduceTable",
+      "click #detect": "detect"
     },
 
     currentPath: "",
@@ -47,14 +48,17 @@ define([
     clearTable: function () {
       this.dataTable.row().remove().draw(false);
       this.allMutations = [];
+
+      this.$("#libResults").hide();
+      this.$("#libResults ul").empty();
     },
 
     reduceTable: function () {
       var reduceObj = {};
       _(this.allMutations).each(function (mutation) {
-        var id = (mutation.selector || 'none');
-        //(mutation.attributeName || '2') +
-        //(mutation.oldValue || '3') +
+        var id = (mutation.path || 'none');
+        //(mutation.attributeName || '2')
+        //(mutation.oldValue || '3');
         //(mutation.type || '4');
         if (reduceObj[id]) {
           reduceObj[id].count += 1
@@ -71,7 +75,8 @@ define([
       var entries = _(reduceObj).values();
       _(entries).each(function (entry) {
         this.dataTable.row.add([
-          "(" + entry.count + ") " + entry.mutation.selector,
+          "(" + this.pad(entry.count, 5) + ") " + entry.mutation.path,
+          entry.mutation.selector,
           entry.mutation.attributeName || '',
           entry.mutation.oldValue || '',
           entry.mutation.type || ''
@@ -127,6 +132,7 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         this.storeMutation(mutation);
         this.dataTable.row.add([
+            mutation.path || '',
             mutation.selector || '',
             mutation.attributeName || '',
             mutation.oldValue || '',
@@ -138,6 +144,32 @@ define([
         );
       }, this);
       this.dataTable.draw()
+    },
+
+    handleLibsDetected: function (responses) {
+      var arr = JSON.parse(responses);
+      this.$("#libResults").show();
+
+      var $resultList = this.$("#libResults ul");
+      $resultList.empty();
+
+      if (arr.length < 1) {
+        $resultList.append("<li>None Detected.</li>")
+      } else {
+        _(arr).each(function (o) {
+          $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
+        }, this);
+      }
+    },
+
+    detect: function () {
+      chrome.devtools.inspectedWindow.eval("detectLibs()", {useContentScriptContext: true});
+    },
+
+    pad: function (num, size) {
+      var s = num + "";
+      while (s.length < size) s = "0" + s;
+      return s;
     }
   });
 });

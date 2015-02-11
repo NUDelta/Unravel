@@ -16,20 +16,30 @@ html
       .col-xs-1(style='margin-top:.6em')
         button#reduce.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
           | Reduce
-      .col-xs-3
+      .col-xs-1(style='margin-top:.6em')
+        button#detect.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
+          | Detect
+      .col-xs-2
+    .row
+      #libResults.col-xs-12(style="display: none;")
+        h4
+          | Libraries Detected
+        ul#libResults
     .row
       .col-xs-12
         span#tagTitle(style="margin-left: .5em;")
-    table.display(cellspacing='0')
-      thead
-        tr
-          th Node Selector
-          th Name
-          th Old Value
-          th Type
+    .row
+      .col-xs-12
+        table.display(cellspacing='0')
+          thead
+            tr
+              th DOM Path
+              th Selector
+              th Name
+              th Old Value
+              th Type
 
-
-          // <th>Target</th>
-          // <th>Previous Sibling</th>
-          // <th>Next Sibling</th>
-      tbody#mutationWrapper
+              // <th>Target</th>
+              // <th>Previous Sibling</th>
+              // <th>Next Sibling</th>
+          tbody#mutationWrapper

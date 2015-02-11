@@ -66,6 +66,8 @@ require([
         router.trigger("elementSelectChange", message.data);
       } else if (message && message.target == "page" && message.name == "mutation") {
         router.trigger("mutation", message.data);
+      } else if (message && message.target == "page" && message.name == "detectLibs") {
+        router.trigger("detectLibs", message.data);
       }
     }, this));
   });
