@@ -4,8 +4,9 @@ define([
   "jquery",
   "datatables",
   "handlebars",
+  "libDetect",
   "text!templates/view.html"
-], function (Backbone, _, $, datatables, Handlebars, viewTemplate) {
+], function (Backbone, _, $, datatables, Handlebars, libDetect, viewTemplate) {
   return Backbone.View.extend({
     template: Handlebars.compile(viewTemplate),
 
@@ -93,8 +94,6 @@ define([
         this.currentPath = cssPath;
       }
       this.$("#tagTitle").text("Selected Element: " + cssPath);
-
-      //this.dataTable.column().search(this.currentSelector).draw();
     },
 
     parseSelector: function (htmlString) {
@@ -147,26 +146,6 @@ define([
       this.dataTable.draw()
     },
 
-    handleLibsDetected: function (responses) {
-      var arr = JSON.parse(responses);
-      this.$("#libResults").show();
-
-      var $resultList = this.$("#libResults ul");
-      $resultList.empty();
-
-      if (arr.length < 1) {
-        $resultList.append("<li>None Detected.</li>")
-      } else {
-        _(arr).each(function (o) {
-          $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
-        }, this);
-      }
-    },
-
-    detect: function () {
-      chrome.devtools.inspectedWindow.eval("detectLibs()", {useContentScriptContext: true});
-    },
-
     pad: function (num, size) {
       var s = num + "";
       while (s.length < size) s = "0" + s;
@@ -182,6 +161,24 @@ define([
       var evalCode = "(" + doInspect.toString() + ").apply(this, ['" + path + "']);";
 
       chrome.devtools.inspectedWindow.eval(evalCode, {});
+    },
+
+    detect: function () {
+      var evalCode = "(" + libDetect.toString() + ").apply(this, []);";
+      chrome.devtools.inspectedWindow.eval(evalCode, {}, function (arr, exception) {
+        this.$("#libResults").show();
+
+        var $resultList = this.$("#libResults ul");
+        $resultList.empty();
+
+        if (arr.length < 1) {
+          $resultList.append("<li>None Detected.</li>")
+        } else {
+          _(arr).each(function (o) {
+            $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
+          }, this);
+        }
+      });
     }
   });
 });

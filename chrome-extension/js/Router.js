@@ -22,10 +22,6 @@ define(["backbone", "View"],
         this.on("mutation", function (mutations) {
           this.homeView.handleMutations(mutations);
         }, this);
-
-        this.on("detectLibs", function (responses) {
-          this.homeView.handleLibsDetected(responses);
-        }, this);
       }
     });
     return Router;
