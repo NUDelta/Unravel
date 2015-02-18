@@ -1,5 +1,5 @@
 /*
- This script is added to the actual web page. Debug is available.
+ This script is added to the web, but in its own context.
  */
 
 jQuery.fn.getPath = function () {
@@ -219,10 +219,40 @@ var detectLibsInjected = function () {
   document.body.appendChild(newDiv);
 };
 
-//Once page is loaded, inject the function as a string script
-$(document).ready(function () {
-  var injectedCode = '' + detectLibsInjected;
-  var script = document.createElement('script');
-  script.appendChild(document.createTextNode('(' + injectedCode + ')();'));
-  (document.body || document.head || document.documentElement).appendChild(script);
-});
+var inspectPathInjected = function () {
+  $(document).ready(function () {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "//code.jquery.com/jquery-1.11.2.min.js";
+    (document.body || document.head || document.documentElement).appendChild(script);
+
+    jQuery.noConflict();
+    (function ($) {
+      $(function () {
+        window.inspectPathInjected = function (path) {
+          console.log("inspecting", path);
+          var el = $(path)[0];
+          inspect(el);
+        };
+      });
+    })(jQuery);
+  });
+};
+
+function inspectPath(path) {
+  console.log("inspecting", path);
+  var el = $(path)[0];
+  window.inspect(el);
+  console.log("done with call");
+};
+
+var injectFn = function (functionAsString) {
+  $(document).ready(function () {
+    var script = document.createElement('script');
+    script.appendChild(document.createTextNode(functionAsString));
+    (document.body || document.head || document.documentElement).appendChild(script);
+  });
+};
+
+injectFn('(' + detectLibsInjected + ')();');
+//injectFn('(' + inspectPathInjected + ')();');

@@ -3,22 +3,27 @@ html
     .row
       .col-xs-3
         h4
-          | Dom Change Events 
+          | DOM Change Tracker
       .col-xs-1(style='margin-top:.6em')
         button#start.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          | Start
+          i.glyphicon.glyphicon-record 
+          | #{' '}Record
       .col-xs-1(style='margin-top:.6em')
         button#stop.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          | Stop
+          i.glyphicon.glyphicon-stop 
+          | #{' '}Stop
       .col-xs-1(style='margin-top:.6em')
         button#clear.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          | Reset
+          i.glyphicon.glyphicon-erase 
+          | #{' '}Reset
       .col-xs-1(style='margin-top:.6em')
         button#reduce.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          | Reduce
+          i.glyphicon.glyphicon-flash 
+          | #{' '}Reduce
       .col-xs-1(style='margin-top:.6em')
         button#detect.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          | Detect
+          i.glyphicon.glyphicon-equalizer 
+          | #{' '}Detect Libraries
       .col-xs-2
     .row
       #libResults.col-xs-12(style="display: none;")
@@ -28,7 +33,7 @@ html
     .row
       .col-xs-12
         span#tagTitle(style="margin-left: .5em;")
-    .row
+    .row.no-left
       .col-xs-12
         table.display(cellspacing='0')
           thead

@@ -11,17 +11,15 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*",
-        "file://*/*"
-      ],
+      "matches": ["<all_urls>"],
+      "match_about_blank": true,
       "js": [
         "js/lib/jquery.js",
         "js/lib/underscore-min.js",
         "contentscript.js"
       ],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [

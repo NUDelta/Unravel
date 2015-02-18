@@ -14,7 +14,8 @@ define([
       "click #stop": "stop",
       "click #clear": "clearTable",
       "click #reduce": "reduceTable",
-      "click #detect": "detect"
+      "click #detect": "detect",
+      "click .inspectElement": "inspectElement"
     },
 
     currentPath: "",
@@ -75,7 +76,7 @@ define([
       var entries = _(reduceObj).values();
       _(entries).each(function (entry) {
         this.dataTable.row.add([
-          "(" + this.pad(entry.count, 5) + ") " + entry.mutation.path,
+          "<a href='javascript:' class='inspectElement' data-path='" + entry.mutation.path + "'>" + "(" + this.pad(entry.count, 5) + ") " + entry.mutation.path + "</a>",
           entry.mutation.selector,
           entry.mutation.attributeName || '',
           entry.mutation.oldValue || '',
@@ -132,7 +133,7 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         this.storeMutation(mutation);
         this.dataTable.row.add([
-            mutation.path || '',
+            "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
             mutation.selector || '',
             mutation.attributeName || '',
             mutation.oldValue || '',
@@ -170,6 +171,17 @@ define([
       var s = num + "";
       while (s.length < size) s = "0" + s;
       return s;
+    },
+
+    inspectElement: function (e) {
+      var path = $(e.target).attr("data-path");
+      var doInspect = function (path) {
+        inspect($(path)[0]);
+      };
+
+      var evalCode = "(" + doInspect.toString() + ").apply(this, ['" + path + "']);";
+
+      chrome.devtools.inspectedWindow.eval(evalCode, {});
     }
   });
 });
