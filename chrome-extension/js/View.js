@@ -4,9 +4,9 @@ define([
   "jquery",
   "datatables",
   "handlebars",
-  "libDetect",
+  "RaleAgent",
   "text!templates/view.html"
-], function (Backbone, _, $, datatables, Handlebars, libDetect, viewTemplate) {
+], function (Backbone, _, $, datatables, Handlebars, RaleAgent, viewTemplate) {
   return Backbone.View.extend({
     template: Handlebars.compile(viewTemplate),
 
@@ -93,7 +93,7 @@ define([
       if (this.currentPath != cssPath) {
         this.currentPath = cssPath;
       }
-      this.$("#tagTitle").text("Selected Element: " + cssPath);
+      this.$("#tagTitle").text("Currently selected element: " + cssPath);
     },
 
     parseSelector: function (htmlString) {
@@ -154,18 +154,30 @@ define([
 
     inspectElement: function (e) {
       var path = $(e.target).attr("data-path");
+      console.log('here');
       var doInspect = function (path) {
-        inspect($(path)[0]);
+        if (!path) {
+          console.error("No path provided when trying to inspect.");
+          return;
+        } else {
+          console.log("Inspecting path", path, raleAgent.$(path)[0])
+        }
+        inspect(raleAgent.$(path)[0]);
       };
 
-      var evalCode = "(" + doInspect.toString() + ").apply(this, ['" + path + "']);";
+      RaleAgent.runInPage(doInspect, null, path);
+    },
 
-      chrome.devtools.inspectedWindow.eval(evalCode, {});
+    inspectSource: function () {
+      var url, lineNumber, callback;
+
+      callback = function () {
+      };
+      chrome.devtools.panels.openResource(url, lineNumber, callback);
     },
 
     detect: function () {
-      var evalCode = "(" + libDetect.toString() + ").apply(this, []);";
-      chrome.devtools.inspectedWindow.eval(evalCode, {}, function (arr, exception) {
+      var callback = function (arr, exception) {
         this.$("#libResults").show();
 
         var $resultList = this.$("#libResults ul");
@@ -178,7 +190,11 @@ define([
             $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
           }, this);
         }
-      });
+      };
+
+      RaleAgent.runInPage(function () {
+        return raleAgent.libDetect();
+      }, callback);
     }
   });
 });
