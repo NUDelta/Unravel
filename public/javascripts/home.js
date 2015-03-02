@@ -9,5 +9,5 @@ $("#test1").click(function () {
 
 $("#test2").click(function () {
   var $effect2 = $("#effect2");
-  $effect2.append("<span> A </span>")
+  $effect2.append("<span> A </span>");
 });

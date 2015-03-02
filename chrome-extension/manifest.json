@@ -14,7 +14,7 @@
       "matches": ["<all_urls>"],
       "match_about_blank": true,
       "js": [
-        "js/lib/jquery.js",
+        "js/lib/jquery-2.1.3.min.js",
         "js/lib/underscore-min.js",
         "contentscript.js"
       ],

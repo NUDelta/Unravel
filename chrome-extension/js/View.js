@@ -26,10 +26,11 @@ define([
 
     dataTable: null,
 
-    allMutations: [],
+    pathsRows: [],
 
     initialize: function (options) {
       console.log("Delta View initialized.");
+      this.start();
     },
 
     render: function () {
@@ -41,55 +42,30 @@ define([
     },
 
     start: function () {
-      chrome.devtools.inspectedWindow.eval("startObserving('" + this.currentPath + "')", {useContentScriptContext: true});
+      var callback = function (currentPath) {
+        console.log("Started observing", (currentPath || "non"));
+      };
+
+      RaleAgent.runInPage(function () {
+        return raleAgent.startObserving();
+      }, callback, this.currentPath);
     },
 
     stop: function () {
-      chrome.devtools.inspectedWindow.eval("stopObserving()", {useContentScriptContext: true});
+      RaleAgent.runInPage(function () {
+        return raleAgent.stopObserving();
+      }, callback, this.currentPath);
+
       raleAgent.traceJsOff();
     },
 
     clearTable: function () {
       this.dataTable.row().remove().draw(false);
-      this.allMutations = [];
+      this.pathsRows = [];
 
       this.$("#libResults").hide();
       this.$("#libResults ul").empty();
       raleAgent.traceJsOff();
-    },
-
-    reduceTable: function () {
-      var reduceObj = {};
-      _(this.allMutations).each(function (mutation) {
-        var id = (mutation.path || 'none');
-        //(mutation.attributeName || '2')
-        //(mutation.oldValue || '3');
-        //(mutation.type || '4');
-        if (reduceObj[id]) {
-          reduceObj[id].count += 1
-        } else {
-          reduceObj[id] = {
-            count: 1,
-            mutation: mutation
-          }
-        }
-      });
-
-      this.clearTable();
-
-      var entries = _(reduceObj).values();
-      _(entries).each(function (entry) {
-        this.dataTable.row.add([
-          "<a href='javascript:' class='inspectElement' data-path='" + entry.mutation.path + "'>" + "(" + this.pad(entry.count, 5) + ") " + entry.mutation.path + "</a>",
-          entry.mutation.selector,
-          entry.mutation.attributeName || '',
-          entry.mutation.oldValue || '',
-          entry.mutation.type || ''
-          //mutation.previousSibling
-          //mutation.nextSibling
-        ]);
-      }, this);
-      this.dataTable.draw()
     },
 
     trace: function () {
@@ -140,33 +116,30 @@ define([
       return tagName + idName + className + nameAttr;
     },
 
-    storeMutation: function (mutation) {
-      this.allMutations.push(mutation)
-    },
-
     handleMutations: function (mutations) {
       _(mutations).map(function (mutation) {
         mutation.selector = this.parseSelector(mutation.target);
-        this.storeMutation(mutation);
-        this.dataTable.row.add([
+        var path = (mutation.path || "");
+
+        if (this.pathsRows[path] && this.pathsRows[path].length > 0) {
+          var data = this.pathsRows[path].data();
+          data[0] = data[0] + 1;
+          this.pathsRows[path].data(data);
+        } else {
+          var dt = this.dataTable.row.add([
+            1,
             "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
             mutation.selector || '',
             mutation.attributeName || '',
             mutation.oldValue || '',
             mutation.type || ''
-            //mutation.target
-            //mutation.previousSibling
-            //mutation.nextSibling
-          ]
-        );
+          ]);
+          //var rowNum = dt.index();
+          //var rowArr = dt.row(dt).data();
+          this.pathsRows[path] = dt.row(dt);
+        }
       }, this);
       this.dataTable.draw()
-    },
-
-    pad: function (num, size) {
-      var s = num + "";
-      while (s.length < size) s = "0" + s;
-      return s;
     },
 
     inspectElement: function (e) {

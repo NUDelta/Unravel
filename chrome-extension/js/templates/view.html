@@ -3,9 +3,6 @@
   <body>
     <div class="row">
       <div style="margin-top:.6em" class="col-xs-1">
-        <button id="start" type="button" aria-label="Left Align" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-record"> </i> Record</button>
-      </div>
-      <div style="margin-top:.6em" class="col-xs-1">
         <button id="stop" type="button" aria-label="Left Align" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-stop"> </i> Stop</button>
       </div>
       <div style="margin-top:.6em" class="col-xs-1">
@@ -33,14 +30,12 @@
         <table cellspacing="0" class="display">
           <thead>
             <tr>
+              <th>Count</th>
               <th>DOM Path</th>
               <th>Selector</th>
               <th>Name</th>
               <th>Old Value</th>
               <th>Type</th>
-              <!-- <th>Target</th>-->
-              <!-- <th>Previous Sibling</th>-->
-              <!-- <th>Next Sibling</th>-->
             </tr>
           </thead>
           <tbody id="mutationWrapper"></tbody>
