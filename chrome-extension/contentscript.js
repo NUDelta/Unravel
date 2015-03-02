@@ -20,15 +20,14 @@ jQuery.fn.getPath = function () {
   return path;
 };
 
+window.addEventListener("JSTrace", function (event) {
+  var str = event.detail.replace(/(?:\r\n|\r|\n)/g, '|||');
 
-// Receives messages from the inspected page and redirects them to the background,
-// building up the first step towards the communication between the backbone agent and the panel.
-window.addEventListener("message", function (event) {
-  // We only accept messages from ourselves
-  if (event.source != window) return;
-
-  var message = event.data;
-  chrome.extension.sendMessage(message);
+  chrome.extension.sendMessage({
+    target: "page",
+    name: "JSTrace",
+    data: str
+  });
 }, false);
 
 // Sends a message to the background when the DOM of the inspected page is ready

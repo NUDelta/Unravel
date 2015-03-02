@@ -16,6 +16,7 @@ define([
       "click #clear": "clearTable",
       "click #reduce": "reduceTable",
       "click #detect": "detect",
+      "click #trace": "trace",
       "click .inspectElement": "inspectElement"
     },
 
@@ -45,6 +46,7 @@ define([
 
     stop: function () {
       chrome.devtools.inspectedWindow.eval("stopObserving()", {useContentScriptContext: true});
+      raleAgent.traceJsOff();
     },
 
     clearTable: function () {
@@ -53,6 +55,7 @@ define([
 
       this.$("#libResults").hide();
       this.$("#libResults ul").empty();
+      raleAgent.traceJsOff();
     },
 
     reduceTable: function () {
@@ -87,6 +90,20 @@ define([
         ]);
       }, this);
       this.dataTable.draw()
+    },
+
+    trace: function () {
+      console.log("activating trace");
+      RaleAgent.runInPage(function () {
+        raleAgent.traceJsOn();
+      });
+    },
+
+    handleJSTrace: function (data) {
+      var c = data.split("|||    at ");
+      var d = c.slice(1);
+
+      console.log(JSON.stringify(d));
     },
 
     elementSelected: function (cssPath) {

@@ -26,6 +26,10 @@ define([
       this.on("mutation", function (mutations) {
         this.homeView.handleMutations(mutations);
       }, this);
+
+      this.on("JSTrace", function (data) {
+        this.homeView.handleJSTrace(data);
+      }, this);
     }
   });
   return Router;

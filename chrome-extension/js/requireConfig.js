@@ -68,6 +68,8 @@ require([
         router.trigger("mutation", message.data);
       } else if (message && message.target == "page" && message.name == "detectLibs") {
         router.trigger("detectLibs", message.data);
+      } else if (message && message.target == "page" && message.name == "JSTrace") {
+        router.trigger("JSTrace", message.data);
       }
     }, this));
   });

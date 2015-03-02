@@ -1,7 +1,8 @@
 define([
   "jQueryInjector",
-  "libDetectInjector"
-], function (jQueryInjector, libDetectInjector) {
+  "libDetectInjector",
+  "jsTraceInjector"
+], function (jQueryInjector, libDetectInjector, jsTraceInjector) {
   function RaleAgent() {
     if (!(this instanceof RaleAgent)) {
       throw new TypeError("RaleAgent constructor cannot be called as a function.");
@@ -16,6 +17,7 @@ define([
     });
     RaleAgent.runInPage(jQueryInjector);
     RaleAgent.runInPage(libDetectInjector);
+    RaleAgent.runInPage(jsTraceInjector);
   };
 
   RaleAgent.runInPage = function (fn, callback) {
