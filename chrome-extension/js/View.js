@@ -121,7 +121,7 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         var path = (mutation.path || "");
 
-        if (this.pathsRows[path] && this.pathsRows[path].length > 0) {
+        if (this.pathsRows[path]) {
           var data = this.pathsRows[path].data();
           data[0] = data[0] + 1;
           this.pathsRows[path].data(data);
@@ -136,7 +136,7 @@ define([
           ]);
           //var rowNum = dt.index();
           //var rowArr = dt.row(dt).data();
-          this.pathsRows[path] = dt.row(dt);
+          this.pathsRows[path] = dt.row(dt.index());
         }
       }, this);
       this.dataTable.draw()

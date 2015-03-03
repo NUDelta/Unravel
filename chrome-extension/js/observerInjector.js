@@ -13,8 +13,6 @@ define([],
         console.log("Created new observer for DOM");
         window.raleAgent.observer = new MutationObserver(function (mutations, observer) {
           var serializedMutations = window.raleAgent._(mutations).map(function (mutation) {
-            debugger;
-
             return {
               addedNodes: mutation.addedNodes ? window.raleAgent._(mutation.addedNodes).map(function (node) {
                 return node.outerHTML;
@@ -25,7 +23,7 @@ define([],
               previousSibling: mutation.previousSibling ? mutation.previousSibling.outerHTML : null,
               nextSibling: mutation.nextSibling ? mutation.nextSibling.outerHTML : null,
               target: mutation.target ? mutation.target.outerHTML : null,
-              path: raleAgent.$(mutation.target).getPath(),
+              path: window.raleAgent.$(mutation.target).getPath(),
               attributeName: mutation.attributeName,
               attributeNamespace: mutation.attributeNamespace,
               oldValue: mutation.oldValue,
@@ -33,21 +31,10 @@ define([],
             };
           });
 
-          console.log('heremu');
-          //chrome.extension.sendMessage({
-          //  target: "page",
-          //  name: "mutation",
-          //  data: serializedMutations
-          //});
-
           window.dispatchEvent(new CustomEvent("DOMObserve", {"detail": serializedMutations}));
-
-
-          //console.log(JSON.stringify(serializedMutations));
-          //console.log("Δ DOM: ", serializedMutations);
         });
 
-        var $el = raleAgent.$(cssPath || window.document);
+        var $el = window.raleAgent.$(cssPath || window.document);
         var observable = $el[0];
 
         window.raleAgent.observer.observe(observable, {
