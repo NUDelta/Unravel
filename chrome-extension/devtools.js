@@ -7,7 +7,7 @@ chrome.devtools.panels.elements.createSidebarPane(name,
     sidebar.setHeight("600px");
   });
 
-chrome.devtools.panels.create(name, "img/panel.png", "panel.html");
+chrome.devtools.panels.create(name, "img/visor128.png", "panel.html");
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
   chrome.devtools.inspectedWindow.eval("selectedElement($0)", {useContentScriptContext: true});

@@ -1,15 +1,15 @@
 define([],
   function () {
     return function () {
-      window.raleAgent.traceJsOn = function () {
+      window.visorAgent.traceJsOn = function () {
 
-        if (!window.raleAgent.functionPool) {
-          window.raleAgent.functionPool = {};
+        if (!window.visorAgent.functionPool) {
+          window.visorAgent.functionPool = {};
         }
 
         for (var func in document) {
           if (typeof(document[func]) === 'function') {
-            window.raleAgent[func] = document[func];
+            window.visorAgent[func] = document[func];
             (function () {
               var functionName = func;
               document[functionName] = function () {
@@ -18,7 +18,7 @@ define([],
                 var error = new Error();
                 window.dispatchEvent(new CustomEvent("JSTrace", {"detail": error.stack}));
 
-                return window.raleAgent[functionName].apply(document, args);
+                return window.visorAgent[functionName].apply(document, args);
 
               }
             })();
@@ -27,14 +27,14 @@ define([],
         console.log("Javascript tracing enabled.")
       }
 
-      window.raleAgent.traceJsOff = function () {
-        if (!window.raleAgent.functionPool) {
+      window.visorAgent.traceJsOff = function () {
+        if (!window.visorAgent.functionPool) {
           return;
         }
 
         for (var func in window.document) {
           if (typeof(window.document[func]) === 'function') {
-            window.document[func] = window.raleAgent.functionPool[func];
+            window.document[func] = window.visorAgent.functionPool[func];
           }
         }
 

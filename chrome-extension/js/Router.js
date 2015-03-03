@@ -1,13 +1,13 @@
 define([
   "backbone",
   "View",
-  "RaleAgent"
-], function (Backbone, HomeView, RaleAgent) {
+  "VisorAgent"
+], function (Backbone, HomeView, VisorAgent) {
 
   var Router = Backbone.Router.extend({
 
     initialize: function () {
-      RaleAgent.install();
+      VisorAgent.install();
     },
 
     routes: {

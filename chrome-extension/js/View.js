@@ -4,9 +4,9 @@ define([
   "jquery",
   "datatables",
   "handlebars",
-  "RaleAgent",
+  "VisorAgent",
   "text!templates/view.html"
-], function (Backbone, _, $, datatables, Handlebars, RaleAgent, viewTemplate) {
+], function (Backbone, _, $, datatables, Handlebars, VisorAgent, viewTemplate) {
   return Backbone.View.extend({
     template: Handlebars.compile(viewTemplate),
 
@@ -46,17 +46,17 @@ define([
         console.log("Started observing", (currentPath || "non"));
       };
 
-      RaleAgent.runInPage(function () {
-        return raleAgent.startObserving();
+      VisorAgent.runInPage(function () {
+        return visorAgent.startObserving();
       }, callback, this.currentPath);
     },
 
     stop: function () {
-      RaleAgent.runInPage(function () {
-        return raleAgent.stopObserving();
+      VisorAgent.runInPage(function () {
+        return visorAgent.stopObserving();
       }, callback, this.currentPath);
 
-      raleAgent.traceJsOff();
+      visorAgent.traceJsOff();
     },
 
     clearTable: function () {
@@ -65,13 +65,13 @@ define([
 
       this.$("#libResults").hide();
       this.$("#libResults ul").empty();
-      raleAgent.traceJsOff();
+      visorAgent.traceJsOff();
     },
 
     trace: function () {
       console.log("activating trace");
-      RaleAgent.runInPage(function () {
-        raleAgent.traceJsOn();
+      VisorAgent.runInPage(function () {
+        visorAgent.traceJsOn();
       });
     },
 
@@ -148,12 +148,12 @@ define([
           console.error("No path provided when trying to inspect.");
           return;
         } else {
-          console.log("Inspecting path", path, raleAgent.$(path)[0])
+          console.log("Inspecting path", path, visorAgent.$(path)[0])
         }
-        inspect(raleAgent.$(path)[0]);
+        inspect(visorAgent.$(path)[0]);
       };
 
-      RaleAgent.runInPage(doInspect, null, path);
+      VisorAgent.runInPage(doInspect, null, path);
     },
 
     inspectSource: function () {
@@ -180,8 +180,8 @@ define([
         }
       };
 
-      RaleAgent.runInPage(function () {
-        return raleAgent.libDetect();
+      VisorAgent.runInPage(function () {
+        return visorAgent.libDetect();
       }, callback);
     }
   });

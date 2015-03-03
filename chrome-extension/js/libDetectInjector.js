@@ -1,7 +1,7 @@
 define([],
   function () {
     return function () {
-      window.raleAgent.libDetect = function () {
+      window.visorAgent.libDetect = function () {
         var testCases = [
           {
             lib: "jQuery",

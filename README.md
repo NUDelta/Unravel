@@ -1,2 +1,2 @@
-# chrome-devtool-dom-changes
-A chrome dev tool extension for tracking DOM changes
+# Visor
+Chrome Developer Tools extension for Visualizing Changes in the DOM and tracking method calls in JS

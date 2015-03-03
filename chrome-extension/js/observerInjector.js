@@ -1,29 +1,29 @@
 define([],
   function () {
     return function () {
-      window.raleAgent.startObserving = function (cssPath) {
+      window.visorAgent.startObserving = function (cssPath) {
 
         MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-        if (window.raleAgent.observer && window.raleAgent.observer.disconnect) {
+        if (window.visorAgent.observer && window.visorAgent.observer.disconnect) {
           console.log("Deleting old observer");
-          window.raleAgent.observer.disconnect();
+          window.visorAgent.observer.disconnect();
         }
 
         console.log("Created new observer for DOM");
-        window.raleAgent.observer = new MutationObserver(function (mutations, observer) {
-          var serializedMutations = window.raleAgent._(mutations).map(function (mutation) {
+        window.visorAgent.observer = new MutationObserver(function (mutations, observer) {
+          var serializedMutations = window.visorAgent._(mutations).map(function (mutation) {
             return {
-              addedNodes: mutation.addedNodes ? window.raleAgent._(mutation.addedNodes).map(function (node) {
+              addedNodes: mutation.addedNodes ? window.visorAgent._(mutation.addedNodes).map(function (node) {
                 return node.outerHTML;
               }) : null,
-              removedNodes: mutation.removedNodes ? window.raleAgent._(mutation.removedNodes).map(function (node) {
+              removedNodes: mutation.removedNodes ? window.visorAgent._(mutation.removedNodes).map(function (node) {
                 return node.outerHTML;
               }) : null,
               previousSibling: mutation.previousSibling ? mutation.previousSibling.outerHTML : null,
               nextSibling: mutation.nextSibling ? mutation.nextSibling.outerHTML : null,
               target: mutation.target ? mutation.target.outerHTML : null,
-              path: window.raleAgent.$(mutation.target).getPath(),
+              path: window.visorAgent.$(mutation.target).getPath(),
               attributeName: mutation.attributeName,
               attributeNamespace: mutation.attributeNamespace,
               oldValue: mutation.oldValue,
@@ -34,10 +34,10 @@ define([],
           window.dispatchEvent(new CustomEvent("DOMObserve", {"detail": serializedMutations}));
         });
 
-        var $el = window.raleAgent.$(cssPath || window.document);
+        var $el = window.visorAgent.$(cssPath || window.document);
         var observable = $el[0];
 
-        window.raleAgent.observer.observe(observable, {
+        window.visorAgent.observer.observe(observable, {
           subtree: true,
           attributes: true,
           childList: true,
@@ -47,9 +47,9 @@ define([],
         });
       };
 
-      window.raleAgent.stopObserving = function () {
-        if (window.raleAgent.observer) {
-          window.raleAgent.observer.disconnect();
+      window.visorAgent.stopObserving = function () {
+        if (window.visorAgent.observer) {
+          window.visorAgent.observer.disconnect();
         }
       };
     };
