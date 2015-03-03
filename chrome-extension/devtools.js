@@ -1,5 +1,5 @@
 // Script executed every time the devtools are opened.
-var name = "RALE-Analysis";
+var name = "Visor";
 
 chrome.devtools.panels.elements.createSidebarPane(name,
   function (sidebar) {

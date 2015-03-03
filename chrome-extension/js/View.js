@@ -134,8 +134,6 @@ define([
             mutation.oldValue || '',
             mutation.type || ''
           ]);
-          //var rowNum = dt.index();
-          //var rowArr = dt.row(dt).data();
           this.pathsRows[path] = dt.row(dt.index());
         }
       }, this);
