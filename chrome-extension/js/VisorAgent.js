@@ -15,7 +15,13 @@ define([
   VisorAgent.install = function () {
     //Install global agent in web page
     VisorAgent.runInPage(function () {
-      window.visorAgent = {};
+      window.visorAgent = {
+        keepAlive: function () {
+          window.setInterval(function () {
+            window.dispatchEvent(new CustomEvent("VisorKeepAlive", {"detail": 1}));
+          }, 250);
+        }
+      };
     });
     VisorAgent.runInPage(jQueryInjector);
     VisorAgent.runInPage(underscoreInjector);
@@ -31,8 +37,36 @@ define([
   };
 
   VisorAgent.prototype = {
-    constructor: VisorAgent
     //instance methods
+    constructor: VisorAgent,
+
+    keptAlive: false,
+    strikeCount: 0,
+
+    keepAlive: function (fn, callback) {
+      console.log("Injecting keepalive");
+      VisorAgent.runInPage(function () {
+        console.log("Launching keepalive in window");
+        window.visorAgent.keepAlive();
+      });
+
+      var that = this;
+      window.setInterval(function () {
+        if (that.keptAlive) {
+          that.keptAlive = false;
+        } else {
+          that.strikeCount += 1;
+          if (that.strikeCount == 2) {
+            console.log("Lost connection");
+            window.location.reload();
+          }
+        }
+      }, 1000);
+    },
+
+    receiveKeepAlive: function () {
+      this.keptAlive = true;
+    }
   };
 
   return VisorAgent;

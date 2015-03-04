@@ -8,6 +8,8 @@ define([
 
     initialize: function () {
       VisorAgent.install();
+      this.visorAgent = new VisorAgent();
+      this.visorAgent.keepAlive();
     },
 
     routes: {
@@ -29,6 +31,10 @@ define([
 
       this.on("JSTrace", function (data) {
         this.homeView.handleJSTrace(data);
+      }, this);
+
+      this.on("VisorKeepAlive", function (data) {
+        this.visorAgent.receiveKeepAlive(data);
       }, this);
     }
   });

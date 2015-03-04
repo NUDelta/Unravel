@@ -10,6 +10,14 @@ window.addEventListener("JSTrace", function (event) {
   });
 }, false);
 
+window.addEventListener("VisorKeepAlive", function (event) {
+  chrome.extension.sendMessage({
+    target: "page",
+    name: "VisorKeepAlive",
+    data: event.detail
+  });
+}, false);
+
 window.addEventListener("DOMObserve", function (event) {
   var str = event.detail;
 
