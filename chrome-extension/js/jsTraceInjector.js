@@ -35,7 +35,6 @@ define([],
             })();
           }
         }
-        console.log("Javascript tracing enabled.")
       };
 
       window.visorAgent.traceJsOff = function () {
@@ -48,8 +47,6 @@ define([],
             window.document[func] = window.visorAgent.functionPool[func];
           }
         }
-
-        console.log("Javascript tracing disabled.")
       };
     };
   });

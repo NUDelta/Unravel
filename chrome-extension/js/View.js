@@ -17,7 +17,9 @@ define([
       "click .inspectElement": "inspectElement",
       "click .inspectSource": "inspectSource",
       "click #resultToggle": "toggleLibResultsPane",
-      "click #detectJSAgain": "detectJSLibs"
+      "click #detectJSAgain": "detectJSLibs",
+      "click #filterSVG": "toggleFilterSVG",
+      "click #filterSizzle": "toggleFilterSizzle"
     },
 
     currentPath: "",
@@ -27,7 +29,12 @@ define([
     dataTable: null,
 
     pathsDomRows: [],
+
     pathsJSRows: [],
+
+    filterSVG: true,
+
+    filterSizzle: true,
 
     initialize: function (options) {
       this.detectJSLibs();
@@ -45,6 +52,22 @@ define([
       });
       if (mockData) {
         this.handleMutations(mockData);
+      }
+    },
+
+    toggleFilterSVG: function () {
+      if (this.$('#filterSVG').prop('checked')) {
+        this.filterSVG = true;
+      } else {
+        this.filterSVG = false;
+      }
+    },
+
+    toggleFilterSizzle: function () {
+      if (this.$('#filterSizzle').prop('checked')) {
+        this.filterSizzle = true;
+      } else {
+        this.filterSizzle = false;
       }
     },
 
@@ -129,6 +152,10 @@ define([
       _(mutations).map(function (mutation) {
         mutation.selector = this.parseSelector(mutation.target);
         var path = (mutation.path || "");
+
+        if (this.filterSVG && mutation.path.toLowerCase().indexOf("svg") > -1) {
+          return;
+        }
 
         var oldAttributeValue = mutation.attributeName ? "<span>" + (mutation.attributeName || '') + "=" + "'" + (mutation.oldValue || '') + "'</span></br>" : "";
         if (this.pathsDomRows[path]) {

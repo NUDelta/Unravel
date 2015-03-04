@@ -44,9 +44,7 @@ define([
     strikeCount: 0,
 
     keepAlive: function (fn, callback) {
-      console.log("Injecting keepalive");
       VisorAgent.runInPage(function () {
-        console.log("Launching keepalive in window");
         window.visorAgent.keepAlive();
       });
 
@@ -57,8 +55,10 @@ define([
         } else {
           that.strikeCount += 1;
           if (that.strikeCount == 2) {
-            console.log("Lost connection");
-            window.location.reload();
+            console.log("Visor extension reloaded.");
+            if (window.visorMocks !== true) {
+              window.location.reload();
+            }
           }
         }
       }, 1000);

@@ -6,11 +6,9 @@ define([],
         MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
         if (window.visorAgent.observer && window.visorAgent.observer.disconnect) {
-          console.log("Deleting old observer");
           window.visorAgent.observer.disconnect();
         }
 
-        console.log("Created new observer for DOM");
         window.visorAgent.observer = new MutationObserver(function (mutations, observer) {
           var serializedMutations = window.visorAgent._(mutations).map(function (mutation) {
             return {

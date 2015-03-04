@@ -37,6 +37,17 @@ html
                   | HTML Changes
             #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
               .panel-body
+                .row
+                  .col-xs-2
+                    .checkbox
+                      label
+                        input#filterSVG(type='checkbox', checked="checked")
+                        | Hide SVG
+                  //.col-xs-2
+                  //  .checkbox
+                  //    label
+                  //      input#filterSizzle(type='checkbox', checked="checked")
+                  //      | Hide Sizzle
                 table#domResults.display(cellspacing='0')
                   thead
                     tr

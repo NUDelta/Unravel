@@ -70,6 +70,18 @@ define([],
             }
           },
           {
+            lib: "YUI",
+            testFn: function () {
+              return (typeof YUI === 'function') ? YUI.version : undefined;
+            }
+          },
+          {
+            lib: "AUI",
+            testFn: function () {
+              return (typeof AUI === 'function') ? AUI.version : undefined;
+            }
+          },
+          {
             lib: "ThreeJS",
             testFn: function () {
               return (typeof THREE === 'object') ? THREE.REVISION : undefined;
