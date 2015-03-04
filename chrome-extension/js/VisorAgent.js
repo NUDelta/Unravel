@@ -20,6 +20,9 @@ define([
           window.setInterval(function () {
             window.dispatchEvent(new CustomEvent("VisorKeepAlive", {"detail": 1}));
           }, 250);
+        },
+        selectElement: function (el) {
+          window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": visorAgent.$(el).getPath()}));
         }
       };
     });

@@ -8,7 +8,7 @@ table {
   height: 300px;
 }
 
-a {
+a, a#selectedElement {
   color: #2183d5;
 }
 

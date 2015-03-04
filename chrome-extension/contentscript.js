@@ -18,6 +18,14 @@ window.addEventListener("VisorKeepAlive", function (event) {
   });
 }, false);
 
+window.addEventListener("ElementSelected", function (event) {
+  chrome.extension.sendMessage({
+    target: "page",
+    name: "elementSelected",
+    data: event.detail
+  });
+}, false);
+
 window.addEventListener("DOMObserve", function (event) {
   var str = event.detail;
 
@@ -36,20 +44,3 @@ window.addEventListener('DOMContentLoaded', function () {
     name: 'ready'
   });
 }, false);
-
-
-function selectedElement(el) {
-  chrome.extension.sendMessage({
-    target: "page",
-    name: "elementSelected",
-    data: $(el).getPath()
-  });
-}
-
-var injectFn = function (functionAsString) {
-  $(document).ready(function () {
-    var script = document.createElement('script');
-    script.appendChild(document.createTextNode(functionAsString));
-    (document.body || document.head || document.documentElement).appendChild(script);
-  });
-};

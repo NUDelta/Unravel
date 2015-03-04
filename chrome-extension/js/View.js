@@ -85,8 +85,8 @@ define([
         this.$("#record .active").show();
       };
 
-      VisorAgent.runInPage(function () {
-        return visorAgent.startObserving();
+      VisorAgent.runInPage(function (path) {
+        return visorAgent.startObserving(path);
       }, callback, this.currentPath);
 
       VisorAgent.runInPage(function () {
@@ -111,6 +111,9 @@ define([
       this.jsDataTable.row().remove().draw(false);
       this.pathsDomRows = [];
       this.pathsJSRows = [];
+      this.currentPath = "";
+      this.$("#selectedElement").hide();
+      this.$(".selectedWrap").hide();
       this.stop();
     },
 
@@ -118,7 +121,15 @@ define([
       if (this.currentPath != cssPath) {
         this.currentPath = cssPath;
       }
-      this.$("#tagTitle").text("Currently selected element: " + cssPath);
+      this.$("#selectedElement").attr("data-path", cssPath);
+      this.$("#selectedElement").html(cssPath + " <i class='glyphicon glyphicon-search'></i>");
+      this.$(".selectedWrap").show();
+      this.$("#selectedElement").show();
+
+      if(this.$("#record .active").is(":visible")){
+        this.stop();
+        this.start();
+      }
     },
 
     parseSelector: function (htmlString) {

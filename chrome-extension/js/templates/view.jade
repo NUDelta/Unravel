@@ -20,7 +20,7 @@ html
               h4.panel-title
                 a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
                   | JS Library Detection
-            #collapseOne.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingOne')
+            #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
               .panel-body
                 .row
                   .col-xs-10
@@ -34,7 +34,9 @@ html
             #headingTwo.panel-heading(role='tab')
               h4.panel-title
                 a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
-                  | HTML Changes
+                  | HTML Changes #{' '}
+                span.selectedWrap(style="display:none;") for selection:#{' '}
+                a#selectedElement.inspectElement(style="display:none;", href="javascript:;")
             #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
               .panel-body
                 .row
