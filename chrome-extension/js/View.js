@@ -130,18 +130,18 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         var path = (mutation.path || "");
 
-        var oldAttributeValue = mutation.attributeName ? "<span>" + (mutation.attributeName || '') + "=" + "\"" + (mutation.oldValue || '') + "\"</span></br>" : "";
+        var oldAttributeValue = mutation.attributeName ? "<span>" + (mutation.attributeName || '') + "=" + "'" + (mutation.oldValue || '') + "'</span></br>" : "";
         if (this.pathsDomRows[path]) {
           var data = this.pathsDomRows[path].data();
           data[0] = data[0] + 1;
-          data[3] = data[3] + oldAttributeValue;
+          data[3] = "<div class='inlay'>" + $(data[3]).html() + oldAttributeValue + "</div>";
           this.pathsDomRows[path].data(data);
         } else {
           var dt = this.domDataTable.row.add([
             1,
             "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
             mutation.selector,
-            oldAttributeValue
+            "<div class='inlay'>" + oldAttributeValue + "</div>"
           ]);
           this.pathsDomRows[path] = dt.row(dt.index());
         }
