@@ -22,8 +22,14 @@ html
                   | JS Library Detection
             #collapseOne.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingOne')
               .panel-body
-                #libResults
-                  ul
+                .row
+                  .col-xs-10
+                    #libResults
+                      ul
+                  .col-xs-2
+                    a#detectJSAgain(href="javascript:;")
+                      i.glyphicon.glyphicon-refresh
+                      | #{' '}Re-Detect
           .panel.panel-default
             #headingTwo.panel-heading(role='tab')
               h4.panel-title
@@ -35,11 +41,9 @@ html
                   thead
                     tr
                       th Count
-                      th DOM Path
-                      th Selector
-                      th Name
-                      th Old Value
-                      th Type
+                      th CSS Path
+                      th CSS Selector
+                      th HTML Attribute Changed
                   tbody#mutationWrapper
           .panel.panel-default
             #headingThree.panel-heading(role='tab')

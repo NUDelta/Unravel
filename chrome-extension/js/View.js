@@ -14,10 +14,10 @@ define([
       "click #record": "record",
       "click #reset": "reset",
       "click #reduce": "reduceTable",
-      "click #detect": "detect",
       "click .inspectElement": "inspectElement",
       "click .inspectSource": "inspectSource",
-      "click #resultToggle": "toggleLibResultsPane"
+      "click #resultToggle": "toggleLibResultsPane",
+      "click #detectJSAgain": "detectJSLibs"
     },
 
     currentPath: "",
@@ -30,8 +30,7 @@ define([
     pathsJSRows: [],
 
     initialize: function (options) {
-      console.log("Delta View initialized.");
-      this.detect();
+      this.detectJSLibs();
     },
 
     render: function () {
@@ -61,7 +60,6 @@ define([
       var callback = function (currentPath) {
         this.$("#record .inactive").hide();
         this.$("#record .active").show();
-        console.log("Started observing", (currentPath || "non"));
       };
 
       VisorAgent.runInPage(function () {
@@ -132,18 +130,18 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         var path = (mutation.path || "");
 
+        var oldAttributeValue = mutation.attributeName ? "<span>" + (mutation.attributeName || '') + "=" + "\"" + (mutation.oldValue || '') + "\"</span></br>" : "";
         if (this.pathsDomRows[path]) {
           var data = this.pathsDomRows[path].data();
           data[0] = data[0] + 1;
+          data[3] = data[3] + oldAttributeValue;
           this.pathsDomRows[path].data(data);
         } else {
           var dt = this.domDataTable.row.add([
             1,
             "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
-            mutation.selector || '',
-            mutation.attributeName || '',
-            mutation.oldValue || '',
-            mutation.type || ''
+            mutation.selector,
+            oldAttributeValue
           ]);
           this.pathsDomRows[path] = dt.row(dt.index());
         }
@@ -210,14 +208,12 @@ define([
           return "remove";
         }
 
-        var frame = {
+        return {
           functionName: functionName,
           script: locationParts[0],
           lineNumber: locationParts[1],
           charNumber: locationParts[2]
         };
-
-        return frame
       }, this);
 
       return _(frames).without("remove");
@@ -227,10 +223,10 @@ define([
       var path = $(e.target).attr("data-path");
       var doInspect = function (path) {
         if (!path) {
-          console.error("No path provided when trying to inspect.");
+          console.log("No path provided when trying to inspect.");
           return;
         } else {
-          console.log("Inspecting path", path, visorAgent.$(path)[0])
+          console.log("Inspect " + visorAgent.$(path)[0])
         }
         inspect(visorAgent.$(path)[0]);
       };
@@ -247,18 +243,23 @@ define([
       chrome.devtools.panels.openResource(url, lineNumber, callback);
     },
 
-    detect: function () {
+    detectJSLibs: function () {
       var callback = function (arr, exception) {
         var $resultList = this.$("#libResults ul");
         $resultList.empty();
+        var $message = $("<li>Detecting...</li>");
+        $resultList.append($message);
 
-        if (arr.length < 1) {
-          $resultList.append("<li>None Detected.</li>")
-        } else {
-          _(arr).each(function (o) {
-            $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
-          }, this);
-        }
+        window.setTimeout(function () {
+          $message.remove();
+          if (arr.length < 1) {
+            $resultList.append("<li>None Detected.</li>")
+          } else {
+            _(arr).each(function (o) {
+              $resultList.append("<li>" + o.lib + ": " + o.value + "</li>")
+            });
+          }
+        }, 1000);
       };
 
       VisorAgent.runInPage(function () {
