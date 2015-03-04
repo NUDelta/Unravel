@@ -11,13 +11,13 @@ define([
     template: Handlebars.compile(viewTemplate),
 
     events: {
-      "click #start": "start",
-      "click #stop": "stop",
-      "click #clear": "clearTable",
+      "click #record": "record",
+      "click #reset": "reset",
       "click #reduce": "reduceTable",
       "click #detect": "detect",
-      "click #trace": "trace",
-      "click .inspectElement": "inspectElement"
+      "click .inspectElement": "inspectElement",
+      "click .inspectSource": "inspectSource",
+      "click #resultToggle": "toggleLibResultsPane"
     },
 
     currentPath: "",
@@ -26,60 +26,71 @@ define([
 
     dataTable: null,
 
-    pathsRows: [],
+    pathsDomRows: [],
+    pathsJSRows: [],
 
     initialize: function (options) {
       console.log("Delta View initialized.");
-      this.start();
+      this.detect();
     },
 
     render: function () {
       this.$el.html(this.template());
-      this.dataTable = this.$("table").DataTable();
+      this.domDataTable = this.$("table#domResults").DataTable({
+        paging: false,
+        searching: false
+      });
+      this.jsDataTable = this.$("table#jsResults").DataTable({
+        paging: false,
+        searching: false
+      });
       if (mockData) {
         this.handleMutations(mockData);
       }
     },
 
+    record: function () {
+      if (this.$("#record .active").is(":visible")) {
+        this.stop();
+      } else {
+        this.start();
+      }
+    },
+
     start: function () {
       var callback = function (currentPath) {
+        this.$("#record .inactive").hide();
+        this.$("#record .active").show();
         console.log("Started observing", (currentPath || "non"));
       };
 
       VisorAgent.runInPage(function () {
         return visorAgent.startObserving();
       }, callback, this.currentPath);
-    },
 
-    stop: function () {
-      VisorAgent.runInPage(function () {
-        return visorAgent.stopObserving();
-      }, callback, this.currentPath);
-
-      visorAgent.traceJsOff();
-    },
-
-    clearTable: function () {
-      this.dataTable.row().remove().draw(false);
-      this.pathsRows = [];
-
-      this.$("#libResults").hide();
-      this.$("#libResults ul").empty();
-      visorAgent.traceJsOff();
-    },
-
-    trace: function () {
-      console.log("activating trace");
       VisorAgent.runInPage(function () {
         visorAgent.traceJsOn();
       });
     },
 
-    handleJSTrace: function (data) {
-      var c = data.split("|||    at ");
-      var d = c.slice(1);
+    stop: function () {
+      var callback = function () {
+        this.$("#record .active").hide();
+        this.$("#record .inactive").show();
+      };
 
-      console.log(JSON.stringify(d));
+      VisorAgent.runInPage(function () {
+        visorAgent.stopObserving();
+        visorAgent.traceJsOff();
+      }, callback);
+    },
+
+    reset: function () {
+      this.domDataTable.row().remove().draw(false);
+      this.jsDataTable.row().remove().draw(false);
+      this.pathsDomRows = [];
+      this.pathsJSRows = [];
+      this.stop();
     },
 
     elementSelected: function (cssPath) {
@@ -121,12 +132,12 @@ define([
         mutation.selector = this.parseSelector(mutation.target);
         var path = (mutation.path || "");
 
-        if (this.pathsRows[path]) {
-          var data = this.pathsRows[path].data();
+        if (this.pathsDomRows[path]) {
+          var data = this.pathsDomRows[path].data();
           data[0] = data[0] + 1;
-          this.pathsRows[path].data(data);
+          this.pathsDomRows[path].data(data);
         } else {
-          var dt = this.dataTable.row.add([
+          var dt = this.domDataTable.row.add([
             1,
             "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
             mutation.selector || '',
@@ -134,15 +145,86 @@ define([
             mutation.oldValue || '',
             mutation.type || ''
           ]);
-          this.pathsRows[path] = dt.row(dt.index());
+          this.pathsDomRows[path] = dt.row(dt.index());
         }
       }, this);
-      this.dataTable.draw()
+      this.domDataTable.draw()
+    },
+
+    handleJSTrace: function (traceEvent) {
+      var callStack = this.parseError(traceEvent.stack);
+
+      var formattedArgs = traceEvent.args.replace("[", "");
+      formattedArgs = formattedArgs.replace("]", "");
+      var domCall = "document." + traceEvent.functionName + "(" + formattedArgs + ")<br/>";
+      var formattedTrace = "";
+      _(callStack).each(function (frame) {
+        var sourceUrl = "<a href='javascript:' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (frame.script || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
+        formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
+      });
+
+      var path = formattedTrace;
+
+      if (this.pathsJSRows[path]) {
+        var data = this.pathsJSRows[path].data();
+        data[0] = data[0] + 1;
+        this.pathsJSRows[path].data(data);
+      } else {
+        var dt = this.jsDataTable.row.add([
+          1,
+          formattedTrace,
+          domCall
+        ]);
+        this.pathsJSRows[path] = dt.row(dt.index());
+      }
+      this.jsDataTable.draw()
+    },
+
+    parseError: function (error) {
+      var frames = error.split('|||').slice(1).map(function (line) {
+        var tokens = line.replace(/^\s+/, '').split(/\s+/).slice(1);
+
+        if (tokens[1] === "function)") {
+          tokens[0] = tokens[0] + " " + tokens[1] + " " + tokens[2] + " " + tokens[3];
+          tokens[1] = tokens[4];
+          tokens = tokens.slice(0, 2);
+        }
+
+        var urlLike = tokens.pop().replace(/[\(\)\s]/g, '');
+        var locationParts = urlLike.split(':');
+        var lastNumber = locationParts.pop();
+        var possibleNumber = locationParts[locationParts.length - 1];
+        if (!isNaN(parseFloat(possibleNumber)) && isFinite(possibleNumber)) {
+          var lineNumber = locationParts.pop();
+          locationParts = [locationParts.join(':'), lineNumber, lastNumber];
+        } else {
+          locationParts = [locationParts.join(':'), lastNumber, undefined];
+        }
+
+        tokens[0] = tokens[0].replace("<anonymous>", "&lt;anonymous&gt;");
+        locationParts[0] = locationParts[0].replace("<anonymous>", "&lt;anonymous&gt;");
+
+        var functionName = (!tokens[0] || tokens[0] === 'Anonymous') ? undefined : tokens[0];
+
+        if (functionName.indexOf("visorAgent") > -1) {
+          return "remove";
+        }
+
+        var frame = {
+          functionName: functionName,
+          script: locationParts[0],
+          lineNumber: locationParts[1],
+          charNumber: locationParts[2]
+        };
+
+        return frame
+      }, this);
+
+      return _(frames).without("remove");
     },
 
     inspectElement: function (e) {
       var path = $(e.target).attr("data-path");
-      console.log('here');
       var doInspect = function (path) {
         if (!path) {
           console.error("No path provided when trying to inspect.");
@@ -156,18 +238,17 @@ define([
       VisorAgent.runInPage(doInspect, null, path);
     },
 
-    inspectSource: function () {
-      var url, lineNumber, callback;
+    inspectSource: function (e) {
+      var path = $(e.target).attr("data-path");
+      var arr = path.split("|||");
+      var url = arr[0], lineNumber = arr[1], callback;
 
-      callback = function () {
-      };
+      console.log("Inspect (" + url + ":" + lineNumber + ")");
       chrome.devtools.panels.openResource(url, lineNumber, callback);
     },
 
     detect: function () {
       var callback = function (arr, exception) {
-        this.$("#libResults").show();
-
         var $resultList = this.$("#libResults ul");
         $resultList.empty();
 
@@ -186,3 +267,7 @@ define([
     }
   });
 });
+
+
+
+

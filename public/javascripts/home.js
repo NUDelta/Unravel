@@ -11,3 +11,35 @@ $("#test2").click(function () {
   var $effect2 = $("#effect2");
   $effect2.append("<span> A </span>");
 });
+
+$("#test3").click(function () {
+  var a = new Error();
+  console.log(a.stack);
+  var b = a.stack.replace(/(?:\r\n|\r|\n)/g, '|||');
+
+  console.log("");
+  var c = b.split('|||').slice(1).map(function (line) {
+    var tokens = line.replace(/^\s+/, '').split(/\s+/).slice(1);
+
+    var urlLike = tokens.pop().replace(/[\(\)\s]/g, '');
+    var locationParts = urlLike.split(':');
+    var lastNumber = locationParts.pop();
+    var possibleNumber = locationParts[locationParts.length - 1];
+    if (!isNaN(parseFloat(possibleNumber)) && isFinite(possibleNumber)) {
+      var lineNumber = locationParts.pop();
+      locationParts = [locationParts.join(':'), lineNumber, lastNumber];
+    } else {
+      locationParts = [locationParts.join(':'), lastNumber, undefined];
+    }
+
+    var functionName = (!tokens[0] || tokens[0] === 'Anonymous') ? undefined : tokens[0];
+    return {
+      fn: functionName,
+      script: locationParts[0],
+      lineNumber: locationParts[1],
+      charNumber: locationParts[2]
+    }
+  }, this);
+
+  console.log(c);
+});

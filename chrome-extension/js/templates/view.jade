@@ -1,40 +1,58 @@
 html
   body
-    .row
-      .col-xs-1(style='margin-top:.6em')
-        button#stop.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          i.glyphicon.glyphicon-stop 
-          | #{' '}Stop
-      .col-xs-1(style='margin-top:.6em')
-        button#clear.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          i.glyphicon.glyphicon-erase 
+    .row(style='padding-top:.6em; padding-bottom:1em;')
+      .col-xs-12
+        button#record.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:.7em;")
+          span.inactive
+            i.glyphicon.glyphicon-record
+            | #{' '}Record
+          span.active(style="display:none;")
+            i.glyphicon.glyphicon-record
+            | #{' '}Stop
+        button#reset.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
+          i.glyphicon.glyphicon-ban-circle
           | #{' '}Reset
-      .col-xs-2(style='margin-top:.6em')
-        button#detect.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          i.glyphicon.glyphicon-equalizer 
-          | #{' '}Detect Libraries
-      .col-xs-1(style='margin-top:.6em')
-        button#trace.btn.btn-default.btn-xs(type='button', aria-label='Left Align')
-          i.glyphicon.glyphicon-road
-          | #{' '}Trace JS
-      .col-xs-2
-    .row
-      #libResults.col-xs-12(style="display: none;")
-        h4
-          | Libraries Detected
-        ul#libResults
     .row
       .col-xs-12
-        span#tagTitle(style="margin-left: .5em;")
-    .row.no-left
-      .col-xs-12
-        table.display(cellspacing='0')
-          thead
-            tr
-              th Count
-              th DOM Path
-              th Selector
-              th Name
-              th Old Value
-              th Type
-          tbody#mutationWrapper
+        #accordion.panel-group(role='tablist', aria-multiselectable='true')
+          .panel.panel-default
+            #headingOne.panel-heading(role='tab')
+              h4.panel-title
+                a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                  | JS Library Detection
+            #collapseOne.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingOne')
+              .panel-body
+                #libResults
+                  ul
+          .panel.panel-default
+            #headingTwo.panel-heading(role='tab')
+              h4.panel-title
+                a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                  | HTML Changes
+            #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
+              .panel-body
+                table#domResults.display(cellspacing='0')
+                  thead
+                    tr
+                      th Count
+                      th DOM Path
+                      th Selector
+                      th Name
+                      th Old Value
+                      th Type
+                  tbody#mutationWrapper
+          .panel.panel-default
+            #headingThree.panel-heading(role='tab')
+              h4.panel-title
+                a(data-toggle='collapse', data-target='#collapseThree', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
+                  | JavaScript Function Calls
+            #collapseThree.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree')
+              .panel-body
+                table#jsResults.display(cellspacing='0')
+                  thead
+                    tr
+                      th Count
+                      th StackFrame
+                      th DOM API Call
+                  tbody#jsMethodWrapper
+

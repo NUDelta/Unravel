@@ -3,12 +3,10 @@
  */
 
 window.addEventListener("JSTrace", function (event) {
-  var str = event.detail.replace(/(?:\r\n|\r|\n)/g, '|||');
-
   chrome.extension.sendMessage({
     target: "page",
     name: "JSTrace",
-    data: str
+    data: event.detail
   });
 }, false);
 

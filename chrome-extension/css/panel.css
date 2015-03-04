@@ -23,3 +23,8 @@ h4{
 .dataTables_filter {
   margin-right: .5em;
 }
+
+#record .active .glyphicon-record{
+  background-color: #ff4f52;
+  border-radius: 6px;
+}

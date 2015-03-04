@@ -9,23 +9,34 @@ define([],
 
         for (var func in document) {
           if (typeof(document[func]) === 'function') {
-            window.visorAgent[func] = document[func];
+            window.visorAgent.functionPool[func] = document[func];
             (function () {
-              var functionName = func;
+              var functionName = func;  //closure in the func reference
               document[functionName] = function () {
                 var args = [].splice.call(arguments, 0);
 
                 var error = new Error();
-                window.dispatchEvent(new CustomEvent("JSTrace", {"detail": error.stack}));
+                var strArgs;
+                try {
+                  strArgs = JSON.stringify(args);
+                } catch (ignored) {
+                }
 
-                return window.visorAgent[functionName].apply(document, args);
+                window.dispatchEvent(new CustomEvent("JSTrace", {
+                  "detail": {
+                    stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
+                    functionName: functionName,
+                    args: strArgs
+                  }
+                }));
 
+                return window.visorAgent.functionPool[functionName].apply(document, args);
               }
             })();
           }
         }
         console.log("Javascript tracing enabled.")
-      }
+      };
 
       window.visorAgent.traceJsOff = function () {
         if (!window.visorAgent.functionPool) {

@@ -44,7 +44,8 @@ require.config({
 require([
   "jquery",
   "backbone",
-  "Router"
+  "Router",
+  "bootstrap"
 ], function ($, Backbone, DeltaRouter) {
   $(document).ready(function () {
     console.log = function (text) {
