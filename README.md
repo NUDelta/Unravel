@@ -5,7 +5,7 @@ Chrome Developer Tools extension for Visualizing Changes in the DOM and tracking
 
 ### Clone the repo
 
-   git clone https://github.com/NUDelta/Visor
+    git clone https://github.com/NUDelta/Visor
 
 ### Load the Unpacked Extension in Chrome
 
