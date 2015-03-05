@@ -4,7 +4,8 @@ A Chrome Dev Tools extension for visualizing HTML changes, detecting JS librarie
 ## Installation
 
 1. Download the Extension [Visor.crx](https://raw.githubusercontent.com/NUDelta/Visor/master/dist/Visor.crx)
-3. Drag and drop Visor.crx into your [Chrome Extensions](chrome://extensions/) pane <a href="chrome://extensions/">Chrome Extensions</a>
+2. Drag and drop Visor.crx into your chrome://extensions
+3. Open your Elements Pane
 
 ## Preview
 
