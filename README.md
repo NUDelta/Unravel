@@ -1,5 +1,5 @@
 # Visor
-Chrome Developer Tools extension for Visualizing Changes in the DOM and tracking method calls in JS
+A Chrome Dev Tools extension for visualizing HTML changes, detecting JS libraries, and tracing runtime JavaScript method calls.
 
 ## Installation
 
