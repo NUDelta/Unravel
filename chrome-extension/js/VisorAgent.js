@@ -15,26 +15,30 @@ define([
   VisorAgent.install = function () {
     //Install global agent in web page
     VisorAgent.runInPage(function () {
-      window.visorAgent = {
-        keepAlive: function () {
-          if (window.visorAgent.keepAliveInterval){
-            window.clearInterval(window.visorAgent.keepAliveInterval);
-          }
-
-          window.visorAgent.keepAliveInterval = window.setInterval(function () {
-            window.dispatchEvent(new CustomEvent("VisorKeepAlive", {"detail": 1}));
-          }, 250);
-        },
-        selectElement: function (el) {
-          window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": visorAgent.$(el).getPath()}));
-        }
-      };
+      window.visorAgent = {};
     });
     VisorAgent.runInPage(jQueryInjector);
     VisorAgent.runInPage(underscoreInjector);
     VisorAgent.runInPage(libDetectInjector);
     VisorAgent.runInPage(jsTraceInjector);
     VisorAgent.runInPage(observerInjector);
+    VisorAgent.runInPage(function () {
+      window.visorAgent.keepAlive = function () {
+        if (window.visorAgent.keepAliveInterval) {
+          window.clearInterval(window.visorAgent.keepAliveInterval);
+        }
+
+        window.visorAgent.keepAliveInterval = window.setInterval(function () {
+          window.dispatchEvent(new CustomEvent("VisorKeepAlive", {"detail": 1}));
+        }, 250);
+      };
+
+      window.visorAgent.selectElement = function (el) {
+        window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": visorAgent.$(el).getPath()}));
+      };
+    });
+
+
   };
 
   VisorAgent.runInPage = function (fn, callback) {

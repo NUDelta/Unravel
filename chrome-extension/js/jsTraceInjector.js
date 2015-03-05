@@ -19,20 +19,22 @@ define([],
               document[functionName] = function () {
                 var args = [].splice.call(arguments, 0);
 
-                var error = new Error();
-                var strArgs;
-                try {
-                  strArgs = JSON.stringify(args);
-                } catch (ignored) {
-                }
-
-                window.dispatchEvent(new CustomEvent("JSTrace", {
-                  "detail": {
-                    stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
-                    functionName: functionName,
-                    args: strArgs
+                if (functionName.indexOf("createEvent") < 0) {
+                  var error = new Error();
+                  var strArgs;
+                  try {
+                    strArgs = JSON.stringify(args);
+                  } catch (ignored) {
                   }
-                }));
+
+                  window.dispatchEvent(new CustomEvent("JSTrace", {
+                    "detail": {
+                      stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
+                      functionName: functionName,
+                      args: strArgs
+                    }
+                  }));
+                }
 
                 return window.visorAgent.functionPool[functionName].apply(document, args);
               }

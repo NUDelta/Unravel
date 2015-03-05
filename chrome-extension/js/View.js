@@ -111,10 +111,13 @@ define([
       this.jsDataTable.row().remove().draw(false);
       this.pathsDomRows = [];
       this.pathsJSRows = [];
+      this.stop();
+    },
+
+    resetInspectedElement: function () {
       this.currentPath = "";
       this.$("#selectedElement").hide();
       this.$(".selectedWrap").hide();
-      this.stop();
     },
 
     elementSelected: function (cssPath) {
@@ -126,7 +129,7 @@ define([
       this.$(".selectedWrap").show();
       this.$("#selectedElement").show();
 
-      if(this.$("#record .active").is(":visible")){
+      if (this.$("#record .active").is(":visible")) {
         this.stop();
         this.start();
       }
