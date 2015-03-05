@@ -1,7 +1,10 @@
 # Visor
+<div>
 ![x](https://raw.githubusercontent.com/NUDelta/Visor/master/chrome-extension/img/visor128.png "")
+</div>
+<div>
 A Chrome Dev Tools extension for visualizing HTML changes, detecting JS libraries, and tracing runtime JavaScript method calls.
-
+</div>
 ## Installation
 
 1. Download the Extension [Visor.crx](https://raw.githubusercontent.com/NUDelta/Visor/master/dist/Visor.crx)
