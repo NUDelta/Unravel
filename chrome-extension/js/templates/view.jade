@@ -16,21 +16,6 @@ html
       .col-xs-12
         #accordion.panel-group(role='tablist', aria-multiselectable='true')
           .panel.panel-default
-            #headingOne.panel-heading(role='tab')
-              h4.panel-title
-                a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-                  | JS Library Detection
-            #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
-              .panel-body
-                .row
-                  .col-xs-10
-                    #libResults
-                      ul
-                  .col-xs-2
-                    a#detectJSAgain(href="javascript:;")
-                      i.glyphicon.glyphicon-refresh
-                      | #{' '}Re-Detect
-          .panel.panel-default
             #headingTwo.panel-heading(role='tab')
               h4.panel-title
                 a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
@@ -58,6 +43,21 @@ html
                       th CSS Selector
                       th HTML Attribute Changes
                   tbody#mutationWrapper
+          .panel.panel-default
+            #headingOne.panel-heading(role='tab')
+              h4.panel-title
+                a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                  | JS Library Detection
+            #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
+              .panel-body
+                .row
+                  .col-xs-10
+                    #libResults
+                      ul
+                  .col-xs-2
+                    a#detectJSAgain(href="javascript:;")
+                      i.glyphicon.glyphicon-refresh
+                      | #{' '}Re-Detect
           .panel.panel-default
             #headingThree.panel-heading(role='tab')
               h4.panel-title

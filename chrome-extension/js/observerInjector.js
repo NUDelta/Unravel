@@ -5,9 +5,7 @@ define([],
 
         MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-        if (window.visorAgent.observer && window.visorAgent.observer.disconnect) {
-          window.visorAgent.observer.disconnect();
-        }
+        window.visorAgent.stopObserving();
 
         window.visorAgent.observer = new MutationObserver(function (mutations, observer) {
           var serializedMutations = window.visorAgent._(mutations).map(function (mutation) {
@@ -46,7 +44,7 @@ define([],
       };
 
       window.visorAgent.stopObserving = function () {
-        if (window.visorAgent.observer) {
+        if (window.visorAgent.observer && window.visorAgent.observer.disconnect) {
           window.visorAgent.observer.disconnect();
         }
       };

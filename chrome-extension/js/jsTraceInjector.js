@@ -2,6 +2,10 @@ define([],
   function () {
     return function () {
       window.visorAgent.traceJsOn = function () {
+        if (window.visorAgent.traceJsActive) {
+          window.visorAgent.traceJsOff();
+        }
+        window.visorAgent.traceJsActive = true;
 
         if (!window.visorAgent.functionPool) {
           window.visorAgent.functionPool = {};
@@ -47,6 +51,8 @@ define([],
             window.document[func] = window.visorAgent.functionPool[func];
           }
         }
+
+        window.visorAgent.traceJsActive = false;
       };
     };
   });

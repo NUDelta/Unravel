@@ -17,7 +17,11 @@ define([
     VisorAgent.runInPage(function () {
       window.visorAgent = {
         keepAlive: function () {
-          window.setInterval(function () {
+          if (window.visorAgent.keepAliveInterval){
+            window.clearInterval(window.visorAgent.keepAliveInterval);
+          }
+
+          window.visorAgent.keepAliveInterval = window.setInterval(function () {
             window.dispatchEvent(new CustomEvent("VisorKeepAlive", {"detail": 1}));
           }, 250);
         },

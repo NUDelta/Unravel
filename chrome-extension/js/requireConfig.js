@@ -48,8 +48,26 @@ require([
   "bootstrap"
 ], function ($, Backbone, DeltaRouter) {
   $(document).ready(function () {
-    console.log = function (text) {
-      chrome.devtools.inspectedWindow.eval("console.log('" + text + "')", {useContentScriptContext: true})
+    console.log = function () {
+      var fn = function () {
+        console.log.apply(console, Array.prototype.slice.call(arguments, 0));
+      };
+      var args = Array.prototype.slice.call(arguments, 0);
+      var evalCode = "(" + fn.toString() + ").apply(this, " + JSON.stringify(args) + ");";
+      chrome.devtools.inspectedWindow.eval(evalCode, {});
+    };
+
+    console.error = function () {
+      var fn = function () {
+        console.error.apply(console, Array.prototype.slice.call(arguments, 0));
+      };
+      var args = Array.prototype.slice.call(arguments, 0);
+      var evalCode = "(" + fn.toString() + ").apply(this, " + JSON.stringify(args) + ");";
+      chrome.devtools.inspectedWindow.eval(evalCode, {});
+    };
+
+    window.onerror = function (errorMsg, url, lineNumber) {
+      console.error(errorMsg, url + ":" + lineNumber)
     };
 
     var router = new DeltaRouter();
