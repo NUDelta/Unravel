@@ -19,7 +19,7 @@ define([
       "click #resultToggle": "toggleLibResultsPane",
       "click #detectJSAgain": "detectJSLibs",
       "click #filterSVG": "toggleFilterSVG",
-      "click #filterSizzle": "toggleFilterSizzle"
+      "click #constrain": "toggleConstrain"
     },
 
     currentPath: "",
@@ -34,7 +34,7 @@ define([
 
     filterSVG: true,
 
-    filterSizzle: true,
+    constrainToPath: false,
 
     initialize: function (options) {
       this.detectJSLibs();
@@ -63,12 +63,15 @@ define([
       }
     },
 
-    toggleFilterSizzle: function () {
-      if (this.$('#filterSizzle').prop('checked')) {
-        this.filterSizzle = true;
+    toggleConstrain: function () {
+      if (this.$('#constrain').prop('checked')) {
+        this.constrainToPath = true;
       } else {
-        this.filterSizzle = false;
+        this.constrainToPath = false;
       }
+
+      this.stop();
+      this.start();
     },
 
     record: function () {
@@ -80,14 +83,16 @@ define([
     },
 
     start: function () {
-      var callback = function (currentPath) {
+      var callback = function () {
         this.$("#record .inactive").hide();
         this.$("#record .active").show();
       };
 
+      var path = this.constrainToPath ? this.currentPath : "";
+
       VisorAgent.runInPage(function (path) {
         return visorAgent.startObserving(path);
-      }, callback, this.currentPath);
+      }, callback, path);
 
       VisorAgent.runInPage(function () {
         visorAgent.traceJsOn();
@@ -116,7 +121,6 @@ define([
 
     resetInspectedElement: function () {
       this.currentPath = "";
-      this.$("#selectedElement").hide();
       this.$(".selectedWrap").hide();
     },
 
@@ -127,7 +131,6 @@ define([
       this.$("#selectedElement").attr("data-path", cssPath);
       this.$("#selectedElement").html(cssPath + " <i class='glyphicon glyphicon-search'></i>");
       this.$(".selectedWrap").show();
-      this.$("#selectedElement").show();
 
       if (this.$("#record .active").is(":visible")) {
         this.stop();

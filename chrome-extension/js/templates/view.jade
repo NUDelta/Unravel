@@ -20,8 +20,6 @@ html
               h4.panel-title
                 a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
                   | HTML Changes #{' '}
-                span.selectedWrap(style="display:none;") for selection:#{' '}
-                a#selectedElement.inspectElement(style="display:none;", href="javascript:;")
             #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
               .panel-body
                 .row
@@ -30,11 +28,12 @@ html
                       label
                         input#filterSVG(type='checkbox', checked="checked")
                         | Hide SVG
-                  //.col-xs-2
-                  //  .checkbox
-                  //    label
-                  //      input#filterSizzle(type='checkbox', checked="checked")
-                  //      | Hide Sizzle
+                  .col-xs-10
+                    .checkbox.selectedWrap(style="display:none;")
+                      label
+                        input#constrain(type='checkbox')
+                        | Show only changes from#{' '}
+                        a#selectedElement.inspectElement(href="javascript:;")
                 table#domResults.display(cellspacing='0')
                   thead
                     tr
