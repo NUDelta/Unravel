@@ -10,8 +10,6 @@ A Chrome Dev Tools extension for visualizing HTML changes, detecting JS librarie
 3. Refresh your page or relaunch Chrome
 4. Open your Elements Pane and click record to start seeing interactions
 
-    *Note: Visor will not monitor interactions in the chrome://extensions/ page.
-
 ## Preview
 
 ![x](https://raw.githubusercontent.com/NUDelta/Visor/master/dist/img/demo0.png "")
