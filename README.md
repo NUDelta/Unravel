@@ -3,14 +3,11 @@ Chrome Developer Tools extension for Visualizing Changes in the DOM and tracking
 
 ## Installation
 
-### Clone the repo
+1. Download the Extension [Visor.crx](https://raw.githubusercontent.com/NUDelta/Visor/master/dist/Visor.crx)
+2. Open your [Chrome Extensions](chrome://extensions/)
+3. Drag and drop Visor.crx into the extensions pane
 
-    git clone https://github.com/NUDelta/Visor
-
-### Load the Unpacked Extension in Chrome
-
-1. [Open Chrome Extensions](chrome://extensions/)
-2. Load Unpacked Extension > Navigate to the cloned Visor directory
+## Preview
 
 ![x](https://raw.githubusercontent.com/NUDelta/Visor/master/dist/img/demo0.png "")
 
