@@ -36,7 +36,13 @@ define([],
           {
             lib: "Underscore",
             testFn: function () {
-              return (typeof _ === 'function') && _.pluck ? _.VERSION : undefined;
+              return (typeof _ === 'function') && _.pluck && !_.support ? _.VERSION : undefined;
+            }
+          },
+          {
+            lib: "LoDash",
+            testFn: function () {
+              return (typeof _ === 'function') && _.pluck && _.support ? _.VERSION : undefined;
             }
           },
           {
@@ -91,6 +97,20 @@ define([],
             lib: "Mustache",
             testFn: function () {
               return (typeof Mustache === 'object') ? Mustache.version : undefined;
+            }
+          },
+          {
+            lib: "BootstrapJS",
+            testFn: function () {
+              if (typeof jQuery === 'function' &&
+                jQuery.fn &&
+                jQuery.fn.carousel &&
+                jQuery.fn.carousel.Constructor &&
+                jQuery.fn.carousel.Constructor.VERSION) {
+                return jQuery.fn.carousel.Constructor.VERSION;
+              } else {
+                return undefined;
+              }
             }
           }
         ];
