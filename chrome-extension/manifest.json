@@ -1,6 +1,6 @@
 {
   "name": "Visor",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Visualize DOM changes and JS method calls",
   "minimum_chrome_version": "22.0",
   "manifest_version": 2,
