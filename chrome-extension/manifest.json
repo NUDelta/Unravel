@@ -1,5 +1,5 @@
 {
-  "name": "Visor",
+  "name": "Unravel",
   "version": "0.2.2",
   "description": "Visualize DOM changes and JS method calls",
   "minimum_chrome_version": "22.0",
@@ -31,8 +31,8 @@
     "tabs"
   ],
   "icons": {
-    "16": "img/visor16.png",
-    "48": "img/visor48.png",
-    "128": "img/visor128.png"
+    "16": "img/knot16.png",
+    "48": "img/knot48.png",
+    "128": "img/knot128.png"
   }
 }

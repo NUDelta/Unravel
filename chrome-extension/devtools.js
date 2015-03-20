@@ -1,5 +1,5 @@
 // Script executed every time the devtools are opened.
-var name = "Visor";
+var name = "Unravel";
 
 chrome.devtools.panels.elements.createSidebarPane(name,
   function (sidebar) {
@@ -8,7 +8,7 @@ chrome.devtools.panels.elements.createSidebarPane(name,
   }
 );
 
-//chrome.devtools.panels.create(name, "img/visor128.png", "panel.html");
+//chrome.devtools.panels.create(name, "img/unravel128.png", "panel.html");
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
   chrome.devtools.inspectedWindow.eval("window.visorAgent.selectElement($0)");
