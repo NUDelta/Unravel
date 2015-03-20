@@ -1,0 +1,71 @@
+/* begin popover/amzPopoverCss.css */
+.ap_popover{position:absolute;outline:0}
+.ap_body{height:100%;min-height:36px;position:relative;background-color:#fff;margin:0 17px}
+.ap_popover_sprited .ap_body .ap_left-arrow,.ap_body .ap_left{width:17px;height:100%;position:absolute;top:0;left:-17px;background-attachment:scroll;background-repeat:repeat-y}
+.ap_popover_sprited .ap_body .ap_left{background-position:0 top}
+.ap_popover_sprited .ap_body .ap_right-arrow,.ap_body .ap_right{width:17px;height:100%;position:absolute;top:0;right:-17px;background-attachment:scroll;background-repeat:repeat-y}
+.ap_popover_sprited .ap_body .ap_right{background-position:-51px top}
+.ap_header,.ap_footer{position:relative;width:100%}
+.ap_header *,.ap_footer *{height:26px}
+.ap_header .ap_left{position:absolute;top:0;left:0;width:34px;background-attachment:scroll;background-repeat:no-repeat}
+.ap_popover_sprited .ap_header .ap_left{background-position:left -2px}
+.ap_header .ap_right{width:34px;position:absolute;top:0;right:0;background-attachment:scroll;background-repeat:no-repeat}
+.ap_popover_sprited .ap_header .ap_right{background-position:right -2px}
+.ap_header .ap_middle{margin:0 34px;background-attachment:scroll;background-repeat:repeat-x}
+.ap_popover_sprited .ap_header .ap_middle{background-position:0 -70px}
+.ap_footer .ap_left{position:absolute;top:0;left:0;width:34px;background-attachment:scroll;background-repeat:no-repeat}
+.ap_popover_sprited .ap_footer .ap_left{background-position:left -40px}
+.ap_footer .ap_right{width:34px;position:absolute;top:0;right:0;background-attachment:scroll;background-repeat:no-repeat}
+.ap_popover_sprited .ap_footer .ap_right{background-position:right -40px}
+.ap_footer .ap_middle{margin:0 34px;background-attachment:scroll;background-repeat:repeat-x}
+.ap_popover_sprited .ap_footer .ap_middle{background-position:0 -108px}
+.ap_popover .ap_titlebar{display:none;position:absolute;left:0;top:0;background-color:#eaf3fe;border-bottom:1px solid #c2ddf2;font-size:14px;font-weight:bold;margin:8px 18px;white-space:nowrap;overflow:hidden}
+.ap_popover .ap_titlebar.multiline{white-space:normal;overflow:visible}
+.ap_popover .ap_titlebar .ap_title{padding:4px 0;margin-left:10px;overflow:hidden}
+#ap_overlay,#ap_overlay div{background-color:#3f4c58;width:100%;position:absolute;top:0;left:0;z-index:99}
+.ap_popover .ap_close{position:absolute;right:18px;top:13px}
+.ap_popover .ap_close a{padding:5px;text-decoration:none;outline:0}
+.ap_popover .ap_close .ap_closetext{display:none;margin-right:5px;line-height:1em}
+.ap_popover .ap_closebutton{display:-moz-inline-box;display:inline-block;width:15px;height:15px;background-repeat:no-repeat;background-position:0 -136px;position:relative;overflow:hidden;vertical-align:top}
+.ap_popover .ap_closebutton span{position:absolute;top:-9999px}
+.ap_popover .ap_close img{vertical-align:top}
+.ap_classic{border-top:1px solid #ccc;border-left:1px solid #ccc;border-bottom:1px solid #2f2f1d;border-right:1px solid #2f2f1d;background-color:#efedd4;padding:3px}
+.ap_classic .ap_titlebar{color:#86875d;font-size:12px;padding:0 0 3px 0;line-height:1em}
+.ap_classic .ap_close{float:right}
+.ap_classic .ap_content{clear:both;background-color:white;border:1px solid #aca976;padding:8px;font-size:11px}
+/* end popover/amzPopoverCss.css */
+
+/* begin amazonShoveler/amazonShovelerCss.css */
+.shoveler{position:relative;width:100%;}
+.shoveler .shoveler-content{margin:0 45px;}
+.shoveler ul{height:150px;padding:0;overflow:hidden;outline:none;}
+* html .shoveler li{display:inline;}
+.shoveler li{float:left;margin:0;padding:10px 0 0 0;width:180px;height:100%;list-style:none;}
+.shoveler li.shoveler-progress{background:no-repeat center url(http://g-ecx.images-amazon.com/images/G/01/ui/loadIndicators/loading-small._V192238939_.gif);}
+.shoveler div.button{position:absolute;height:50px;width:25px;top:55px;cursor:pointer;}
+.shoveler div.button.disabled{opacity:.5;-moz-opacity:.5;filter:alpha(opacity=50);cursor:default;}
+.shoveler div.button.depressed{background-position:0 -50px;}
+.shoveler div.button.disabled.depressed{background-position:0 0;}
+.shoveler div.prev-button{background:no-repeat url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/shoveler/left-arrow-semi-rd._V17361814_.gif);left:10px;}
+.shoveler div.next-button{background:no-repeat url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/shoveler/right-arrow-semi-rd._V17361809_.gif);right:10px;}
+.shoveler a.back-button,.shoveler a.next-button{position:absolute;height:50px;width:25px;top:75px;}
+.shoveler a.back-button{left:1px;}
+.shoveler a.next-button{right:1px;}
+.shoveler .depressed .s_shvlBack{background-position:-30px -130px;}
+.shoveler .depressed .s_shvlNext{background-position:-60px -130px;}
+.shoveler .shoveler-pagination{position:absolute;right:0;top:0;padding:10px;}
+.shoveler .start-over{font-size:80%;}
+.shoveler .start-over a.start-over-link{text-decoration:none;color:#004B91;}
+.shoveler.default-style .shoveler-header{border:1px solid #9DC4D8;border-width:1px 1px 0 1px;background:bottom left repeat-x #eff5f9 url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/yourstore/box/sliced_box_fill/sliced-box-tbevel._V47082452_.gif);}
+.shoveler.default-style .shoveler-title{padding:5px 7px;}
+.shoveler.default-style .shoveler-main{border:1px solid #9DC4D8;border-width:1px 1px 0 1px;position:relative;}
+.shoveler.default-style .shoveler-footer{border:1px solid #9DC4D8;border-width:0 1px 1px 1px;}
+.shoveler.default-style .shoveler-footer-content{height:16px;line-height:16px;}
+.shoveler.default-style .shoveler-upper-left,.shoveler.default-style .shoveler-upper-right,.shoveler.default-style .shoveler-bottom-left,.shoveler.default-style .shoveler-bottom-right{width:17px;height:17px;position:absolute;}
+.shoveler.default-style .shoveler-upper-right{position:relative;float:right;}
+.shoveler.default-style .shoveler-bottom-right{position:relative;float:right;}
+.shoveler.default-style div.shoveler-upper-left{background:no-repeat top left url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/yourstore/box/sliced_box_fill/sliced-box-tl._V6007502_.gif);}
+.shoveler.default-style div.shoveler-upper-right{background:no-repeat top right url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/yourstore/box/sliced_box_fill/sliced-box-tr._V6007499_.gif);}
+.shoveler.default-style div.shoveler-bottom-left{background:no-repeat bottom left url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/yourstore/box/sliced-box-bl._V47082482_.gif);}
+.shoveler.default-style div.shoveler-bottom-right{background:no-repeat bottom right url(http://g-ecx.images-amazon.com/images/G/01/x-locale/personalization/yourstore/box/sliced-box-br._V47062575_.gif);}
+/* end amazonShoveler/amazonShovelerCss.css */

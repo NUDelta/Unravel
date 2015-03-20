@@ -1,0 +1,106 @@
+/*! ###
+    Copyright (c) 2011 Amazon.com, Inc., and its Affiliates.
+    All rights reserved.
+    Not to be reused without permission
+    ###
+*/body{font-family:arial,helvetica,sans-serif!important}
+a:active,a:hover,a:link,a:visited{font-family:arial,helvetica,sans-serif!important}
+div.left_nav,#leftNav div.unified_widget{border-bottom:1px solid #DDD;border-right:1px solid #DDD}
+#leftNav{font-size:95%!important}
+#searchResults td img{display:inline}
+td img{display:block}
+#container.lp #leftNavContainer .customPriceV2 input#high-price,#container.lp #leftNavContainer .customPriceV2 input#low-price{width:90%}
+#container div.amabot_center{padding:5px 10px 5px 5px}
+#center{float:right;margin:5px 0 0 -205px;overflow:hidden;width:100%}
+.so_jp_ja #center{margin-left:-220px}
+.oneColumn #center{float:left;margin:5px 0 0;overflow:hidden;width:100%}
+.oneColumn #center .s9Multipack{border:1px solid #ddd;border-radius:20px;-moz-border-radius:20px;-webkit-border-radius:20px;-o-border-radius:20px;padding:10px}
+.oneColumn #center h2{color:black;font-family:arial narrow,arial,sans serif;font-weight:normal;margin:0 0 .35em}
+.oneColumn #rightContainerATF,.oneColumn #rightResultsATF{margin-left:0}
+.unified_widget:last-of-type{margin-bottom:0}
+#filler{line-height:0}
+#left{display:inline;float:left;margin-top:5px;position:relative;width:200px}
+.so_jp_ja #left{width:220px}
+#footer{clear:both;margin-top:10px;width:100%}
+#centerSlots{display:inline;float:left;margin-left:205px}
+.so_jp_ja #centerSlots{margin-left:220px}
+.threeColumn #centerSlots{margin-right:300px}
+#rightSlots{float:left;margin-left:-300px;width:300px;clear:right}
+#searchResults{clear:both}
+#bottom{clear:both}
+.marker{line-height:0;height:1px}
+#leftNav a:link,#leftNav a:visited{text-decoration:none}
+div.left_nav{margin:0;padding:10px 14px 5px 2px}
+#leftNav .left_nav ul{border-bottom:0;margin-bottom:6px;padding:0 0 6px 20px;line-height:13px}
+div.left_nav h2{display:none}
+div.left_nav h3{color:#c60;font-size:100%;font-weight:bold;margin:0;padding:4px 0}
+div.left_nav p.seeMore{font-size:95%;margin:-10px 0 0;padding:0 0 4px;text-indent:15px}
+div.left_nav a:visited{color:#039}
+div.left_nav a:hover{text-decoration:underline}
+#leftNav div.unified_widget{padding:8px}
+.amabot_right .left_nav a:link,.amabot_right .left_nav a:visited{text-decoration:none}
+.amabot_right .left_nav a:hover{background-color:#f6f6df;color:#C60;text-decoration:underline}
+.amabot_right .left_nav ul{list-style-position:outside;list-style-type:none}
+.amabot_right .left_nav li{font-size:12px;padding-bottom:4px}
+.amabot_right .left_nav{border:1px solid #c9e1f4;padding:8px}
+#backlinkMsgBox span.icon{left:10px;top:10px;width:25px;height:25px;display:block;position:absolute;background-repeat:no-repeat}
+#backlinkMsgBox{background-color:#FFD;border:solid 1px #0071b5;font-size:95%;margin:0;padding:15px 15px 15px 45px;position:relative}
+#backlinkMsg span{font-weight:bold}
+.largeGridResult .searchPopoverBg div.container{top:251px!important}
+div.cols4 .searchPopoverBg div.container{width:180px}
+#navFooter td img{display:inline}
+.tcg{width:100%;text-align:center;margin:20px 0}
+.tcg1,.tcg2{width:460px;overflow:hidden;position:relative;margin:auto;text-align:left}
+.tcg3{min-width:460px;overflow:hidden;position:relative;margin:auto;text-align:left}
+.tcg4{min-width:460px;max-width:1900px;overflow:hidden;position:relative;margin:auto;text-align:left}
+.tcg5{min-width:460px;max-width:1900px;overflow:hidden;position:relative;margin:auto;text-align:left}
+.tcg a img{border:0}
+.tcg a:hover{text-decoration:underline;color:#e47911}
+.tcg p{margin:0 0 .5em}
+.tcg .carat{color:#e47911;font-size:13px;font-weight:bold;line-height:0;margin:0}
+.tcg h2 a{font-weight:normal;color:#004b91;text-decoration:none}
+.tcg h2 a:hover{color:#e47911;text-decoration:none}
+.tcg1 .mainasin,.tcg2 .mainasin{width:185px;overflow:hidden;float:left}
+.tcg1 .hdlnblk,.tcg2 .hdlnblk{position:relative;top:0;margin-left:200px}
+.tcg1 .hdlnblk h2,.tcg2 .hdlnblk h2{font-weight:normal;color:#106eb8;margin:0;letter-spacing:-1px}
+.tcg3 .mainasin{width:210px;overflow:hidden;float:right}
+.tcg3 .hdlnblk{margin-right:200px}
+.tcg4 .hdlnblk{text-align:center}
+.tcg3 .hdlnblk h2{color:#106eb8;font-size:29px;margin:0;line-height:1em}
+.tcg3 p{margin:.5em 0}
+.tcg4 .hdlnblk h2{color:#106eb8;font-weight:normal;margin:0;line-height:1.1em}
+* html .tcg4 .hdlnblk h2{margin-top:22px}
+.tcg1 .subhed{line-height:1.2em}
+.tcg1 .pricehed{color:#900}
+.tcg1 .messagehed{color:#e47911}
+.tcg2 .subhed{color:#e47911;font-size:20px;line-height:1.05em}
+.tcg4 .subhed{color:#e47911;line-height:1.2em}
+.tcg1 .sublk,.tcg2 .sublk{margin-left:200px}
+.tcg3 .sublk{margin-right:200px}
+.tcg1 .caveat,.tcg2 .caveat,.tcg3 .caveat{font-size:9px;color:#666}
+.tcg1 .caveat,.tcg3 .caveat{margin-top:5px}
+.tcg3 .logo{display:block;float:right}
+.tcg4 .caveat{color:#666;float:left;font-size:9px;text-align:center;width:161px}
+.tcg4 .shop{float:left;text-align:center;width:161px}
+.tcg5 .promo{float:left;margin-left:0;width:145px}
+.tcg5 .promo a img{text-align:left;margin-left:0}
+.tcg4 .title,.tcg5 .title{font-size:11px}
+.tcg4 .caveat,.tcg4 .shop{margin-top:10px}
+.tcg4 .asin{max-width:140px;width:135px;padding:0;text-align:center;margin:0 auto;float:none}
+.tcg4 #AsinHolder{margin:0 auto;text-align:center}
+.tcg5 .asin{width:135px;float:left;margin:0;padding:0}
+.tcg3 .asin{margin:0;padding:0}
+.tcg5 .shop{text-align:left;margin-left:0}
+.tcg4 .asinCell{width:160px;float:left;text-align:left}
+.tcg5 .asinCell{width:160px;float:left;text-align:left}
+.tcg3 .asinCell{width:200px;float:left;text-align:center}
+.tcg h2,.tcg h2 a,.tcg h2 a:active,.tcg h2 a:hover,.tcg h2 a:visited{font-family:Arial,Verdana,Helvetica,sans-serif}
+.tcg1 .hdlnblk h2,.tcg2 .hdlnblk h2{font-size:37px;line-height:1em}
+.tcg1 .subhed{font-size:23px}
+.tcg4 .hdlnblk h2{font-size:29px}
+.tcg4 .subhed{font-size:1.6em}
+.nav_redesign div.hdr{border-bottom:1px solid #EEE;border-top:1px solid #EEE;display:inline;float:left;font-size:93%;margin:4px 0;width:100%}
+.nav_redesign div.hdr{background:none repeat scroll 0 0 #EEE}
+.nav_redesign div.spr_gradient{border-top:1px solid #EEE;background:0;height:0;margin:0 -8px 10px -8px}
+.advice-voting-button img{display:inline}
+.bm{margin-bottom:1.25em}
