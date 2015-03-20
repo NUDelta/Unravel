@@ -1,5 +1,5 @@
 # Unravel
-<img align="right" src="https://raw.githubusercontent.com/NUDelta/Unravel/master/chrome-extension/img/knot105.png">
+<img align="right" src="https://raw.githubusercontent.com/NUDelta/Unravel/master/chrome-extension/img/unravel105.png">
 
 A Chrome Dev Tools extension for visualizing HTML changes, detecting JS libraries, and tracing runtime JavaScript method calls.
 

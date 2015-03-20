@@ -31,8 +31,8 @@
     "tabs"
   ],
   "icons": {
-    "16": "img/knot16.png",
-    "48": "img/knot48.png",
-    "128": "img/knot128.png"
+    "16": "img/unravel16.png",
+    "48": "img/unravel48.png",
+    "128": "img/unravel128.png"
   }
 }
