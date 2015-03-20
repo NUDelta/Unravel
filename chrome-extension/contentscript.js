@@ -10,10 +10,10 @@ window.addEventListener("JSTrace", function (event) {
   });
 }, false);
 
-window.addEventListener("VisorKeepAlive", function (event) {
+window.addEventListener("UnravelKeepAlive", function (event) {
   chrome.extension.sendMessage({
     target: "page",
-    name: "VisorKeepAlive",
+    name: "UnravelKeepAlive",
     data: event.detail
   });
 }, false);

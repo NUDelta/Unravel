@@ -4,9 +4,9 @@ define([
   "jquery",
   "datatables",
   "handlebars",
-  "VisorAgent",
+  "UnravelAgent",
   "text!templates/view.html"
-], function (Backbone, _, $, datatables, Handlebars, VisorAgent, viewTemplate) {
+], function (Backbone, _, $, datatables, Handlebars, UnravelAgent, viewTemplate) {
   return Backbone.View.extend({
     template: Handlebars.compile(viewTemplate),
 
@@ -90,12 +90,12 @@ define([
 
       var path = this.constrainToPath ? this.currentPath : "";
 
-      VisorAgent.runInPage(function (path) {
-        return visorAgent.startObserving(path);
+      UnravelAgent.runInPage(function (path) {
+        return unravelAgent.startObserving(path);
       }, callback, path);
 
-      VisorAgent.runInPage(function () {
-        visorAgent.traceJsOn();
+      UnravelAgent.runInPage(function () {
+        unravelAgent.traceJsOn();
       });
     },
 
@@ -105,9 +105,9 @@ define([
         this.$("#record .inactive").show();
       };
 
-      VisorAgent.runInPage(function () {
-        visorAgent.stopObserving();
-        visorAgent.traceJsOff();
+      UnravelAgent.runInPage(function () {
+        unravelAgent.stopObserving();
+        unravelAgent.traceJsOff();
       }, callback);
     },
 
@@ -248,7 +248,7 @@ define([
 
         var functionName = (!tokens[0] || tokens[0] === 'Anonymous') ? undefined : tokens[0];
 
-        if (functionName.indexOf("visorAgent") > -1) {
+        if (functionName.indexOf("unravelAgent") > -1) {
           return "remove";
         }
 
@@ -270,12 +270,12 @@ define([
           console.log("No path provided when trying to inspect.");
           return;
         } else {
-          console.log("Inspect " + visorAgent.$(path)[0])
+          console.log("Inspect " + unravelAgent.$(path)[0])
         }
-        inspect(visorAgent.$(path)[0]);
+        inspect(unravelAgent.$(path)[0]);
       };
 
-      VisorAgent.runInPage(doInspect, null, path);
+      UnravelAgent.runInPage(doInspect, null, path);
     },
 
     inspectSource: function (e) {
@@ -306,8 +306,8 @@ define([
         }, 1000);
       };
 
-      VisorAgent.runInPage(function () {
-        return visorAgent.libDetect();
+      UnravelAgent.runInPage(function () {
+        return unravelAgent.libDetect();
       }, callback);
     }
   });

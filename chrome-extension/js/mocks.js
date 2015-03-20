@@ -1,4 +1,4 @@
-if (window.visorMocks === true) {
+if (window.unravelMocks === true) {
   var head = document.getElementsByTagName("head")[0];
   var js = document.createElement("script");
   js.type = "text/javascript";

@@ -1,15 +1,15 @@
 define([
   "backbone",
   "View",
-  "VisorAgent"
-], function (Backbone, HomeView, VisorAgent) {
+  "UnravelAgent"
+], function (Backbone, HomeView, UnravelAgent) {
 
   var Router = Backbone.Router.extend({
 
     initialize: function () {
-      VisorAgent.install();
-      this.visorAgent = new VisorAgent();
-      this.visorAgent.keepAlive();
+      UnravelAgent.install();
+      this.unravelAgent = new UnravelAgent();
+      this.unravelAgent.keepAlive();
     },
 
     routes: {
@@ -33,8 +33,8 @@ define([
         this.homeView.handleJSTrace(data);
       }, this);
 
-      this.on("VisorKeepAlive", function (data) {
-        this.visorAgent.receiveKeepAlive(data);
+      this.on("UnravelKeepAlive", function (data) {
+        this.unravelAgent.receiveKeepAlive(data);
       }, this);
     }
   });

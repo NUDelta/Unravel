@@ -1,19 +1,19 @@
 define([],
   function () {
     return function () {
-      window.visorAgent.traceJsOn = function () {
-        if (window.visorAgent.traceJsActive) {
-          window.visorAgent.traceJsOff();
+      window.unravelAgent.traceJsOn = function () {
+        if (window.unravelAgent.traceJsActive) {
+          window.unravelAgent.traceJsOff();
         }
-        window.visorAgent.traceJsActive = true;
+        window.unravelAgent.traceJsActive = true;
 
-        if (!window.visorAgent.functionPool) {
-          window.visorAgent.functionPool = {};
+        if (!window.unravelAgent.functionPool) {
+          window.unravelAgent.functionPool = {};
         }
 
         for (var func in document) {
           if (typeof(document[func]) === 'function') {
-            window.visorAgent.functionPool[func] = document[func];
+            window.unravelAgent.functionPool[func] = document[func];
             (function () {
               var functionName = func;  //closure in the func reference
               document[functionName] = function () {
@@ -36,25 +36,25 @@ define([],
                   }));
                 }
 
-                return window.visorAgent.functionPool[functionName].apply(document, args);
+                return window.unravelAgent.functionPool[functionName].apply(document, args);
               }
             })();
           }
         }
       };
 
-      window.visorAgent.traceJsOff = function () {
-        if (!window.visorAgent.functionPool) {
+      window.unravelAgent.traceJsOff = function () {
+        if (!window.unravelAgent.functionPool) {
           return;
         }
 
         for (var func in window.document) {
           if (typeof(window.document[func]) === 'function') {
-            window.document[func] = window.visorAgent.functionPool[func];
+            window.document[func] = window.unravelAgent.functionPool[func];
           }
         }
 
-        window.visorAgent.traceJsActive = false;
+        window.unravelAgent.traceJsActive = false;
       };
     };
   });

@@ -89,8 +89,8 @@ require([
         router.trigger("detectLibs", message.data);
       } else if (message && message.target == "page" && message.name == "JSTrace") {
         router.trigger("JSTrace", message.data);
-      } else if (message && message.target == "page" && message.name == "VisorKeepAlive") {
-        router.trigger("VisorKeepAlive", message.data);
+      } else if (message && message.target == "page" && message.name == "UnravelKeepAlive") {
+        router.trigger("UnravelKeepAlive", message.data);
       }
     }, this));
   });

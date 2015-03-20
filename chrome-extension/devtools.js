@@ -11,5 +11,5 @@ chrome.devtools.panels.elements.createSidebarPane(name,
 //chrome.devtools.panels.create(name, "img/unravel128.png", "panel.html");
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
-  chrome.devtools.inspectedWindow.eval("window.visorAgent.selectElement($0)");
+  chrome.devtools.inspectedWindow.eval("window.unravelAgent.selectElement($0)");
 });

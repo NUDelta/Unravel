@@ -1,7 +1,7 @@
 define([],
   function () {
     return function () {
-      window.visorAgent.libDetect = function () {
+      window.unravelAgent.libDetect = function () {
         var testCases = [
           {
             lib: "jQuery",
