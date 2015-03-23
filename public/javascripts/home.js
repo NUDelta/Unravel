@@ -9,7 +9,8 @@ $("#test1").click(function () {
 
 $("#test2").click(function () {
   var $effect2 = $("#effect2");
-  $effect2.append("<span> A </span>");
+  var currentMoment = moment().format('MMMM Do YYYY, h:mm:ss a');
+  $effect2.append("<p>" + currentMoment + "</p>");
 });
 
 $("#test3").click(function () {
