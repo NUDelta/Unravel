@@ -283,8 +283,8 @@ define([
       var arr = path.split("|||");
       var url = arr[0], lineNumber = arr[1], callback;
 
-      console.log("Inspect (" + url + ":" + lineNumber + ")");
-      chrome.devtools.panels.openResource(url, lineNumber, callback);
+      console.log("Unravel: Click to inspect (" + url + ":" + lineNumber + ")");
+      //chrome.devtools.panels.openResource(url, lineNumber, callback);
     },
 
     detectJSLibs: function () {
