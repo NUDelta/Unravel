@@ -30,7 +30,7 @@ define([
 
         window.unravelAgent.keepAliveInterval = window.setInterval(function () {
           window.dispatchEvent(new CustomEvent("UnravelKeepAlive", {"detail": 1}));
-        }, 250);
+        }, 500);
       };
 
       window.unravelAgent.selectElement = function (el) {
@@ -66,9 +66,9 @@ define([
         } else {
           that.strikeCount += 1;
           if (that.strikeCount == 2) {
-            console.log("Unravel extension reloaded.");
+            console.warn("Unravel: Warning, page disconnected. Ignore this if a breakpoint is set. Otherwise close and reopen the dev tool window.");
             if (window.unravelMocks !== true) {
-              window.location.reload();
+              //window.location.reload();
             }
           }
         }

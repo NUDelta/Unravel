@@ -66,6 +66,15 @@ require([
       chrome.devtools.inspectedWindow.eval(evalCode, {});
     };
 
+    console.warn = function () {
+      var fn = function () {
+        console.warn.apply(console, Array.prototype.slice.call(arguments, 0));
+      };
+      var args = Array.prototype.slice.call(arguments, 0);
+      var evalCode = "(" + fn.toString() + ").apply(this, " + JSON.stringify(args) + ");";
+      chrome.devtools.inspectedWindow.eval(evalCode, {});
+    };
+
     window.onerror = function (errorMsg, url, lineNumber) {
       console.error(errorMsg, url + ":" + lineNumber)
     };
