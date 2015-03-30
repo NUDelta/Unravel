@@ -4212,11 +4212,11 @@ var swfobject = function() {
             var i = 0;
             ! function o() {
                 if (typeof n.GetVariable != D) try {
-                    var a = n.GetVariable("$version");
-                    a && (a = a.split(" ")[1].split(","), J.pv = [v(a[0]), v(a[1]), v(a[2])])
-                } catch (s) {
-                    J.pv = [8, 0, 0]
-                } else if (10 > i) return i++, void setTimeout(o, 10);
+                        var a = n.GetVariable("$version");
+                        a && (a = a.split(" ")[1].split(","), J.pv = [v(a[0]), v(a[1]), v(a[2])])
+                    } catch (s) {
+                        J.pv = [8, 0, 0]
+                    } else if (10 > i) return i++, void setTimeout(o, 10);
                 e.removeChild(t), n = null, r()
             }()
         } else r()
@@ -15185,10 +15185,10 @@ $growl_section.on("click", function(e) {
                             case "flash:rtf":
                                 t.rtf = e[i], n.rtf = i
                         }
-                        return {
-                            data: t,
-                            formatMap: n
-                        }
+                    return {
+                        data: t,
+                        formatMap: n
+                    }
                 }
             },
             lt = function(e, t) {
@@ -17611,7 +17611,7 @@ $growl_section.on("click", function(e) {
                             } catch (s) {
                                 r = s
                             }
-                            if (r) throw r
+                        if (r) throw r
                     }
                 }
 

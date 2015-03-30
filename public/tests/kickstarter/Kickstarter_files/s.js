@@ -1778,7 +1778,7 @@ var Sift = Sift || function() {
                                     c = f.getNum(g.GetVersionInfo());
                                     break
                                 } catch (n) {}
-                                this.installed = c ? 1 : -1
+                            this.installed = c ? 1 : -1
                         } else {
                             g = f.hasMimeType(this.mimeType);
                             var h = f.findNavPlugin("RealPlayer.*Plug-?in", 0);
