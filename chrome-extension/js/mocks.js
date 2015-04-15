@@ -2,8 +2,8 @@ if (window.unravelMocks === true) {
   var head = document.getElementsByTagName("head")[0];
   var js = document.createElement("script");
   js.type = "text/javascript";
-  js.src = "//localhost:35729/livereload.js";
-  head.appendChild(js);
+  //js.src = "//localhost:35729/livereload.js";
+  //head.appendChild(js);
 
 //Evaluated for mocks only, not in chrome plugin
   var chrome = {

@@ -44,11 +44,13 @@ define([
       this.$el.html(this.template());
       this.domDataTable = this.$("table#domResults").DataTable({
         paging: false,
-        searching: false
+        searching: false,
+        "order": [[ 0, "desc" ]]
       });
       this.jsDataTable = this.$("table#jsResults").DataTable({
         paging: false,
-        searching: false
+        searching: false,
+        "order": [[ 0, "desc" ]]
       });
       if (mockData) {
         this.handleMutations(mockData);
@@ -181,9 +183,14 @@ define([
           data[3] = "<div class='inlay'>" + $(data[3]).html() + oldAttributeValue + "</div>";
           this.pathsDomRows[path].data(data);
         } else {
+          var trimmedPath = mutation.path;
+          if (trimmedPath && trimmedPath.length > 45){
+              trimmedPath = trimmedPath.substring(0, 45) + "...";
+          }
+
           var dt = this.domDataTable.row.add([
             1,
-            "<a href='javascript:' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + mutation.path + " <i class='glyphicon glyphicon-search'></i></a>",
+            "<a href='#' title='Inspect Element' class='inspectElement' data-path='" + mutation.path + "'>" + trimmedPath + " <i class='glyphicon glyphicon-search'></i></a>",
             mutation.selector,
             "<div class='inlay'>" + oldAttributeValue + "</div>"
           ]);
@@ -200,8 +207,10 @@ define([
       formattedArgs = formattedArgs.replace("]", "");
       var domCall = "document." + traceEvent.functionName + "(" + formattedArgs + ")<br/>";
       var formattedTrace = "";
+      callStack = _(callStack).reverse();
       _(callStack).each(function (frame) {
-        var sourceUrl = "<a href='javascript:' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (frame.script || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
+        var cleanedScriptName = frame.script.replace("http://54.175.112.172","");
+        var sourceUrl = "<a href='#' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (cleanedScriptName || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
       });
 
@@ -224,6 +233,9 @@ define([
 
     parseError: function (error) {
       var frames = error.split('|||').slice(1).map(function (line) {
+        if(line.indexOf("yimg.com") > -1){
+          return "remove";
+        }
         var tokens = line.replace(/^\s+/, '').split(/\s+/).slice(1);
 
         if (tokens[1] === "function)") {
@@ -283,8 +295,8 @@ define([
       var arr = path.split("|||");
       var url = arr[0], lineNumber = arr[1], callback;
 
-      console.log("Unravel: Click to inspect (" + url + ":" + lineNumber + ")");
-      //chrome.devtools.panels.openResource(url, lineNumber, callback);
+      //console.log("Unravel: Click to inspect (" + url + ":" + lineNumber + ")");
+      chrome.devtools.panels.openResource(url, parseInt(lineNumber), function(){});
     },
 
     detectJSLibs: function () {

@@ -16,6 +16,16 @@ h4 {
   margin-left: 4px;
 }
 
+/*.panel-body {*/
+  /*max-height: 20em;*/
+  /*overflow: scroll;*/
+/*}*/
+
+.checkbox {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .dataTables_length {
   margin-left: .5em;
 }
@@ -30,7 +40,7 @@ h4 {
 }
 
 .inlay {
-  max-height: 11em;
+  max-height: 5em;
   overflow: scroll;
   box-shadow: inset 1px 1px 5px #999;
   padding-left: 1em;
@@ -39,4 +49,16 @@ h4 {
 
 .dataTables_info {
   display: none;
+}
+
+#libResults ul li {
+  list-style: none;
+  float: left;
+  display: inline-block;
+  margin-right: 2em;
+}
+
+#libResults ul {
+  margin-bottom: 0;
+  padding-left:4px;
 }
