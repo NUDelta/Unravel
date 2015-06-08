@@ -44,3 +44,52 @@ $("#test3").click(function () {
 
   console.log(c);
 });
+
+function makeFunc() {
+  var fn = document.getElementById;
+
+  function displayName() {
+    return fn;
+  }
+
+  return displayName;
+}
+
+var myFunc = makeFunc();
+myFunc();
+
+
+$("#test4").click(function () {
+  var a = myFunc();
+  var effect4 = a.call(document, "effect4");
+  console.log(effect4);
+
+  var $effect1 = $("#effect4");
+  //if ($effect1.is(":visible")) {
+  //  $effect1.hide();
+  //} else {
+  //  $effect1.show();
+  //}
+});
+
+function asdf() {
+  var makeFunc = function () {
+    var fn = document.getElementById;
+
+    function displayName() {
+      return fn;
+    }
+
+    return displayName;
+  };
+
+  var myFunc = makeFunc();
+  var oldGetElementById = myFunc();
+
+  document.getElementById = function () {
+    return "foo"
+  };
+
+  console.log(oldGetElementById.call(document, "myDiv"));
+  console.log(document.getElementById("myDiv"))
+}
