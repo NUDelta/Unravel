@@ -19,7 +19,8 @@ define([
       "click #resultToggle": "toggleLibResultsPane",
       "click #detectJSAgain": "detectJSLibs",
       "click #filterSVG": "toggleFilterSVG",
-      "click #constrain": "toggleConstrain"
+      "click #constrain": "toggleConstrain",
+      "click #whittle": "whittle"
     },
 
     currentPath: "",
@@ -36,6 +37,8 @@ define([
 
     constrainToPath: false,
 
+    domPathsToKeep: ["head", "title", "script", "style", "link"],
+
     initialize: function (options) {
       this.detectJSLibs();
     },
@@ -45,16 +48,22 @@ define([
       this.domDataTable = this.$("table#domResults").DataTable({
         paging: false,
         searching: false,
-        "order": [[ 0, "desc" ]]
+        "order": [[0, "desc"]]
       });
       this.jsDataTable = this.$("table#jsResults").DataTable({
         paging: false,
         searching: false,
-        "order": [[ 0, "desc" ]]
+        "order": [[0, "desc"]]
       });
       if (mockData) {
         this.handleMutations(mockData);
       }
+    },
+
+    whittle: function () {
+      UnravelAgent.runInPage(function (safePaths) {
+        return unravelAgent.whittle(safePaths);
+      }, null, this.domPathsToKeep);
     },
 
     toggleFilterSVG: function () {
@@ -184,8 +193,8 @@ define([
           this.pathsDomRows[path].data(data);
         } else {
           var trimmedPath = mutation.path;
-          if (trimmedPath && trimmedPath.length > 45){
-              trimmedPath = trimmedPath.substring(0, 45) + "...";
+          if (trimmedPath && trimmedPath.length > 45) {
+            trimmedPath = trimmedPath.substring(0, 45) + "...";
           }
 
           var dt = this.domDataTable.row.add([
@@ -195,9 +204,23 @@ define([
             "<div class='inlay'>" + oldAttributeValue + "</div>"
           ]);
           this.pathsDomRows[path] = dt.row(dt.index());
+          this.addToDomPaths(path);
         }
       }, this);
       this.domDataTable.draw()
+    },
+
+    addToDomPaths: function (path) {
+      var tags = path.split(">");
+      var paths = [];
+
+      for (var i = 0; i < tags.length; i++) {
+        var path = tags.slice(0, i + 1);
+        path = path.join(">");
+        paths.push(path);
+      }
+
+      this.domPathsToKeep = _.union(this.domPathsToKeep, paths);
     },
 
     handleJSTrace: function (traceEvent) {
@@ -209,7 +232,7 @@ define([
       var formattedTrace = "";
       callStack = _(callStack).reverse();
       _(callStack).each(function (frame) {
-        var cleanedScriptName = frame.script.replace("http://54.175.112.172","");
+        var cleanedScriptName = frame.script.replace("http://54.175.112.172", "");
         var sourceUrl = "<a href='#' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (cleanedScriptName || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
       });
@@ -233,7 +256,7 @@ define([
 
     parseError: function (error) {
       var frames = error.split('|||').slice(1).map(function (line) {
-        if(line.indexOf("yimg.com") > -1){
+        if (line.indexOf("yimg.com") > -1) {
           return "remove";
         }
         var tokens = line.replace(/^\s+/, '').split(/\s+/).slice(1);
@@ -296,7 +319,8 @@ define([
       var url = arr[0], lineNumber = arr[1], callback;
 
       //console.log("Unravel: Click to inspect (" + url + ":" + lineNumber + ")");
-      chrome.devtools.panels.openResource(url, parseInt(lineNumber), function(){});
+      chrome.devtools.panels.openResource(url, parseInt(lineNumber), function () {
+      });
     },
 
     detectJSLibs: function () {

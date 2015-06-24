@@ -3,8 +3,9 @@ define([
   "underscoreInjector",
   "libDetectInjector",
   "observerInjector",
-  "jsTraceInjector"
-], function (jQueryInjector, underscoreInjector, libDetectInjector, observerInjector, jsTraceInjector) {
+  "jsTraceInjector",
+  "whittleInjector"
+], function (jQueryInjector, underscoreInjector, libDetectInjector, observerInjector, jsTraceInjector, whittleInjector) {
   function UnravelAgent() {
     if (!(this instanceof UnravelAgent)) {
       throw new TypeError("UnravelAgent constructor cannot be called as a function.");
@@ -22,6 +23,7 @@ define([
     UnravelAgent.runInPage(libDetectInjector);
     UnravelAgent.runInPage(jsTraceInjector);
     UnravelAgent.runInPage(observerInjector);
+    UnravelAgent.runInPage(whittleInjector);
     UnravelAgent.runInPage(function () {
       window.unravelAgent.keepAlive = function () {
         if (window.unravelAgent.keepAliveInterval) {
