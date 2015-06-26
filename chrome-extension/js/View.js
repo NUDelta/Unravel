@@ -20,7 +20,8 @@ define([
       "click #detectJSAgain": "detectJSLibs",
       "click #filterSVG": "toggleFilterSVG",
       "click #constrain": "toggleConstrain",
-      "click #whittle": "whittle"
+      "click #whittle": "whittle",
+      "click #reload": "reloadInjecting"
     },
 
     currentPath: "",
@@ -40,11 +41,20 @@ define([
     domPathsToKeep: ["head", "title", "script", "style", "link"],
 
     initialize: function (options) {
-      this.detectJSLibs();
+
     },
 
-    render: function () {
+    render: function (unravelAgentActive) {
       this.$el.html(this.template());
+
+      if(unravelAgentActive){
+        this.$(".active-mode").show();
+        this.detectJSLibs();
+      } else {
+        this.$(".restart-mode").show();
+        return;
+      }
+
       this.domDataTable = this.$("table#domResults").DataTable({
         paging: false,
         searching: false,
@@ -55,9 +65,6 @@ define([
         searching: false,
         "order": [[0, "desc"]]
       });
-      if (mockData) {
-        this.handleMutations(mockData);
-      }
     },
 
     whittle: function () {
@@ -278,12 +285,17 @@ define([
           locationParts = [locationParts.join(':'), lastNumber, undefined];
         }
 
-        tokens[0] = tokens[0].replace("<anonymous>", "&lt;anonymous&gt;");
-        locationParts[0] = locationParts[0].replace("<anonymous>", "&lt;anonymous&gt;");
+        if(tokens[0]){
+          tokens[0] = tokens[0].replace("<anonymous>", "&lt;anonymous&gt;");
+        }
+
+        if(locationParts[0]){
+          locationParts[0] = locationParts[0].replace("<anonymous>", "&lt;anonymous&gt;");
+        }
 
         var functionName = (!tokens[0] || tokens[0] === 'Anonymous') ? undefined : tokens[0];
 
-        if (functionName.indexOf("unravelAgent") > -1) {
+        if (functionName && functionName.indexOf("unravelAgent") > -1) {
           return "remove";
         }
 
@@ -345,6 +357,11 @@ define([
       UnravelAgent.runInPage(function () {
         return unravelAgent.libDetect();
       }, callback);
+    },
+
+    reloadInjecting: function () {
+      UnravelAgent.reloadInjecting(true);
+      window.location.href = "";
     }
   });
 });

@@ -4,12 +4,8 @@ define([
   "UnravelAgent"
 ], function (Backbone, HomeView, UnravelAgent) {
 
-  var Router = Backbone.Router.extend({
-
+  return Backbone.Router.extend({
     initialize: function () {
-      UnravelAgent.install();
-      this.unravelAgent = new UnravelAgent();
-      this.unravelAgent.keepAlive();
     },
 
     routes: {
@@ -18,25 +14,43 @@ define([
 
     start: function () {
       this.homeView = new HomeView();
-      this.homeView.render();
-      document.body.appendChild(this.homeView.el);
+      var router = this;
 
-      this.on("elementSelectChange", function (cssPath) {
-        this.homeView.elementSelected(cssPath);
-      }, this);
+      UnravelAgent.checkActive(function (isActive) {
+        router.unravelAgent = new UnravelAgent();
+        router.homeView.render(isActive);
+        document.body.appendChild(router.homeView.el);
 
-      this.on("mutation", function (mutations) {
-        this.homeView.handleMutations(mutations);
-      }, this);
+        router.on("elementSelectChange", function (cssPath) {
+          router.homeView.elementSelected(cssPath);
+        }, router);
 
-      this.on("JSTrace", function (data) {
-        this.homeView.handleJSTrace(data);
-      }, this);
+        router.on("mutation", function (mutations) {
+          router.homeView.handleMutations(mutations);
+        }, router);
 
-      this.on("UnravelKeepAlive", function (data) {
-        this.unravelAgent.receiveKeepAlive(data);
-      }, this);
+        router.on("JSTrace", function (data) {
+          router.homeView.handleJSTrace(data);
+        }, router);
+
+        router.on("InjectionDone", function (data) {
+          router.unravelAgent.isInjecting = false;
+        }, router);
+
+        router.on("TabUpdate", function () {
+          if (router.unravelAgent.isInjecting) {
+            return;
+          }
+
+          UnravelAgent.checkActive(function (isActive) {
+            if (!isActive) {
+              router.unravelAgent.isInjecting = true;  //injection scripts will pass a message back
+              UnravelAgent.reloadInjecting();
+              router.homeView.reset();
+            }
+          });
+        }, router);
+      });
     }
   });
-  return Router;
 });

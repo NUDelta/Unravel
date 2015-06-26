@@ -36,6 +36,16 @@ window.addEventListener("DOMObserve", function (event) {
   });
 }, false);
 
+window.addEventListener("InjectionDone", function (event) {
+  var str = event.detail;
+
+  chrome.extension.sendMessage({
+    target: "page",
+    name: "InjectionDone",
+    data: str
+  });
+}, false);
+
 // Sends a message to the background when the DOM of the inspected page is ready
 // (typically used by the panel to check if the backbone agent is on the page).
 window.addEventListener('DOMContentLoaded', function () {

@@ -9,7 +9,6 @@ define([],
           if (safePaths.indexOf(unravelAgent.$(el).getPath()) < 0) {
             trashEls.push(el);
           }
-          debugger;
         });
 
         trashEls.forEach(function (el, index, array) {

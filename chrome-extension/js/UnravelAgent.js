@@ -12,35 +12,41 @@ define([
     }
   }
 
-  //public static
-  UnravelAgent.install = function () {
-    //Install global agent in web page
-    UnravelAgent.runInPage(function () {
+  UnravelAgent.reloadInjecting = function () {
+    var agentFn = function () {
       window.unravelAgent = {};
-    });
-    UnravelAgent.runInPage(jQueryInjector);
-    UnravelAgent.runInPage(underscoreInjector);
-    UnravelAgent.runInPage(libDetectInjector);
-    UnravelAgent.runInPage(jsTraceInjector);
-    UnravelAgent.runInPage(observerInjector);
-    UnravelAgent.runInPage(whittleInjector);
-    UnravelAgent.runInPage(function () {
-      window.unravelAgent.keepAlive = function () {
-        if (window.unravelAgent.keepAliveInterval) {
-          window.clearInterval(window.unravelAgent.keepAliveInterval);
-        }
+    };
 
-        window.unravelAgent.keepAliveInterval = window.setInterval(function () {
-          window.dispatchEvent(new CustomEvent("UnravelKeepAlive", {"detail": 1}));
-        }, 500);
-      };
-
+    var eventsFn = function () {
       window.unravelAgent.selectElement = function (el) {
         window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": unravelAgent.$(el).getPath()}));
       };
+
+      window.unravelAgent.$(window.document).ready(function () {
+        window.dispatchEvent(new CustomEvent("InjectionDone", {"detail": ""}));
+      });
+    };
+
+    var f1 = "(" + agentFn.toString() + ").apply(this, []); ";
+    var f2 = "(" + jQueryInjector.toString() + ").apply(this, []); ";
+    var f3 = "(" + underscoreInjector.toString() + ").apply(this, []); ";
+    var f4 = "(" + libDetectInjector.toString() + ").apply(this, []); ";
+    var f5 = "(" + jsTraceInjector.toString() + ").apply(this, []); ";
+    var f6 = "(" + observerInjector.toString() + ").apply(this, []); ";
+    var f7 = "(" + whittleInjector.toString() + ").apply(this, []); ";
+    var f8 = "(" + eventsFn.toString() + ").apply(this, []); ";
+
+    chrome.devtools.inspectedWindow.reload({
+      ignoreCache: true,
+      injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8
     });
+  };
 
-
+  //public static
+  UnravelAgent.checkActive = function (callback) {
+    UnravelAgent.runInPage(function () {
+      return !!window.unravelAgent;
+    }, callback);
   };
 
   UnravelAgent.runInPage = function (fn, callback) {
@@ -53,33 +59,7 @@ define([
     //instance methods
     constructor: UnravelAgent,
 
-    keptAlive: false,
-    strikeCount: 0,
-
-    keepAlive: function (fn, callback) {
-      UnravelAgent.runInPage(function () {
-        window.unravelAgent.keepAlive();
-      });
-
-      var that = this;
-      window.setInterval(function () {
-        if (that.keptAlive) {
-          that.keptAlive = false;
-        } else {
-          that.strikeCount += 1;
-          if (that.strikeCount == 2) {
-            console.warn("Unravel: Warning, page disconnected. Ignore this if a breakpoint is set. Otherwise close and reopen the dev tool window.");
-            if (window.unravelMocks !== true) {
-              //window.location.reload();
-            }
-          }
-        }
-      }, 1000);
-    },
-
-    receiveKeepAlive: function () {
-      this.keptAlive = true;
-    }
+    isInjecting: false
   };
 
   return UnravelAgent;

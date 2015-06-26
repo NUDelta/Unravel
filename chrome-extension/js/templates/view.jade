@@ -1,80 +1,85 @@
 html
   body
-    //.row(style='padding-top:.6em; padding-bottom:0;')
-    //  .col-xs-12
-    //    img(src="img/banner.png")
-    .row(style='padding-top:.6em; padding-bottom:1em;')
-      .col-xs-12
-        button#record.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:.7em;")
-          span.inactive
-            i.glyphicon.glyphicon-record
-            | #{' '}Record
-          span.active(style="display:none;")
-            i.glyphicon.glyphicon-record
-            | #{' '}Stop
-        button#reset.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
-          i.glyphicon.glyphicon-ban-circle
-          | #{' '}Reset
-        button#whittle.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
-          i
-          | #{' '}Whittle
-    .row
-      .col-xs-12
-        #accordion.panel-group(role='tablist', aria-multiselectable='true')
-          .panel.panel-default
-            #headingTwo.panel-heading(role='tab')
-              h4.panel-title
-                a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
-                  | HTML Changes #{' '}
-            #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
-              .panel-body
-                .row
-                  .col-xs-2
-                    .checkbox
-                      label
-                        input#filterSVG(type='checkbox', checked="checked")
-                        | Hide SVG
-                  .col-xs-10
-                    .checkbox.selectedWrap(style="display:none;")
-                      label
-                        input#constrain(type='checkbox')
-                        | Show only changes from#{' '}
-                        a#selectedElement.inspectElement(href="javascript:;")
-                table#domResults.display(cellspacing='0')
-                  thead
-                    tr
-                      th Count
-                      th CSS Path
-                      th CSS Selector
-                      th HTML Attribute Changes
-                  tbody#mutationWrapper
-          .panel.panel-default
-            #headingOne.panel-heading(role='tab')
-              h4.panel-title
-                a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-                  | JS Library Detection
-            #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
-              .panel-body
-                .row
-                  .col-xs-10
-                    #libResults
-                      ul
-                  .col-xs-2
-                    a#detectJSAgain(href="javascript:;")
-                      i.glyphicon.glyphicon-refresh
-                      | #{' '}Re-Detect
-          .panel.panel-default
-            #headingThree.panel-heading(role='tab')
-              h4.panel-title
-                a(data-toggle='collapse', data-target='#collapseThree', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
-                  | JavaScript Function Calls
-            #collapseThree.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree')
-              .panel-body
-                table#jsResults.display(cellspacing='0')
-                  thead
-                    tr
-                      th Count
-                      th StackFrame
-                      th DOM API Call
-                  tbody#jsMethodWrapper
+    .restart-mode(style="display:none;")
+      .row(style='padding-top:.6em; padding-bottom:1em;')
+        .col-xs-12
+          span The Unravel System needs inspection access to this window.
+          button#reload.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
+            i
+            | #{' '}Reload with Unravel
+    .active-mode(style="display:none;")
+      .row(style='padding-top:.6em; padding-bottom:1em;')
+        .col-xs-12
+          button#record.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:.7em;")
+            span.inactive
+              i.glyphicon.glyphicon-record
+              | #{' '}Record
+            span.active(style="display:none;")
+              i.glyphicon.glyphicon-record
+              | #{' '}Stop
+          button#reset.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
+            i.glyphicon.glyphicon-ban-circle
+            | #{' '}Reset
+          button#whittle.btn.btn-default.btn-xs(type='button', aria-label='Left Align', style="margin-left:1em;")
+            i
+            | #{' '}Whittle
+      .row
+        .col-xs-12
+          #accordion.panel-group(role='tablist', aria-multiselectable='true')
+            .panel.panel-default
+              #headingTwo.panel-heading(role='tab')
+                h4.panel-title
+                  a(data-toggle='collapse', data-target='#collapseTwo', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                    | HTML Changes #{' '}
+              #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
+                .panel-body
+                  .row
+                    .col-xs-2
+                      .checkbox
+                        label
+                          input#filterSVG(type='checkbox', checked="checked")
+                          | Hide SVG
+                    .col-xs-10
+                      .checkbox.selectedWrap(style="display:none;")
+                        label
+                          input#constrain(type='checkbox')
+                          | Show only changes from#{' '}
+                          a#selectedElement.inspectElement(href="javascript:;")
+                  table#domResults.display(cellspacing='0')
+                    thead
+                      tr
+                        th Count
+                        th CSS Path
+                        th CSS Selector
+                        th HTML Attribute Changes
+                    tbody#mutationWrapper
+            .panel.panel-default
+              #headingOne.panel-heading(role='tab')
+                h4.panel-title
+                  a(data-toggle='collapse', data-target='#collapseOne', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                    | JS Library Detection
+              #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
+                .panel-body
+                  .row
+                    .col-xs-10
+                      #libResults
+                        ul
+                    .col-xs-2
+                      a#detectJSAgain(href="javascript:;")
+                        i.glyphicon.glyphicon-refresh
+                        | #{' '}Re-Detect
+            .panel.panel-default
+              #headingThree.panel-heading(role='tab')
+                h4.panel-title
+                  a(data-toggle='collapse', data-target='#collapseThree', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
+                    | JavaScript Function Calls
+              #collapseThree.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree')
+                .panel-body
+                  table#jsResults.display(cellspacing='0')
+                    thead
+                      tr
+                        th Count
+                        th StackFrame
+                        th DOM API Call
+                    tbody#jsMethodWrapper
 

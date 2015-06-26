@@ -32,3 +32,19 @@ chrome.extension.onMessage.addListener(function (message, sender, sendResponse) 
     }
   }
 });
+
+chrome.tabs.onUpdated.addListener(function (updatedTabId, changeInfo) {
+  // the event is emitted a second time when the update is complete, but we only need the first one.
+  if (changeInfo.status == 'loading') {
+    var port = panelPorts[updatedTabId];
+    if (port) {
+      port.postMessage({
+        target: 'page',
+        name: 'TabUpdate',
+        data: {
+          urlChanged: changeInfo.url !== undefined
+        }
+      });
+    }
+  }
+});
