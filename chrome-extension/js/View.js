@@ -36,6 +36,8 @@ define([
 
     filterSVG: true,
 
+    eventTracePaths: [],
+
     constrainToPath: false,
 
     domPathsToKeep: ["head", "title", "script", "style", "link"],
@@ -47,7 +49,7 @@ define([
     render: function (unravelAgentActive) {
       this.$el.html(this.template());
 
-      if(unravelAgentActive){
+      if (unravelAgentActive) {
         this.$(".active-mode").show();
         this.detectJSLibs();
       } else {
@@ -230,6 +232,11 @@ define([
       this.domPathsToKeep = _.union(this.domPathsToKeep, paths);
     },
 
+    handleEventTrace: function (data) {
+      this.eventTracePaths = _.union(this.eventTracePaths, [data.path]);
+      this.addToDomPaths(data.path);
+    },
+
     handleJSTrace: function (traceEvent) {
       var callStack = this.parseError(traceEvent.stack);
 
@@ -285,11 +292,11 @@ define([
           locationParts = [locationParts.join(':'), lastNumber, undefined];
         }
 
-        if(tokens[0]){
+        if (tokens[0]) {
           tokens[0] = tokens[0].replace("<anonymous>", "&lt;anonymous&gt;");
         }
 
-        if(locationParts[0]){
+        if (locationParts[0]) {
           locationParts[0] = locationParts[0].replace("<anonymous>", "&lt;anonymous&gt;");
         }
 

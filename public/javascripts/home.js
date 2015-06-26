@@ -62,7 +62,7 @@ myFunc();
 $("#test4").click(function () {
   var a = myFunc();
   var effect4 = a.call(document, "effect4");
-  console.log(effect4);
+  //console.log(effect4);
 
   var $effect1 = $("#effect4");
   //if ($effect1.is(":visible")) {

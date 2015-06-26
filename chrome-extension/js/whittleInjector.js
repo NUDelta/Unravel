@@ -5,7 +5,6 @@ define([],
         var trashEls = [];
 
         unravelAgent.$('*').each(function (i, el) {
-          var $el = unravelAgent.$(el);
           if (safePaths.indexOf(unravelAgent.$(el).getPath()) < 0) {
             trashEls.push(el);
           }

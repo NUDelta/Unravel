@@ -37,7 +37,11 @@ define([
           router.unravelAgent.isInjecting = false;
         }, router);
 
-        router.on("TabUpdate", function () {
+        router.on("eventTrace", function (data) {
+          router.homeView.handleEventTrace(data);
+        }, router);
+
+        router.on("TabUpdate", function (data) {
           if (router.unravelAgent.isInjecting) {
             return;
           }

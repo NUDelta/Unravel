@@ -102,6 +102,8 @@ require([
         router.trigger("InjectionDone", message.data);
       } else if (message && message.target == "page" && message.name == "TabUpdate") {
         router.trigger("TabUpdate", message.data);
+      } else if (message && message.target == "page" && message.name == "eventTrace") {
+        router.trigger("eventTrace", message.data);
       }
     }, this));
   });

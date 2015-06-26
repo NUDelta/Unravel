@@ -14,14 +14,14 @@ define([
 
   UnravelAgent.reloadInjecting = function () {
     var agentFn = function () {
-      window.unravelAgent = {};
+      window.unravelAgent = {
+        selectElement: function (el) {
+          window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": unravelAgent.$(el).getPath()}));
+        }
+      };
     };
 
-    var eventsFn = function () {
-      window.unravelAgent.selectElement = function (el) {
-        window.dispatchEvent(new CustomEvent("ElementSelected", {"detail": unravelAgent.$(el).getPath()}));
-      };
-
+    var lastFn = function () {
       window.unravelAgent.$(window.document).ready(function () {
         window.dispatchEvent(new CustomEvent("InjectionDone", {"detail": ""}));
       });
@@ -34,7 +34,7 @@ define([
     var f5 = "(" + jsTraceInjector.toString() + ").apply(this, []); ";
     var f6 = "(" + observerInjector.toString() + ").apply(this, []); ";
     var f7 = "(" + whittleInjector.toString() + ").apply(this, []); ";
-    var f8 = "(" + eventsFn.toString() + ").apply(this, []); ";
+    var f8 = "(" + lastFn.toString() + ").apply(this, []); ";
 
     chrome.devtools.inspectedWindow.reload({
       ignoreCache: true,
