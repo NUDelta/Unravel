@@ -10,6 +10,7 @@ define([],
 
           args[1] = function () {
             var wrapperArgs = [].splice.call(arguments, 0);
+            eventHandlerFn.apply(this, wrapperArgs);
 
             var path = window.unravelAgent.$(this).getPath();
 
@@ -22,8 +23,6 @@ define([],
                 }
               }));
             }
-
-            eventHandlerFn.apply(this, wrapperArgs);
           };
 
           return originalAddEventListener.apply(this, args);
@@ -56,13 +55,16 @@ define([],
                   } catch (ignored) {
                   }
 
-                  window.dispatchEvent(new CustomEvent("JSTrace", {
-                    "detail": {
-                      stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
-                      functionName: functionName,
-                      args: strArgs
-                    }
-                  }));
+                  var stackTrace = error.stack.replace(/(?:\r\n|\r|\n)/g, '|||');
+                  if (stackTrace.indexOf("getPath") < 0) {
+                    window.dispatchEvent(new CustomEvent("JSTrace", {
+                      "detail": {
+                        stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
+                        functionName: functionName,
+                        args: strArgs
+                      }
+                    }));
+                  }
                 }
 
                 return window.unravelAgent.functionPool[functionName].apply(document, args);

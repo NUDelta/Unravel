@@ -18,8 +18,6 @@ define([],
         trashEls.forEach(function (el, index, array) {
           unravelAgent.$(el).remove();
         });
-
-        return "";
       };
     };
   });

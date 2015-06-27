@@ -281,7 +281,12 @@ define([
           tokens = tokens.slice(0, 2);
         }
 
-        var urlLike = tokens.pop().replace(/[\(\)\s]/g, '');
+        var urlLike = "";
+        try {
+          urlLike = tokens.pop().replace(/[\(\)\s]/g, '');
+        } catch (ignored) {
+          return "remove";
+        }
         var locationParts = urlLike.split(':');
         var lastNumber = locationParts.pop();
         var possibleNumber = locationParts[locationParts.length - 1];
