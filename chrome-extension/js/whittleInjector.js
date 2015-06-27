@@ -5,7 +5,12 @@ define([],
         var trashEls = [];
 
         unravelAgent.$('*').each(function (i, el) {
-          if (safePaths.indexOf(unravelAgent.$(el).getPath()) < 0) {
+          var path = unravelAgent.$(el).getPath();
+          if (path.indexOf("head") > -1 || path.indexOf("script") > -1 || path.indexOf("style") > -1) {
+            return
+          }
+
+          if (safePaths.indexOf(path) < 0) {
             trashEls.push(el);
           }
         });

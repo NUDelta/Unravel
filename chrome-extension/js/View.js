@@ -40,7 +40,7 @@ define([
 
     constrainToPath: false,
 
-    domPathsToKeep: ["head", "title", "script", "style", "link"],
+    domPathsToKeep: [],
 
     initialize: function (options) {
 
