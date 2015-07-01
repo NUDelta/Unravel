@@ -5,7 +5,7 @@ var path = require('path');
 
 var app = express();
 
-app.set('port', 3000);
+app.set('port', 3001);
 
 //Only use this for non-production apps
 var lessMiddleware = require('less-middleware');

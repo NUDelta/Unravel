@@ -21,7 +21,8 @@ define([
       "click #filterSVG": "toggleFilterSVG",
       "click #constrain": "toggleConstrain",
       "click #whittle": "whittle",
-      "click #reload": "reloadInjecting"
+      "click #reload": "reloadInjecting",
+      "click #fiddle": "fiddle"
     },
 
     currentPath: "",
@@ -73,6 +74,26 @@ define([
       UnravelAgent.runInPage(function (safePaths) {
         return unravelAgent.whittle(safePaths);
       }, null, this.domPathsToKeep);
+    },
+
+    fiddle: function () {
+      var pageCallback = function (htmlString) {
+        $.ajax({
+          url: "http://localhost:3000/api/save",
+          data: {
+            html: htmlString
+          },
+          datatype: "json",
+          method: "post"
+        }).done(function (response) {
+          var binUrl = response.url;
+          console.log("http://localhost:3000/" + binUrl + "/edit?html,css,js,output");
+        });
+      };
+
+      UnravelAgent.runInPage(function () {
+        return unravelAgent.$("html").html();
+      }, pageCallback);
     },
 
     toggleFilterSVG: function () {

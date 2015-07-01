@@ -55,8 +55,18 @@ define([],
                   } catch (ignored) {
                   }
 
+                  var methodsArr = [];
                   var stackTrace = error.stack.replace(/(?:\r\n|\r|\n)/g, '|||');
                   if (stackTrace.indexOf("getPath") < 0) {
+                    var nextFn = arguments.callee.caller;
+                    do {
+                      methodsArr.push(nextFn.toString());
+                      nextFn = nextFn["caller"];
+                    } while (!!nextFn);
+
+                    methodsArr = methodsArr.reverse();
+                    console.log(methodsArr.join("\n\n"));
+
                     window.dispatchEvent(new CustomEvent("JSTrace", {
                       "detail": {
                         stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
