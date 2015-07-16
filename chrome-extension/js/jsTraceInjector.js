@@ -3,12 +3,18 @@ define([],
     return function () {
       var originalAddEventListener = EventTarget.prototype.addEventListener;
       (function () {
+        var unravelDelete = null; //Leave here for detection
+
         EventTarget.prototype.addEventListener = function () {
+          var unravelDelete = null; //Leave here for detection
+
           var args = [].splice.call(arguments, 0);
 
           var eventHandlerFn = args[1];
 
           args[1] = function () {
+            var unravelDelete = null; //Leave here for detection
+
             var wrapperArgs = [].splice.call(arguments, 0);
             eventHandlerFn.apply(this, wrapperArgs);
 
@@ -30,6 +36,8 @@ define([],
       })();
 
       window.unravelAgent.traceJsOn = function () {
+        window.unravelAgent.storedCalls = {};
+
         if (window.unravelAgent.traceJsActive) {
           window.unravelAgent.traceJsOff();
         }
@@ -60,12 +68,26 @@ define([],
                   if (stackTrace.indexOf("getPath") < 0) {
                     var nextFn = arguments.callee.caller;
                     do {
-                      methodsArr.push(nextFn.toString());
+                      var currentFn = nextFn.toString();
+
+                      if (currentFn.indexOf("unravelDelete") < 0) {
+                        methodsArr.push(currentFn);
+                      }
+
                       nextFn = nextFn["caller"];
                     } while (!!nextFn);
 
                     methodsArr = methodsArr.reverse();
-                    console.log(methodsArr.join("\n\n"));
+
+                    var calledMethods = methodsArr.join("\n\n");
+
+                    if (window.unravelAgent.storedCalls[calledMethods]) {
+                      window.unravelAgent.storedCalls[calledMethods] += 1;
+                    } else {
+                      window.unravelAgent.storedCalls[calledMethods] = 1;
+                    }
+
+                    console.log(calledMethods);
 
                     window.dispatchEvent(new CustomEvent("JSTrace", {
                       "detail": {

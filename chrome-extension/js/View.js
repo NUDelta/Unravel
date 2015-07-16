@@ -77,11 +77,15 @@ define([
     },
 
     fiddle: function () {
-      var pageCallback = function (htmlString) {
+      var pageCallback = function (o) {
+        var js = _(o.js).keys().join("\n");
+
         $.ajax({
           url: "http://localhost:3000/api/save",
           data: {
-            html: htmlString
+            html: o.html,
+            css: o.css,
+            javascript: js
           },
           datatype: "json",
           method: "post"
@@ -91,9 +95,77 @@ define([
         });
       };
 
-      UnravelAgent.runInPage(function () {
-        return unravelAgent.$("html").html();
-      }, pageCallback);
+      UnravelAgent.runInPage(function (safePaths) {
+        unravelAgent.whittle(safePaths);
+
+        if (document.styleSheets && document.styleSheets.length) {
+          var css = "";
+          for (var i = 0; i < document.styleSheets.length; i++) {
+            if (document.styleSheets[i] && document.styleSheets[i].cssRules) {
+              var cssRules = document.styleSheets[i].cssRules;
+              for (var j = 0; j < cssRules.length; j++) {
+                var keepRule = false;
+                var mediaRuleText = "";
+                try {
+                  var selectorText = cssRules[j].selectorText;
+                  var selectors = selectorText.split(",");
+                  keepRule = !!_(selectors).find(function (selector) {
+                    var checkText = selector.indexOf(':') > -1 ? selector.substr(0, selector.indexOf(':')) : selector;
+                    return !!unravelAgent.$(checkText).length;
+                  });
+                } catch (err) {
+                  if (cssRules[j] instanceof CSSMediaRule) {
+                    var subRulesToRemove = [];
+
+                    var mediaRule = cssRules[j];
+                    var innerCSSRules = mediaRule.cssRules;
+                    for (var k = 0; k < innerCSSRules.length; k++) {
+                      var innerMediaRule = innerCSSRules[k];
+                      var innerSelectorText = innerMediaRule.selectorText;
+
+                      try {
+                        var innerSelectors = innerSelectorText.split(",");
+                        var innerExists = !!_(innerSelectors).find(function (selector) {
+                          var checkText = selector.indexOf(':') > -1 ? selector.substr(0, selector.indexOf(':')) : selector;
+                          return !!unravelAgent.$(checkText).length;
+                        });
+                        if (!innerExists) {
+                          subRulesToRemove.push(innerMediaRule.cssText);
+                        }
+                      } catch (err) {
+                      }
+                    }
+                    keepRule = false;
+
+                    if (innerCSSRules.length === subRulesToRemove.length) {
+                      mediaRuleText = "";
+                    } else {
+                      mediaRuleText = cssRules[j].cssText;
+                      for (var l = 0; l < subRulesToRemove.length; l++) {
+                        mediaRuleText = mediaRuleText.replace(subRulesToRemove[l], "");
+                      }
+                    }
+                  } else {
+                    keepRule = true;
+                  }
+                }
+
+                if (keepRule) {
+                  css += cssRules[j].cssText + "\n";
+                } else if (mediaRuleText) {
+                  css += mediaRuleText;
+                }
+              }
+            }
+          }
+        }
+
+        return {
+          html: unravelAgent.$("html").html(),
+          css: css,
+          js: window.unravelAgent.storedCalls
+        };
+      }, pageCallback, this.domPathsToKeep);
     },
 
     toggleFilterSVG: function () {

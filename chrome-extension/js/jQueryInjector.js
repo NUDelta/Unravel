@@ -9192,6 +9192,9 @@ define([],
       window.unravelAgent.$ = jQuery.noConflict(true);
 
       window.unravelAgent.$.fn.getPath = function () {
+       var unravelDelete = null;
+        //some text
+
         if (this.length != 1) throw 'Requires one element.';
         var path, node = this;
         while (node.length) {
