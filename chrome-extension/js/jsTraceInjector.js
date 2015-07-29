@@ -87,7 +87,7 @@ define([],
                       window.unravelAgent.storedCalls[calledMethods] = 1;
                     }
 
-                    console.log(calledMethods);
+                    //console.log(calledMethods);
 
                     window.dispatchEvent(new CustomEvent("JSTrace", {
                       "detail": {
