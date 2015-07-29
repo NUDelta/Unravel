@@ -344,6 +344,7 @@ define([
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
       });
 
+      //TODO - add different arguments here
       var path = formattedTrace;
 
       if (this.pathsJSRows[path]) {
