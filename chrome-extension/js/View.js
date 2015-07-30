@@ -44,7 +44,8 @@ define([
     domPathsToKeep: [],
 
     initialize: function (options) {
-
+      //this.render();
+      //this.start();
     },
 
     render: function (unravelAgentActive) {
