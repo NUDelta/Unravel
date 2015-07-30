@@ -43,6 +43,8 @@ define([
 
     domPathsToKeep: [],
 
+    pathEvents: [],
+
     initialize: function (options) {
       //this.render();
       //this.start();
@@ -78,9 +80,18 @@ define([
     },
 
     fiddle: function () {
-      var pageCallback = function (o) {
-        var js = _(o.js).keys().join("\n");
+      var that = this;
 
+      var pageCallback = function (o) {
+        //var js = _(o.js).keys().join("\n");
+        var pathEvents = that.pathEvents;
+
+
+        //_(pathEvents)
+        var data = pathEvents[0];
+        var js = '$("' + data.selector + '").on(' + data.type + ', ' + data.handler +  ');';
+
+        debugger;
         $.ajax({
           url: "http://localhost:3000/api/save",
           data: {
@@ -329,6 +340,7 @@ define([
     handleEventTrace: function (data) {
       this.eventTracePaths = _.union(this.eventTracePaths, [data.path]);
       this.addToDomPaths(data.path);
+      this.pathEvents.push(data);
     },
 
     handleJSTrace: function (traceEvent) {

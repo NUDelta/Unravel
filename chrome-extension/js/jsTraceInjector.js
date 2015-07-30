@@ -9,21 +9,26 @@ define([],
           var unravelDelete = null; //Leave here for detection
 
           var args = [].splice.call(arguments, 0);
+          var handlerStr = "";
+          try {
+            handlerStr = args[1].toString();
+          } catch (err) {
+          }
 
           var methodsArr = [];
-          var nextFn = arguments.callee.caller;
-
-          if (nextFn) {
-            do {
-              var currentFn = nextFn.toString();
-
-              if (currentFn.indexOf("unravelDelete") < 0) {
-                methodsArr.push(currentFn);
-              }
-
-              nextFn = nextFn["caller"];
-            } while (!!nextFn);
-          }
+          //var nextFn = arguments.callee.caller;
+          //
+          //if (nextFn) {
+          //  do {
+          //    var currentFn = nextFn.toString();
+          //
+          //    if (currentFn.indexOf("unravelDelete") < 0) {
+          //      methodsArr.push(currentFn);
+          //    }
+          //
+          //    nextFn = nextFn["caller"];
+          //  } while (!!nextFn);
+          //}
 
           methodsArr = methodsArr.reverse();
 
@@ -40,10 +45,11 @@ define([],
             if (path) {
               window.dispatchEvent(new CustomEvent("eventTrace", {
                 "detail": {
-                  methods: JSON.stringify(methodsArr),
+                  bindingSource: JSON.stringify(methodsArr),
                   path: window.unravelAgent.$(this).getPath(),
+                  selector: window.unravelAgent.$(this).getSelector(),
                   type: JSON.stringify(args[0]),
-                  event: JSON.stringify(wrapperArgs[0])
+                  handler: handlerStr
                 }
               }));
             }
@@ -142,6 +148,6 @@ define([],
         window.unravelAgent.traceJsActive = false;
       };
 
-      window.unravelAgent.traceJsOn();
+      //window.unravelAgent.traceJsOn();
     };
   });

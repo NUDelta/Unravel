@@ -9191,6 +9191,33 @@ define([],
 
       window.unravelAgent.$ = jQuery.noConflict(true);
 
+      window.unravelAgent.$.fn.getSelector = function () {
+        var $el = window.unravelAgent.$(this);
+
+        if (!$el.prop || !$el.prop("tagName")) {
+          return "";
+        }
+
+        var tagName = $el.prop("tagName").toLowerCase();
+        var idName = $el.attr("id") || "";
+        if (idName.length > 0) {
+          idName = "#" + idName;
+        }
+        var nameAttr = $el.attr("name") || "";
+        if (nameAttr.length > 0) {
+          nameAttr = '[name="' + nameAttr + '"]';
+        }
+
+        var className;
+        try {
+          className = "." + $el.attr("class").split(" ").join(".");
+        } catch (err) {
+          className = "";
+        }
+
+        return tagName + idName + className + nameAttr;
+      };
+
       window.unravelAgent.$.fn.getPath = function () {
        var unravelDelete = null;
         //some text
