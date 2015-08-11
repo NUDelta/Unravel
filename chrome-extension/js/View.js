@@ -89,9 +89,8 @@ define([
 
         //_(pathEvents)
         var data = pathEvents[0];
-        var js = '$("' + data.selector + '").on(' + data.type + ', ' + data.handler +  ');';
+        var js = '$("' + data.selector + '").on(' + data.type + ', ' + data.handler + ');';
 
-        debugger;
         $.ajax({
           url: "http://localhost:3000/api/save",
           data: {
@@ -222,9 +221,23 @@ define([
       UnravelAgent.runInPage(function () {
         unravelAgent.traceJsOn();
       });
+
+      UnravelAgent.runInPage(function () {
+        return unravelAgent.fondue.trackHits();
+      });
+
+      var that = this;
+      var fondueCallback = function (functionMap) {
+        that.fondueFnMap = functionMap;
+      };
+
+      UnravelAgent.runInPage(function () {
+        return unravelAgent.fondue.getFunctionMap();
+      }, fondueCallback);
     },
 
     stop: function () {
+      var that = this;
       var callback = function () {
         this.$("#record .active").hide();
         this.$("#record .inactive").show();
@@ -234,6 +247,30 @@ define([
         unravelAgent.stopObserving();
         unravelAgent.traceJsOff();
       }, callback);
+
+      var fondueCallback = function (o) {
+        that.invocations = o.invocations;
+        that.deltas = o.deltas;
+
+        _(_(that.fondueFnMap).values()).each(function (fn) {
+          if(that.deltas[fn.id] > 0){
+            console.log("This function was called " + that.deltas[fn.id] + " times.");
+            console.log(fn.originalSource);
+          }
+        });
+
+        debugger;
+      };
+
+      UnravelAgent.runInPage(function () {
+        var deltas = unravelAgent.fondue.hitCountDeltas();
+        var invocations = unravelAgent.fondue.trackLogs();
+
+        return {
+          deltas: deltas,
+          invocations: invocations
+        };
+      }, fondueCallback);
     },
 
     reset: function () {
