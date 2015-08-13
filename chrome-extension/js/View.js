@@ -215,16 +215,10 @@ define([
       var path = this.constrainToPath ? this.currentPath : "";
 
       UnravelAgent.runInPage(function (path) {
-        return unravelAgent.startObserving(path);
-      }, callback, path);
-
-      UnravelAgent.runInPage(function () {
+        unravelAgent.startObserving(path);
         unravelAgent.traceJsOn();
-      });
-
-      UnravelAgent.runInPage(function () {
-        return unravelAgent.fondue.trackHits();
-      });
+        unravelAgent.fondueBridge.startTracking();
+      }, callback, path);
 
       var that = this;
       var fondueCallback = function (functionMap) {
@@ -232,43 +226,59 @@ define([
       };
 
       UnravelAgent.runInPage(function () {
-        return unravelAgent.fondue.getFunctionMap();
+        return unravelAgent.fondueBridge.getFunctionMap();
       }, fondueCallback);
     },
 
     stop: function () {
-      var that = this;
-      var callback = function () {
-        this.$("#record .active").hide();
-        this.$("#record .inactive").show();
+      var fondueCallback = function (o) {
+        var nodeInvocations = o.nodeInvocations;
+        var nodeHitCounts = o.nodeHitCounts;
+        var tracerNodes = o.tracerNodes;
+
+        var nothing = true;
+        _(tracerNodes).each(function (node) {
+          if (nodeHitCounts[node.id] > 0 && node.type === "function") {
+            nothing = false;
+            console.log(nodeHitCounts[node.id] + " hits",
+              "\n\n" + node.originalSource,
+              "\n\nInvocations:",
+              _.where(nodeInvocations, {nodeId: node.id}),
+              "\n\nTracerNode:",
+              node
+            );
+          }
+        });
+
+        if (nothing) {
+          console.log("No activity captured by tracer.",
+            "\nTracerNodes:",
+            tracerNodes,
+            "\nHit counts:",
+            nodeHitCounts,
+            "\nInvocations:",
+            nodeInvocations
+          );
+        }
       };
 
       UnravelAgent.runInPage(function () {
         unravelAgent.stopObserving();
         unravelAgent.traceJsOff();
-      }, callback);
-
-      var fondueCallback = function (o) {
-        that.invocations = o.invocations;
-        that.deltas = o.deltas;
-
-        _(_(that.fondueFnMap).values()).each(function (fn) {
-          if(that.deltas[fn.id] > 0){
-            console.log("This function was called " + that.deltas[fn.id] + " times.");
-            console.log(fn.originalSource);
-          }
-        });
-
-        debugger;
-      };
+      }, function () {
+        this.$("#record .active").hide();
+        this.$("#record .inactive").show();
+      });
 
       UnravelAgent.runInPage(function () {
-        var deltas = unravelAgent.fondue.hitCountDeltas();
-        var invocations = unravelAgent.fondue.trackLogs();
+        var tracerNodes = unravelAgent.fondueBridge.getTracerNodes();
+        var nodeHitCounts = unravelAgent.fondueBridge.getNodeHitCounts();
+        var nodeInvocations = unravelAgent.fondueBridge.getNodeInvocations();
 
         return {
-          deltas: deltas,
-          invocations: invocations
+          tracerNodes: tracerNodes,
+          nodeHitCounts: nodeHitCounts,
+          nodeInvocations: nodeInvocations
         };
       }, fondueCallback);
     },
