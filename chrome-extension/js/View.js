@@ -45,9 +45,10 @@ define([
 
     pathEvents: [],
 
-    initialize: function (options) {
-      //this.render();
-      //this.start();
+    initialize: function () {
+      this.parseFondue = _.bind(this.parseFondue, this);
+      this.fiddle = _.bind(this.fiddle, this);
+      this.whittle = _.bind(this.whittle, this);
     },
 
     render: function (unravelAgentActive) {
@@ -79,102 +80,33 @@ define([
       }, null, this.domPathsToKeep);
     },
 
-    fiddle: function () {
-      var that = this;
-
-      var pageCallback = function (o) {
-        //var js = _(o.js).keys().join("\n");
-        var pathEvents = that.pathEvents;
-
-
-        //_(pathEvents)
-        var data = pathEvents[0];
-        var js = '$("' + data.selector + '").on(' + data.type + ', ' + data.handler + ');';
+    fiddle: function (fondueJS) {
+      var pageCallback = _.bind(function (o) {
+        var jsBinCallback = _.bind(function (response) {
+          var binUrl = response.url;
+          var tabUrl = "http://localhost:8080/" + binUrl + "/edit?html,css,js,output";
+          console.log(tabUrl);
+          window.open(tabUrl);
+          this.reloadInjecting();
+        }, this);
 
         $.ajax({
-          url: "http://localhost:3000/api/save",
+          url: "http://localhost:8080/api/save",
           data: {
             html: o.html,
             css: o.css,
-            javascript: js
+            javascript: fondueJS
           },
           datatype: "json",
           method: "post"
-        }).done(function (response) {
-          var binUrl = response.url;
-          console.log("http://localhost:3000/" + binUrl + "/edit?html,css,js,output");
-        });
-      };
+        }).done(jsBinCallback);
+      }, this);
 
       UnravelAgent.runInPage(function (safePaths) {
-        unravelAgent.whittle(safePaths);
-
-        if (document.styleSheets && document.styleSheets.length) {
-          var css = "";
-          for (var i = 0; i < document.styleSheets.length; i++) {
-            if (document.styleSheets[i] && document.styleSheets[i].cssRules) {
-              var cssRules = document.styleSheets[i].cssRules;
-              for (var j = 0; j < cssRules.length; j++) {
-                var keepRule = false;
-                var mediaRuleText = "";
-                try {
-                  var selectorText = cssRules[j].selectorText;
-                  var selectors = selectorText.split(",");
-                  keepRule = !!_(selectors).find(function (selector) {
-                    var checkText = selector.indexOf(':') > -1 ? selector.substr(0, selector.indexOf(':')) : selector;
-                    return !!unravelAgent.$(checkText).length;
-                  });
-                } catch (err) {
-                  if (cssRules[j] instanceof CSSMediaRule) {
-                    var subRulesToRemove = [];
-
-                    var mediaRule = cssRules[j];
-                    var innerCSSRules = mediaRule.cssRules;
-                    for (var k = 0; k < innerCSSRules.length; k++) {
-                      var innerMediaRule = innerCSSRules[k];
-                      var innerSelectorText = innerMediaRule.selectorText;
-
-                      try {
-                        var innerSelectors = innerSelectorText.split(",");
-                        var innerExists = !!_(innerSelectors).find(function (selector) {
-                          var checkText = selector.indexOf(':') > -1 ? selector.substr(0, selector.indexOf(':')) : selector;
-                          return !!unravelAgent.$(checkText).length;
-                        });
-                        if (!innerExists) {
-                          subRulesToRemove.push(innerMediaRule.cssText);
-                        }
-                      } catch (err) {
-                      }
-                    }
-                    keepRule = false;
-
-                    if (innerCSSRules.length === subRulesToRemove.length) {
-                      mediaRuleText = "";
-                    } else {
-                      mediaRuleText = cssRules[j].cssText;
-                      for (var l = 0; l < subRulesToRemove.length; l++) {
-                        mediaRuleText = mediaRuleText.replace(subRulesToRemove[l], "");
-                      }
-                    }
-                  } else {
-                    keepRule = true;
-                  }
-                }
-
-                if (keepRule) {
-                  css += cssRules[j].cssText + "\n";
-                } else if (mediaRuleText) {
-                  css += mediaRuleText;
-                }
-              }
-            }
-          }
-        }
-
         return {
-          html: unravelAgent.$("html").html(),
-          css: css,
-          js: window.unravelAgent.storedCalls
+          css: unravelAgent.gatherCSS(safePaths), //must be first in this object!
+          html: unravelAgent.whittle(safePaths)
+          //js: window.unravelAgent.storedCalls
         };
       }, pageCallback, this.domPathsToKeep);
     },
@@ -231,37 +163,6 @@ define([
     },
 
     stop: function () {
-      var fondueCallback = function (o) {
-        var nodeInvocations = o.nodeInvocations;
-        var nodeHitCounts = o.nodeHitCounts;
-        var tracerNodes = o.tracerNodes;
-
-        var nothing = true;
-        _(tracerNodes).each(function (node) {
-          if (nodeHitCounts[node.id] > 0 && node.type === "function") {
-            nothing = false;
-            console.log(nodeHitCounts[node.id] + " hits",
-              "\n\n" + node.originalSource,
-              "\n\nInvocations:",
-              _.where(nodeInvocations, {nodeId: node.id}),
-              "\n\nTracerNode:",
-              node
-            );
-          }
-        });
-
-        if (nothing) {
-          console.log("No activity captured by tracer.",
-            "\nTracerNodes:",
-            tracerNodes,
-            "\nHit counts:",
-            nodeHitCounts,
-            "\nInvocations:",
-            nodeInvocations
-          );
-        }
-      };
-
       UnravelAgent.runInPage(function () {
         unravelAgent.stopObserving();
         unravelAgent.traceJsOff();
@@ -280,7 +181,7 @@ define([
           nodeHitCounts: nodeHitCounts,
           nodeInvocations: nodeInvocations
         };
-      }, fondueCallback);
+      }, this.parseFondue);
     },
 
     reset: function () {
@@ -289,6 +190,42 @@ define([
       this.pathsDomRows = [];
       this.pathsJSRows = [];
       this.stop();
+    },
+
+    parseFondue: function (o) {
+      var nodeInvocations = o.nodeInvocations;
+      var nodeHitCounts = o.nodeHitCounts;
+      var tracerNodes = o.tracerNodes;
+
+      var nothing = true;
+      var rawJS = "";
+      _(tracerNodes).each(function (node) {
+        if (nodeHitCounts[node.id] > 0 && node.type === "function") {
+          nothing = false;
+          //console.log(nodeHitCounts[node.id] + " hits",
+          //  "\n\n" + node.originalSource,
+          //  "\n\nInvocations:",
+          //  _.where(nodeInvocations, {nodeId: node.id}),
+          //  "\n\nTracerNode:",
+          //  node
+          //);
+
+          rawJS += node.originalSource + "\n";
+        }
+      });
+
+      if (nothing) {
+        console.log("No activity captured by tracer.",
+          "\nTracerNodes:",
+          tracerNodes,
+          "\nHit counts:",
+          nodeHitCounts,
+          "\nInvocations:",
+          nodeInvocations
+        );
+      }
+
+      this.fiddle(rawJS);
     },
 
     resetInspectedElement: function () {
