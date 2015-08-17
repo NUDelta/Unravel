@@ -4,15 +4,8 @@ define([
   "libDetectInjector",
   "observerInjector",
   "jsTraceInjector",
-  "fondueInjector",
   "whittleInjector"
-], function (jQueryInjector,
-             underscoreInjector,
-             libDetectInjector,
-             observerInjector,
-             jsTraceInjector,
-             fondueInjector,
-             whittleInjector) {
+], function (jQueryInjector, underscoreInjector, libDetectInjector, observerInjector, jsTraceInjector, whittleInjector) {
   function UnravelAgent() {
     if (!(this instanceof UnravelAgent)) {
       throw new TypeError("UnravelAgent constructor cannot be called as a function.");
@@ -34,11 +27,8 @@ define([
     var f4 = "(" + libDetectInjector.toString() + ").apply(this, []); ";
     var f5 = "(" + jsTraceInjector.toString() + ").apply(this, []); ";
     var f6 = "(" + observerInjector.toString() + ").apply(this, []); ";
-    var f7 = "(" + fondueInjector.toString() + ").apply(this, []); ";
-    var f8 = "(" + whittleInjector.toString() + ").apply(this, []); ";
-    var f9 = "(" + lastFn.toString() + ").apply(this, []); ";
+    var f7 = "(" + whittleInjector.toString() + ").apply(this, []); ";
 
-    console.log("UnravelAgent: Calling reload");
     chrome.devtools.inspectedWindow.reload({
       ignoreCache: true,
       injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8
