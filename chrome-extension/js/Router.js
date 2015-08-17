@@ -6,6 +6,7 @@ define([
 
   return Backbone.Router.extend({
     initialize: function () {
+      console.log("Router view initialized.")
     },
 
     routes: {
@@ -21,6 +22,10 @@ define([
         router.homeView.render(isActive);
         document.body.appendChild(router.homeView.el);
 
+        if (!isActive) {
+          return;
+        }
+
         router.on("elementSelectChange", function (cssPath) {
           router.homeView.elementSelected(cssPath);
         }, router);
@@ -33,27 +38,18 @@ define([
           router.homeView.handleJSTrace(data);
         }, router);
 
-        router.on("InjectionDone", function (data) {
-          router.unravelAgent.isInjecting = false;
-        }, router);
-
         router.on("eventTrace", function (data) {
           router.homeView.handleEventTrace(data);
         }, router);
 
         router.on("TabUpdate", function (data) {
-          if (router.unravelAgent.isInjecting) {
-            return;
-          }
-
           UnravelAgent.checkActive(function (isActive) {
             if (!isActive) {
-              router.unravelAgent.isInjecting = true;  //injection scripts will pass a message back
-              UnravelAgent.reloadInjecting();
-              router.homeView.reset();
+              window.location.href = "";
             }
           });
         }, router);
+
       });
     }
   });

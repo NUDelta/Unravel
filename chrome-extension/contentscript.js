@@ -36,16 +36,6 @@ window.addEventListener("DOMObserve", function (event) {
   });
 }, false);
 
-window.addEventListener("InjectionDone", function (event) {
-  var str = event.detail;
-
-  chrome.extension.sendMessage({
-    target: "page",
-    name: "InjectionDone",
-    data: str
-  });
-}, false);
-
 window.addEventListener("eventTrace", function (event) {
   var str = event.detail;
 

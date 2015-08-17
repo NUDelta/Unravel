@@ -28,12 +28,6 @@ define([
       };
     };
 
-    var lastFn = function () {
-      window.unravelAgent.$(window.document).ready(function () {
-        window.dispatchEvent(new CustomEvent("InjectionDone", {"detail": ""}));
-      });
-    };
-
     var f1 = "(" + agentFn.toString() + ").apply(this, []); ";
     var f2 = "(" + jQueryInjector.toString() + ").apply(this, []); ";
     var f3 = "(" + underscoreInjector.toString() + ").apply(this, []); ";
@@ -42,12 +36,24 @@ define([
     var f6 = "(" + observerInjector.toString() + ").apply(this, []); ";
     var f7 = "(" + fondueInjector.toString() + ").apply(this, []); ";
     var f8 = "(" + whittleInjector.toString() + ").apply(this, []); ";
-    var f9 = "(" + lastFn.toString() + ").apply(this, []); ";
 
+    console.log("UnravelAgent: Calling reload");
     chrome.devtools.inspectedWindow.reload({
       ignoreCache: true,
-      injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8 + f9
+      injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8
     });
+
+    var checkTimeout = function (isActive) {
+      if (isActive) {
+        window.location.href = "";
+      } else {
+        window.setTimeout(function () {
+          UnravelAgent.checkActive(checkTimeout)
+        }, 1000);
+      }
+    };
+
+    checkTimeout(false);
   };
 
   //public static

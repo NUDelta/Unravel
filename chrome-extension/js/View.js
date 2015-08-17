@@ -202,14 +202,6 @@ define([
       _(tracerNodes).each(function (node) {
         if (nodeHitCounts[node.id] > 0 && node.type === "function") {
           nothing = false;
-          //console.log(nodeHitCounts[node.id] + " hits",
-          //  "\n\n" + node.originalSource,
-          //  "\n\nInvocations:",
-          //  _.where(nodeInvocations, {nodeId: node.id}),
-          //  "\n\nTracerNode:",
-          //  node
-          //);
-
           rawJS += node.originalSource + "\n";
         }
       });
@@ -226,11 +218,6 @@ define([
       }
 
       this.fiddle(rawJS);
-    },
-
-    resetInspectedElement: function () {
-      this.currentPath = "";
-      this.$(".selectedWrap").hide();
     },
 
     elementSelected: function (cssPath) {
@@ -463,8 +450,7 @@ define([
     },
 
     reloadInjecting: function () {
-      UnravelAgent.reloadInjecting(true);
-      window.location.href = "";
+      UnravelAgent.reloadInjecting();
     }
   });
 });
