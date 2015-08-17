@@ -98,8 +98,6 @@ require([
         router.trigger("detectLibs", message.data);
       } else if (message && message.target == "page" && message.name == "JSTrace") {
         router.trigger("JSTrace", message.data);
-      } else if (message && message.target == "page" && message.name == "InjectionDone") {
-        router.trigger("InjectionDone", message.data);
       } else if (message && message.target == "page" && message.name == "TabUpdate") {
         router.trigger("TabUpdate", message.data);
       } else if (message && message.target == "page" && message.name == "eventTrace") {

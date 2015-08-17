@@ -466,8 +466,7 @@ define([
     },
 
     reloadInjecting: function () {
-      UnravelAgent.reloadInjecting(true);
-      window.location.href = "";
+      UnravelAgent.reloadInjecting();
     }
   });
 });

@@ -4,8 +4,15 @@ define([
   "libDetectInjector",
   "observerInjector",
   "jsTraceInjector",
+  "fondueInjector",
   "whittleInjector"
-], function (jQueryInjector, underscoreInjector, libDetectInjector, observerInjector, jsTraceInjector, whittleInjector) {
+], function (jQueryInjector,
+             underscoreInjector,
+             libDetectInjector,
+             observerInjector,
+             jsTraceInjector,
+             fondueInjector,
+             whittleInjector) {
   function UnravelAgent() {
     if (!(this instanceof UnravelAgent)) {
       throw new TypeError("UnravelAgent constructor cannot be called as a function.");
@@ -21,25 +28,33 @@ define([
       };
     };
 
-    var lastFn = function () {
-      window.unravelAgent.$(window.document).ready(function () {
-        window.dispatchEvent(new CustomEvent("InjectionDone", {"detail": ""}));
-      });
-    };
-
     var f1 = "(" + agentFn.toString() + ").apply(this, []); ";
     var f2 = "(" + jQueryInjector.toString() + ").apply(this, []); ";
     var f3 = "(" + underscoreInjector.toString() + ").apply(this, []); ";
     var f4 = "(" + libDetectInjector.toString() + ").apply(this, []); ";
     var f5 = "(" + jsTraceInjector.toString() + ").apply(this, []); ";
     var f6 = "(" + observerInjector.toString() + ").apply(this, []); ";
-    var f7 = "(" + whittleInjector.toString() + ").apply(this, []); ";
-    var f8 = "(" + lastFn.toString() + ").apply(this, []); ";
+    var f7 = "(" + fondueInjector.toString() + ").apply(this, []); ";
+    var f8 = "(" + whittleInjector.toString() + ").apply(this, []); ";
+    var f9 = "(" + lastFn.toString() + ").apply(this, []); ";
 
+    console.log("UnravelAgent: Calling reload");
     chrome.devtools.inspectedWindow.reload({
       ignoreCache: true,
       injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8
     });
+
+    var checkTimeout = function (isActive) {
+      if (isActive) {
+        window.location.href = "";
+      } else {
+        window.setTimeout(function () {
+          UnravelAgent.checkActive(checkTimeout)
+        }, 1000);
+      }
+    };
+
+    checkTimeout(false);
   };
 
   //public static
