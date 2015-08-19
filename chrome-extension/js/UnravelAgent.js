@@ -37,7 +37,6 @@ define([
     var f7 = "(" + fondueInjector.toString() + ").apply(this, []); ";
     var f8 = "(" + whittleInjector.toString() + ").apply(this, []); ";
 
-    console.log("UnravelAgent: Calling reload");
     chrome.devtools.inspectedWindow.reload({
       ignoreCache: true,
       injectedScript: f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8

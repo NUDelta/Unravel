@@ -45,6 +45,12 @@ define([
 
     pathEvents: [],
 
+    lastRecordingJS: "",
+
+    activeCSS: "",
+
+    activeHTML: "",
+
     initialize: function () {
       this.parseFondue = _.bind(this.parseFondue, this);
       this.fiddle = _.bind(this.fiddle, this);
@@ -75,40 +81,45 @@ define([
     },
 
     whittle: function () {
+      var whittleCallback = function (o) {
+        this.activeHTML = o.activeHTML;
+        this.activeCSS = o.activeCSS;
+      };
+
       UnravelAgent.runInPage(function (safePaths) {
-        return unravelAgent.whittle(safePaths);
-      }, null, this.domPathsToKeep);
+        var activeCSS = unravelAgent.gatherCSS(safePaths);
+        var activeHTML = unravelAgent.whittle(safePaths); //important to run _after_ css
+
+        return {
+          activeCSS: activeCSS,
+          activeHTML: activeHTML
+        };
+      }, _.bind(whittleCallback, this), this.domPathsToKeep);
     },
 
-    fiddle: function (fondueJS) {
-      var pageCallback = _.bind(function (o) {
-        var jsBinCallback = _.bind(function (response) {
-          var binUrl = response.url;
-          var tabUrl = "http://localhost:8080/" + binUrl + "/edit?html,css,js,output";
-          console.log(tabUrl);
-          window.open(tabUrl);
-          this.reloadInjecting();
-        }, this);
-
-        $.ajax({
-          url: "http://localhost:8080/api/save",
-          data: {
-            html: o.html,
-            css: o.css,
-            javascript: fondueJS
-          },
-          datatype: "json",
-          method: "post"
-        }).done(jsBinCallback);
+    fiddle: function () {
+      var jsBinCallback = _.bind(function (response) {
+        var binUrl = response.url;
+        var tabUrl = "http://localhost:8080/" + binUrl + "/edit?html,css,js,output";
+        console.log(tabUrl);
+        window.open(tabUrl);
+        this.reloadInjecting();
       }, this);
 
-      UnravelAgent.runInPage(function (safePaths) {
-        return {
-          css: unravelAgent.gatherCSS(safePaths), //must be first in this object!
-          html: unravelAgent.whittle(safePaths)
-          //js: window.unravelAgent.storedCalls
-        };
-      }, pageCallback, this.domPathsToKeep);
+      $.ajax({
+        url: "http://localhost:8080/api/save",
+        data: {
+          html: this.activeHTML,
+          css: this.activeCSS,
+          javascript: this.lastRecordingJS
+        },
+        datatype: "json",
+        method: "post"
+      }).done(jsBinCallback);
+
+      this.activeHTML = "";
+      this.activeCSS = "";
+      this.lastRecordingJS = "";
     },
 
     toggleFilterSVG: function () {
@@ -189,10 +200,18 @@ define([
       this.jsDataTable.row().remove().draw(false);
       this.pathsDomRows = [];
       this.pathsJSRows = [];
+      this.activeHTML = "";
+      this.activeCSS = "";
+      this.lastRecordingJS = "";
       this.stop();
     },
 
     parseFondue: function (o) {
+      if (!o) {
+        console.warn("Fondue not active. JS Capturing disabled.");
+        return;
+      }
+
       var nodeInvocations = o.nodeInvocations;
       var nodeHitCounts = o.nodeHitCounts;
       var tracerNodes = o.tracerNodes;
@@ -217,7 +236,7 @@ define([
         );
       }
 
-      this.fiddle(rawJS);
+      this.lastRecordingJS = rawJS;
     },
 
     elementSelected: function (cssPath) {

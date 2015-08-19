@@ -6,7 +6,6 @@ define([
 
   return Backbone.Router.extend({
     initialize: function () {
-      console.log("Router view initialized.")
     },
 
     routes: {

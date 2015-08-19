@@ -3,23 +3,26 @@ define([],
     return function () {
       window.unravelAgent.gatherCSS = function () {
         var css = "";
-
         if (document.styleSheets && document.styleSheets.length) {
           for (var i = 0; i < document.styleSheets.length; i++) {
             if (document.styleSheets[i] && document.styleSheets[i].cssRules) {
               var cssRules = document.styleSheets[i].cssRules;
+
               for (var j = 0; j < cssRules.length; j++) {
-                var keepRule = false;
+
                 var mediaRuleText = "";
+
                 try {
+                  var keepRule = false;
                   var selectorText = cssRules[j].selectorText;
                   var selectors = selectorText.split(",");
                   keepRule = !!_(selectors).find(function (selector) {
                     var checkText = selector.indexOf(':') > -1 ? selector.substr(0, selector.indexOf(':')) : selector;
                     return !!unravelAgent.$(checkText).length;
                   });
+
                 } catch (err) {
-                  if (cssRules[j] instanceof CSSMediaRule) {
+                  if (cssRules[j] instanceof CSSMediaRule) {  //CSSKeyframesRule
                     var subRulesToRemove = [];
 
                     var mediaRule = cssRules[j];
@@ -50,7 +53,16 @@ define([],
                         mediaRuleText = mediaRuleText.replace(subRulesToRemove[l], "");
                       }
                     }
+                  } else if (cssRules[j] instanceof CSSFontFaceRule) {
+                    //if (cssRules[j].cssText.length > 1000) {
+                    keepRule = false;
+                    //} else {
+                    //  keepRule = true;
+                    //}
+                  } else if (cssRules[j] instanceof CSSKeyframesRule) {
+                    keepRule = false;
                   } else {
+                    console.log("Blindly passing rule type:", typeof cssRules[j]);
                     keepRule = true;
                   }
                 }
@@ -69,6 +81,8 @@ define([],
       };
 
       window.unravelAgent.whittle = function (safePaths) {
+        console.log(safePaths);
+
         var trashEls = [];
         Node = Node || {COMMENT_NODE: 8};
 
