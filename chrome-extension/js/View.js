@@ -215,14 +215,50 @@ define([
       var nodeInvocations = o.nodeInvocations;
       var nodeHitCounts = o.nodeHitCounts;
       var tracerNodes = o.tracerNodes;
-
       var nothing = true;
-      var rawJS = "";
-      _(tracerNodes).each(function (node) {
-        if (nodeHitCounts[node.id] > 0 && node.type === "function") {
+
+      //todo show hits
+      //todo show files
+      //recreate handlers
+
+      var arrJS = _(tracerNodes).reduce(function (memo, node) {
+        if (nodeHitCounts[node.id] > 0 && node.type === "function" && node.originalSource && node.originalSource.trim().length > 0) {
           nothing = false;
-          rawJS += node.originalSource + "\n";
+          memo.push(node);
         }
+
+        return memo;
+      }, []);
+
+      _(arrJS).each(function (outerObj) {
+        var outerSource = outerObj.originalSource;
+        if (outerSource.indexOf("jQuery.event =") > -1) {
+          //debugger;
+        }
+        var relatedObj = _(arrJS).find(function (innerObj) {
+          if (outerObj.id == innerObj.id || innerObj.remove) {
+            return false;
+          }
+          var innerSource = innerObj.originalSource;
+          if (innerSource.trim().length < 1){
+            return false;
+          }
+          if (outerSource.indexOf(innerSource) > -1 || innerSource.indexOf(outerSource) > -1) {
+            return true;
+          }
+        });
+
+        if (relatedObj) {
+          if (relatedObj.originalSource.length > outerObj.originalSource.length) {
+            outerObj.remove = true;
+          } else if (relatedObj.originalSource.length <= outerObj.originalSource.length) {
+            relatedObj.remove = true;
+          }
+        }
+      });
+
+      var cleanedJS = _(arrJS).filter(function (jsObj) {
+        return !jsObj.remove;
       });
 
       if (nothing) {
@@ -236,7 +272,11 @@ define([
         );
       }
 
-      this.lastRecordingJS = rawJS;
+      this.lastRecordingJS = _(cleanedJS).reduce(function (memo, node) {
+        var sourceHeader = "// HitCount: " + nodeHitCounts[node.id] + "\n" +
+          "// NodeId: " + node.id + "\n";
+        return memo + sourceHeader + node.originalSource + "\n\n";
+      }, "");
     },
 
     elementSelected: function (cssPath) {
