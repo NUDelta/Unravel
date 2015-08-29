@@ -51,6 +51,8 @@ define([
 
     activeHTML: "",
 
+    arrHitLines: [],
+
     initialize: function () {
       this.parseFondue = _.bind(this.parseFondue, this);
       this.fiddle = _.bind(this.fiddle, this);
@@ -97,6 +99,20 @@ define([
       }, _.bind(whittleCallback, this), this.domPathsToKeep);
     },
 
+    corsGet: function (url, callback) {
+      var http = new XMLHttpRequest();
+      http.open("GET", url, true);
+
+      http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+          callback(http);
+        }
+      };
+
+      http.send();
+    },
+
+    //What an async mess!
     fiddle: function () {
       var jsBinCallback = _.bind(function (response) {
         var binUrl = response.url;
@@ -106,20 +122,44 @@ define([
         this.reloadInjecting();
       }, this);
 
-      $.ajax({
-        url: "http://localhost:8080/api/save",
-        data: {
-          html: this.activeHTML,
-          css: this.activeCSS,
-          javascript: this.lastRecordingJS
-        },
-        datatype: "json",
-        method: "post"
-      }).done(jsBinCallback);
+      var postToBin = _.bind(function () {
+        $.ajax({
+          url: "http://localhost:8080/api/save",
+          data: {
+            html: this.activeHTML,
+            css: this.activeCSS,
+            javascript: JSON.stringify(fileArr)
+          },
+          datatype: "json",
+          method: "post"
+        }).done(jsBinCallback);
+      }, this);
+
+      var fileArr = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
+        return {
+          path: path,
+          url: "http://localhost:9000" + path + "?theseus=no",
+          js: ""
+        };
+      }).value();
+
+      var tries = 0;
+      _(fileArr).each(function (fileObj) {
+        this.corsGet(fileObj.url, _.bind(function (http) {
+          var fileObj = _(fileArr).find(function (file) {
+            return file.url === http.responseURL;
+          });
+          fileObj.js = http.responseText;
+
+          tries++;
+          if (tries == fileArr.length) {
+            postToBin();
+          }
+        }, this));
+      }, this);
 
       this.activeHTML = "";
       this.activeCSS = "";
-      this.lastRecordingJS = "";
     },
 
     toggleFilterSVG: function () {
@@ -215,68 +255,53 @@ define([
       var nodeInvocations = o.nodeInvocations;
       var nodeHitCounts = o.nodeHitCounts;
       var tracerNodes = o.tracerNodes;
-      var nothing = true;
 
-      //todo show hits
-      //todo show files
-      //recreate handlers
+      var invocationsByNode = _(nodeInvocations).reduce(function (memo, invoke) {
+        if (!invoke.nodeId) {
+          return memo;
+        }
 
-      var arrJS = _(tracerNodes).reduce(function (memo, node) {
-        if (nodeHitCounts[node.id] > 0 && node.type === "function" && node.originalSource && node.originalSource.trim().length > 0) {
-          nothing = false;
-          memo.push(node);
+        if (memo[invoke.nodeId]) {
+          memo[invoke.nodeId].push(invoke);
+        } else {
+          memo[invoke.nodeId] = [invoke];
+        }
+
+        return memo;
+      }, {});
+
+      this.arrHitLines = _(tracerNodes).reduce(function (memo, node) {
+        var idArr = node.id.split("-");
+        var idArrRev = _(idArr).clone().reverse();
+
+        if (nodeHitCounts[node.id] > 0 && idArr.length > 5) {
+          var hit = {
+            path: idArr.slice(0, -5).join("-"),
+            type: idArrRev[4],
+            startLine: idArrRev[3],
+            startColumn: idArrRev[2],
+            endLine: idArrRev[1],
+            endColumn: idArrRev[0],
+            hits: nodeHitCounts[node.id],
+            invokes: invocationsByNode[node.id]
+          };
+
+          memo.push(hit);
         }
 
         return memo;
       }, []);
 
-      _(arrJS).each(function (outerObj) {
-        var outerSource = outerObj.originalSource;
-        if (outerSource.indexOf("jQuery.event =") > -1) {
-          //debugger;
-        }
-        var relatedObj = _(arrJS).find(function (innerObj) {
-          if (outerObj.id == innerObj.id || innerObj.remove) {
-            return false;
-          }
-          var innerSource = innerObj.originalSource;
-          if (innerSource.trim().length < 1){
-            return false;
-          }
-          if (outerSource.indexOf(innerSource) > -1 || innerSource.indexOf(outerSource) > -1) {
-            return true;
-          }
-        });
+      //todo show hits
+      //todo show files
+      //recreate handlers
+      //Aggregate which files were active
+      //Ajax fetch the files
+      //Collect them as a string
+      //Separate them with headers
+      //Send to JSBIN
 
-        if (relatedObj) {
-          if (relatedObj.originalSource.length > outerObj.originalSource.length) {
-            outerObj.remove = true;
-          } else if (relatedObj.originalSource.length <= outerObj.originalSource.length) {
-            relatedObj.remove = true;
-          }
-        }
-      });
 
-      var cleanedJS = _(arrJS).filter(function (jsObj) {
-        return !jsObj.remove;
-      });
-
-      if (nothing) {
-        console.log("No activity captured by tracer.",
-          "\nTracerNodes:",
-          tracerNodes,
-          "\nHit counts:",
-          nodeHitCounts,
-          "\nInvocations:",
-          nodeInvocations
-        );
-      }
-
-      this.lastRecordingJS = _(cleanedJS).reduce(function (memo, node) {
-        var sourceHeader = "// HitCount: " + nodeHitCounts[node.id] + "\n" +
-          "// NodeId: " + node.id + "\n";
-        return memo + sourceHeader + node.originalSource + "\n\n";
-      }, "");
     },
 
     elementSelected: function (cssPath) {
