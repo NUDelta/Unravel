@@ -16,7 +16,9 @@ define([], function () {
       startTracking: function () {
         window.__tracer.resetTrace();
         this.hitsHandle = null;
+        this.logHandle = null;
         this.trackHits();
+        this.trackLogs();
       },
 
       trackHits: function () {
@@ -26,15 +28,15 @@ define([], function () {
         window.__tracer.hitCountDeltas(this.hitsHandle); //Reset the deltas counter
       },
 
-      getHitsAndInvokes: function(){
-        var tracerNodes = this.getTracerNodes();
+      getHitsAndInvokes: function () {
         var nodeHits = window.__tracer.hitCountDeltas(this.hitsHandle);
-
-        var ids = window.unravelAgent._(nodeHits).keys();
-
-        var nodeLogs = window.unravelAgent._(ids).reduce(function(memo, id){
-          var handle = window.__tracer.trackLogs({ ids: [id]});
-          memo[id] = window.__tracer.logDelta(handle, 50);
+        var invokes = this.getNodeInvocations();
+        var nodeLogs = window.unravelAgent._(invokes).reduce(function(memo, invoke){
+          if(memo[invoke.nodeId]){
+            memo[invoke.nodeId].push(invoke);
+          } else {
+            memo[invoke.nodeId] = [invoke];
+          }
           return memo;
         }, {});
 
@@ -42,6 +44,18 @@ define([], function () {
           nodeHits: nodeHits,
           nodeLogs: nodeLogs
         };
+      },
+
+      trackLogs: function () {
+        if (!this.logHandle) {
+          var nodeList = this.getTracerNodes();
+          var ids = window.unravelAgent._(nodeList).pluck("id");
+          this.logHandle = window.__tracer.trackLogs({ids: ids});
+        }
+      },
+
+      getNodeInvocations: function () {
+        return window.__tracer.logDelta(this.logHandle, 50);
       }
     };
 

@@ -283,23 +283,27 @@ define([
       var nodeLogIds = _(nodeLogs).keys();
       _(nodeLogIds).each(function (id) {
         _(nodeLogs[id]).each(function (log) {
-          var topId = log.topLevelInvocationId;
-
-          if (!topId) {
+          if (!log.parents || log.parents.length < 1) {
             return;
           }
 
-          var topNodeId = _(nodeLogIds).find(function (innerId) {
+          var parentInvocationId = log.parents[0].invocationId;
+
+          if (!parentInvocationId) {
+            return;
+          }
+
+          var parentNodeId = _(nodeLogIds).find(function (innerId) {
             return _(nodeLogs[innerId]).find(function (innerLog) {
-              if (innerLog.invocationId = topId) {
+              if (innerLog.invocationId = parentInvocationId) {
                 return true;
               }
             });
           });
 
-          if (topNodeId) {
-            log.topLevelInvocationNode = _(tracerNodes).find(function (node) {
-              return node.id === topNodeId;
+          if (parentNodeId) {
+            log.parentNode = _(tracerNodes).find(function (node) {
+              return node.id === parentNodeId;
             });
           }
         });
@@ -571,36 +575,19 @@ var foo = {
     "startColumn": 13,
     "endLine": 76,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2552,
-      "invocationId": "0.656435388373211-2552",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2552",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-72-13-76-5",
       "arguments": [{"name": "selector", "value": {"type": "string", "value": "#effect1"}}, {
         "name": "context",
         "value": {"type": "undefined", "value": null}
       }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2714,
-      "invocationId": "0.656435388373211-2714",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-72-13-76-5",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": "#effect1"}}, {
-        "name": "context",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2551", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -616,32 +603,17 @@ var foo = {
     "startColumn": 13,
     "endLine": 255,
     "endColumn": 29,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2563,
-      "invocationId": "0.656435388373211-2563",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2563",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-255-13-255-29",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2725,
-      "invocationId": "0.656435388373211-2725",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-255-13-255-29",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2562", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -657,32 +629,17 @@ var foo = {
     "startColumn": 16,
     "endLine": 256,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2562,
-      "invocationId": "0.656435388373211-2562",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2562",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-254-16-256-5",
       "arguments": [{"name": "obj", "value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2724,
-      "invocationId": "0.656435388373211-2724",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-254-16-256-5",
-      "arguments": [{"name": "obj", "value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2561", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -698,32 +655,17 @@ var foo = {
     "startColumn": 10,
     "endLine": 307,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2564,
-      "invocationId": "0.656435388373211-2564",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2564",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-299-10-307-5",
       "arguments": [{"name": "obj", "value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2726,
-      "invocationId": "0.656435388373211-2726",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-299-10-307-5",
-      "arguments": [{"name": "obj", "value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2563", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -739,52 +681,7 @@ var foo = {
     "startColumn": 13,
     "endLine": 336,
     "endColumn": 45,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359129,
-      "tick": 2648,
-      "invocationId": "0.656435388373211-2648",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-336-13-336-45",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "ms-"}}],
-      "this": {"type": "string", "value": "display"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359139,
-      "tick": 2668,
-      "invocationId": "0.656435388373211-2668",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-336-13-336-45",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "ms-"}}],
-      "this": {"type": "string", "value": "display"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -792,52 +689,7 @@ var foo = {
     "startColumn": 13,
     "endLine": 336,
     "endColumn": 77,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359129,
-      "tick": 2649,
-      "invocationId": "0.656435388373211-2649",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-336-13-336-77",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "function"}}],
-      "this": {"type": "string", "value": "display"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359140,
-      "tick": 2669,
-      "invocationId": "0.656435388373211-2669",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-336-13-336-77",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "function"}}],
-      "this": {"type": "string", "value": "display"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -845,40 +697,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 337,
     "endColumn": 5,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359129,
-      "tick": 2647,
-      "invocationId": "0.656435388373211-2647",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-335-15-337-5",
-      "arguments": [{"name": "string", "value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359139,
-      "tick": 2667,
-      "invocationId": "0.656435388373211-2667",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-335-15-337-5",
-      "arguments": [{"name": "string", "value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -886,52 +705,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 854,
     "endColumn": 51,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359115,
-      "tick": 2574,
-      "invocationId": "0.656435388373211-2574",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-854-22-854-51",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "$1"}}],
-      "this": {"type": "string", "value": ":visible"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359282,
-      "tick": 2736,
-      "invocationId": "0.656435388373211-2736",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-854-22-854-51",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "$1"}}],
-      "this": {"type": "string", "value": ":visible"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -939,202 +713,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 854,
     "endColumn": 76,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359115,
-      "tick": 2575,
-      "invocationId": "0.656435388373211-2575",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-854-15-854-76",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359282,
-      "tick": 2737,
-      "invocationId": "0.656435388373211-2737",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-854-15-854-76",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -1142,206 +721,7 @@ var foo = {
     "startColumn": 6,
     "endLine": 855,
     "endColumn": 7,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359115,
-      "tick": 2573,
-      "invocationId": "0.656435388373211-2573",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-750-6-855-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "results", "value": {"type": "null", "preview": "null"}}, {
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359282,
-      "tick": 2735,
-      "invocationId": "0.656435388373211-2735",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-750-6-855-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "results", "value": {"type": "null", "preview": "null"}}, {
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -1349,40 +729,7 @@ var foo = {
     "startColumn": 14,
     "endLine": 868,
     "endColumn": 34,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2598,
-      "invocationId": "0.656435388373211-2598",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-868-14-868-34",
-      "arguments": [{"value": {"type": "string", "value": ":visible "}}],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359118,
-      "tick": 2616,
-      "invocationId": "0.656435388373211-2616",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-868-14-868-34",
-      "arguments": [{"value": {"type": "string", "value": ":visible "}}],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -1390,54 +737,7 @@ var foo = {
     "startColumn": 8,
     "endLine": 873,
     "endColumn": 9,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2597,
-      "invocationId": "0.656435388373211-2597",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-866-8-873-9",
-      "arguments": [{"name": "key", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "value",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[Array:1]",
-              "ownProperties": {"0": {"type": "object", "preview": "[object Object]"}}
-            }
-          }
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359118,
-      "tick": 2615,
-      "invocationId": "0.656435388373211-2615",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-866-8-873-9",
-      "arguments": [{"name": "key", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "value",
-        "value": {"type": "function"}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -1445,24 +745,7 @@ var foo = {
     "startColumn": 14,
     "endLine": 1276,
     "endColumn": 33,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359138,
-      "tick": 2663,
-      "invocationId": "0.656435388373211-2663",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1276-14-1276-33",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -1470,100 +753,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 1279,
     "endColumn": 11,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359137,
-      "tick": 2662,
-      "invocationId": "0.656435388373211-2662",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1271-10-1279-11",
-      "arguments": [{
-        "name": "a",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "b", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -1571,52 +761,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 1405,
     "endColumn": 55,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359114,
-      "tick": 2570,
-      "invocationId": "0.656435388373211-2570",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1405-15-1405-55",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "='$1']"}}],
-      "this": {"type": "string", "value": ":visible"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359281,
-      "tick": 2732,
-      "invocationId": "0.656435388373211-2732",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1405-15-1405-55",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "='$1']"}}],
-      "this": {"type": "string", "value": ":visible"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -1624,52 +769,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 1412,
     "endColumn": 46,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359114,
-      "tick": 2571,
-      "invocationId": "0.656435388373211-2571",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1412-22-1412-46",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359281,
-      "tick": 2733,
-      "invocationId": "0.656435388373211-2733",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1412-22-1412-46",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -1677,202 +777,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 1424,
     "endColumn": 51,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359115,
-      "tick": 2572,
-      "invocationId": "0.656435388373211-2572",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1424-15-1424-51",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "null", "preview": "null"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359281,
-      "tick": 2734,
-      "invocationId": "0.656435388373211-2734",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1424-15-1424-51",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "null", "preview": "null"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -1880,38 +785,20 @@ var foo = {
     "startColumn": 31,
     "endLine": 1425,
     "endColumn": 7,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359114,
+      "timestamp": 1440994137385,
       "tick": 2569,
-      "invocationId": "0.656435388373211-2569",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2569",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1398-31-1425-7",
       "arguments": [{
         "name": "elem",
         "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
       }, {"name": "expr", "value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2731,
-      "invocationId": "0.656435388373211-2731",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1398-31-1425-7",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "expr", "value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2568", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -1927,99 +814,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 1432,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359136,
-      "tick": 2661,
-      "invocationId": "0.656435388373211-2661",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1432-15-1432-38",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -2027,101 +822,7 @@ var foo = {
     "startColumn": 24,
     "endLine": 1433,
     "endColumn": 7,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359135,
-      "tick": 2660,
-      "invocationId": "0.656435388373211-2660",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1427-24-1433-7",
-      "arguments": [{
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "elem", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2129,24 +830,7 @@ var foo = {
     "startColumn": 16,
     "endLine": 1609,
     "endColumn": 49,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2590,
-      "invocationId": "0.656435388373211-2590",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1609-16-1609-49",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2154,43 +838,7 @@ var foo = {
     "startColumn": 19,
     "endLine": 1630,
     "endColumn": 36,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2591,
-      "invocationId": "0.656435388373211-2591",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-1630-19-1630-36",
-      "arguments": [{"value": {"type": "number", "value": 0}}, {"value": {"type": "number", "value": 3}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:12]",
-        "ownProperties": {
-          "0": {"type": "string", "value": ":visible"},
-          "1": {"type": "string", "value": "visible"},
-          "2": {"type": "undefined", "value": null},
-          "3": {"type": "undefined", "value": null},
-          "4": {"type": "undefined", "value": null},
-          "5": {"type": "undefined", "value": null},
-          "6": {"type": "undefined", "value": null},
-          "7": {"type": "undefined", "value": null},
-          "8": {"type": "undefined", "value": null},
-          "9": {"type": "undefined", "value": null},
-          "10": {"type": "undefined", "value": null},
-          "11": {"type": "undefined", "value": null},
-          "index": {"type": "number", "value": 0},
-          "input": {"type": "string", "value": ":visible"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -2198,50 +846,7 @@ var foo = {
     "startColumn": 20,
     "endLine": 1631,
     "endColumn": 11,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2589,
-      "invocationId": "0.656435388373211-2589",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1605-20-1631-11",
-      "arguments": [{
-        "name": "match",
-        "value": {
-          "type": "object",
-          "preview": "[Array:12]",
-          "ownProperties": {
-            "0": {"type": "string", "value": ":visible"},
-            "1": {"type": "string", "value": "visible"},
-            "2": {"type": "undefined", "value": null},
-            "3": {"type": "undefined", "value": null},
-            "4": {"type": "undefined", "value": null},
-            "5": {"type": "undefined", "value": null},
-            "6": {"type": "undefined", "value": null},
-            "7": {"type": "undefined", "value": null},
-            "8": {"type": "undefined", "value": null},
-            "9": {"type": "undefined", "value": null},
-            "10": {"type": "undefined", "value": null},
-            "11": {"type": "undefined", "value": null},
-            "index": {"type": "number", "value": 0},
-            "input": {"type": "string", "value": ":visible"}
-          }
-        }
-      }],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {"ATTR": {"type": "function"}, "CHILD": {"type": "function"}, "PSEUDO": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -2249,26 +854,7 @@ var foo = {
     "startColumn": 20,
     "endLine": 1807,
     "endColumn": 11,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2607,
-      "invocationId": "0.656435388373211-2607",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-1772-20-1807-11",
-      "arguments": [{"name": "pseudo", "value": {"type": "string", "value": "visible"}}, {
-        "name": "argument",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2276,24 +862,7 @@ var foo = {
     "startColumn": 12,
     "endLine": 2058,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2581,
-      "invocationId": "0.656435388373211-2581",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2058-12-2058-38",
-      "arguments": [{"value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2301,24 +870,7 @@ var foo = {
     "startColumn": 23,
     "endLine": 2064,
     "endColumn": 47,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2582,
-      "invocationId": "0.656435388373211-2582",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2064-23-2064-47",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2326,104 +878,7 @@ var foo = {
     "startColumn": 25,
     "endLine": 2076,
     "endColumn": 52,
-    "hits": 6,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2583,
-      "invocationId": "0.656435388373211-2583",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359116,
-      "tick": 2584,
-      "invocationId": "0.656435388373211-2584",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359116,
-      "tick": 2585,
-      "invocationId": "0.656435388373211-2585",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359116,
-      "tick": 2586,
-      "invocationId": "0.656435388373211-2586",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359116,
-      "tick": 2587,
-      "invocationId": "0.656435388373211-2587",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359116,
-      "tick": 2595,
-      "invocationId": "0.656435388373211-2595",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2076-25-2076-52",
-      "arguments": [{"value": {"type": "string", "value": ""}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 6
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2431,49 +886,7 @@ var foo = {
     "startColumn": 25,
     "endLine": 2077,
     "endColumn": 48,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2588,
-      "invocationId": "0.656435388373211-2588",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2077-25-2077-48",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:12]",
-          "ownProperties": {
-            "0": {"type": "string", "value": ":visible"},
-            "1": {"type": "string", "value": "visible"},
-            "2": {"type": "undefined", "value": null},
-            "3": {"type": "undefined", "value": null},
-            "4": {"type": "undefined", "value": null},
-            "5": {"type": "undefined", "value": null},
-            "6": {"type": "undefined", "value": null},
-            "7": {"type": "undefined", "value": null},
-            "8": {"type": "undefined", "value": null},
-            "9": {"type": "undefined", "value": null},
-            "10": {"type": "undefined", "value": null},
-            "11": {"type": "undefined", "value": null},
-            "index": {"type": "number", "value": 0},
-            "input": {"type": "string", "value": ":visible"}
-          }
-        }
-      }],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {"ATTR": {"type": "function"}, "CHILD": {"type": "function"}, "PSEUDO": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2481,32 +894,7 @@ var foo = {
     "startColumn": 24,
     "endLine": 2078,
     "endColumn": 37,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2592,
-      "invocationId": "0.656435388373211-2592",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2078-24-2078-37",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[Array:3]",
-        "ownProperties": {
-          "0": {"type": "string", "value": ":visible"},
-          "1": {"type": "string", "value": "visible"},
-          "2": {"type": "undefined", "value": null}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2514,34 +902,7 @@ var foo = {
     "startColumn": 14,
     "endLine": 2083,
     "endColumn": 16,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2593,
-      "invocationId": "0.656435388373211-2593",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2079-14-2083-16",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "value": {"type": "string", "value": ":visible"},
-            "type": {"type": "string", "value": "PSEUDO"},
-            "matches": {"type": "object", "preview": "[Array:2]"}
-          }
-        }
-      }],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2549,24 +910,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 2084,
     "endColumn": 49,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2594,
-      "invocationId": "0.656435388373211-2594",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2084-22-2084-49",
-      "arguments": [{"value": {"type": "number", "value": 8}}],
-      "this": {"type": "string", "value": ":visible"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2574,35 +918,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 2101,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2596,
-      "invocationId": "0.656435388373211-2596",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2101-10-2101-38",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[Array:1]",
-              "ownProperties": {"0": {"type": "object", "preview": "[object Object]"}}
-            }
-          }
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2610,34 +926,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 2101,
     "endColumn": 47,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2599,
-      "invocationId": "0.656435388373211-2599",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2101-10-2101-47",
-      "arguments": [{"value": {"type": "number", "value": 0}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:1]",
-        "ownProperties": {
-          "0": {
-            "type": "object",
-            "preview": "[Array:1]",
-            "ownProperties": {"0": {"type": "object", "preview": "[object Object]"}}
-          }
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -2645,26 +934,7 @@ var foo = {
     "startColumn": 35,
     "endLine": 2102,
     "endColumn": 7,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2580,
-      "invocationId": "0.656435388373211-2580",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2037-35-2102-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "parseOnly",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -2672,52 +942,7 @@ var foo = {
     "startColumn": 6,
     "endLine": 2165,
     "endColumn": 7,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2603,
-      "invocationId": "0.656435388373211-2603",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2114-6-2165-7",
-      "arguments": [{"name": "matcher", "value": {"type": "function"}}, {
-        "name": "combinator",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"dir": {"type": "string", "value": "parentNode"}}
-        }
-      }, {"name": "base", "value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359117,
-      "tick": 2605,
-      "invocationId": "0.656435388373211-2605",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2114-6-2165-7",
-      "arguments": [{"name": "matcher", "value": {"type": "function"}}, {
-        "name": "combinator",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"dir": {"type": "string", "value": "parentNode"}}
-        }
-      }, {"name": "base", "value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -2725,314 +950,7 @@ var foo = {
     "startColumn": 19,
     "endLine": 2172,
     "endColumn": 50,
-    "hits": 3,
-    "invokes": [{
-      "timestamp": 1440990359120,
-      "tick": 2622,
-      "invocationId": "0.656435388373211-2622",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2172-19-2172-50",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359122,
-      "tick": 2626,
-      "invocationId": "0.656435388373211-2626",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2172-19-2172-50",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359285,
-      "tick": 2746,
-      "invocationId": "0.656435388373211-2746",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2172-19-2172-50",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -3040,198 +958,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 2177,
     "endColumn": 11,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359119,
-      "tick": 2621,
-      "invocationId": "0.656435388373211-2621",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2169-10-2177-11",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "xml", "value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359285,
-      "tick": 2745,
-      "invocationId": "0.656435388373211-2745",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2169-10-2177-11",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "xml", "value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -3239,30 +966,7 @@ var foo = {
     "startColumn": 6,
     "endLine": 2179,
     "endColumn": 7,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2610,
-      "invocationId": "0.656435388373211-2610",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2167-6-2179-7",
-      "arguments": [{
-        "name": "matchers",
-        "value": {
-          "type": "object",
-          "preview": "[Array:2]",
-          "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3270,29 +974,7 @@ var foo = {
     "startColumn": 25,
     "endLine": 2314,
     "endColumn": 36,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2602,
-      "invocationId": "0.656435388373211-2602",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2312-25-2314-36",
-      "arguments": [{"value": {"type": "function"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"dir": {"type": "string", "value": "parentNode"}}
-        }
-      }, {"value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3300,29 +982,7 @@ var foo = {
     "startColumn": 28,
     "endLine": 2317,
     "endColumn": 36,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2604,
-      "invocationId": "0.656435388373211-2604",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2315-28-2317-36",
-      "arguments": [{"value": {"type": "function"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"dir": {"type": "string", "value": "parentNode"}}
-        }
-      }, {"value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -3330,108 +990,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 2326,
     "endColumn": 11,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359122,
-      "tick": 2627,
-      "invocationId": "0.656435388373211-2627",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2318-22-2326-11",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "xml", "value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3439,30 +998,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 2332,
     "endColumn": 80,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2606,
-      "invocationId": "0.656435388373211-2606",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2332-22-2332-80",
-      "arguments": [{"value": {"type": "null", "preview": "null"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:2]",
-          "ownProperties": {"0": {"type": "string", "value": "visible"}, "1": {"type": "undefined", "value": null}}
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3470,24 +1006,7 @@ var foo = {
     "startColumn": 12,
     "endLine": 2357,
     "endColumn": 34,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2608,
-      "invocationId": "0.656435388373211-2608",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2357-12-2357-34",
-      "arguments": [{"value": {"type": "function"}}],
-      "this": {"type": "object", "preview": "[Array:1]", "ownProperties": {"0": {"type": "function"}}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3495,29 +1014,7 @@ var foo = {
     "startColumn": 15,
     "endLine": 2361,
     "endColumn": 39,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2609,
-      "invocationId": "0.656435388373211-2609",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2361-15-2361-39",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:2]",
-          "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -3525,40 +1022,7 @@ var foo = {
     "startColumn": 6,
     "endLine": 2362,
     "endColumn": 7,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2601,
-      "invocationId": "0.656435388373211-2601",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2304-6-2362-7",
-      "arguments": [{
-        "name": "tokens",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[object Object]",
-              "ownProperties": {
-                "value": {"type": "string", "value": ":visible"},
-                "type": {"type": "string", "value": "PSEUDO"},
-                "matches": {"type": "object", "preview": "[Array:2]"}
-              }
-            }
-          }
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3566,202 +1030,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 2392,
     "endColumn": 49,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359119,
-      "tick": 2620,
-      "invocationId": "0.656435388373211-2620",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2392-22-2392-49",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359284,
-      "tick": 2744,
-      "invocationId": "0.656435388373211-2744",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2392-22-2392-49",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -3769,24 +1038,7 @@ var foo = {
     "startColumn": 20,
     "endLine": 2393,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359123,
-      "tick": 2628,
-      "invocationId": "0.656435388373211-2628",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2393-20-2393-38",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -3794,366 +1046,7 @@ var foo = {
     "startColumn": 25,
     "endLine": 2456,
     "endColumn": 11,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359118,
-      "tick": 2619,
-      "invocationId": "0.656435388373211-2619",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2367-25-2456-11",
-      "arguments": [{
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "xml", "value": {"type": "boolean", "value": false}}, {
-        "name": "results",
-        "value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}
-      }, {
-        "name": "outermost",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359284,
-      "tick": 2743,
-      "invocationId": "0.656435388373211-2743",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2367-25-2456-11",
-      "arguments": [{
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "xml", "value": {"type": "boolean", "value": false}}, {
-        "name": "results",
-        "value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}
-      }, {
-        "name": "outermost",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -4161,26 +1054,7 @@ var foo = {
     "startColumn": 6,
     "endLine": 2461,
     "endColumn": 7,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2613,
-      "invocationId": "0.656435388373211-2613",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2364-6-2461-7",
-      "arguments": [{
-        "name": "elementMatchers",
-        "value": {"type": "object", "preview": "[Array:1]", "ownProperties": {"0": {"type": "function"}}}
-      }, {"name": "setMatchers", "value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4188,23 +1062,7 @@ var foo = {
     "startColumn": 20,
     "endLine": 2472,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2579,
-      "invocationId": "0.656435388373211-2579",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2472-20-2472-38",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4212,39 +1070,7 @@ var foo = {
     "startColumn": 21,
     "endLine": 2476,
     "endColumn": 48,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2600,
-      "invocationId": "0.656435388373211-2600",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2476-21-2476-48",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[object Object]",
-              "ownProperties": {
-                "value": {"type": "string", "value": ":visible"},
-                "type": {"type": "string", "value": "PSEUDO"},
-                "matches": {"type": "object", "preview": "[Array:2]"}
-              }
-            }
-          }
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4252,24 +1078,7 @@ var foo = {
     "startColumn": 14,
     "endLine": 2480,
     "endColumn": 42,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2611,
-      "invocationId": "0.656435388373211-2611",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2480-14-2480-42",
-      "arguments": [{"value": {"type": "function"}}],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4277,29 +1086,7 @@ var foo = {
     "startColumn": 43,
     "endLine": 2485,
     "endColumn": 97,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359117,
-      "tick": 2612,
-      "invocationId": "0.656435388373211-2612",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2485-43-2485-97",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "function"}}
-        }
-      }, {"value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4307,23 +1094,7 @@ var foo = {
     "startColumn": 19,
     "endLine": 2485,
     "endColumn": 98,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359118,
-      "tick": 2614,
-      "invocationId": "0.656435388373211-2614",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2485-19-2485-98",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {"value": {"type": "function"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -4331,44 +1102,7 @@ var foo = {
     "startColumn": 33,
     "endLine": 2491,
     "endColumn": 7,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2578,
-      "invocationId": "0.656435388373211-2578",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2463-33-2491-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "match",
-        "value": {"type": "boolean", "value": false}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359283,
-      "tick": 2740,
-      "invocationId": "0.656435388373211-2740",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2463-33-2491-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "match",
-        "value": {"type": "boolean", "value": false}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4376,38 +1110,7 @@ var foo = {
     "startColumn": 21,
     "endLine": 2562,
     "endColumn": 45,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359116,
-      "tick": 2577,
-      "invocationId": "0.656435388373211-2577",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2562-21-2562-45",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359283,
-      "tick": 2739,
-      "invocationId": "0.656435388373211-2739",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2562-21-2562-45",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4415,40 +1118,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 2566,
     "endColumn": 33,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359118,
-      "tick": 2617,
-      "invocationId": "0.656435388373211-2617",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2566-10-2566-33",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359283,
-      "tick": 2741,
-      "invocationId": "0.656435388373211-2741",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2566-10-2566-33",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -4456,366 +1126,7 @@ var foo = {
     "startColumn": 8,
     "endLine": 2567,
     "endColumn": 9,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359118,
-      "tick": 2618,
-      "invocationId": "0.656435388373211-2618",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2562-8-2567-9",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:0]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359283,
-      "tick": 2742,
-      "invocationId": "0.656435388373211-2742",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2562-8-2567-9",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:0]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -4823,206 +1134,7 @@ var foo = {
     "startColumn": 31,
     "endLine": 2569,
     "endColumn": 7,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359115,
-      "tick": 2576,
-      "invocationId": "0.656435388373211-2576",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2502-31-2569-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "results", "value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}, {
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359283,
-      "tick": 2738,
-      "invocationId": "0.656435388373211-2738",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2502-31-2569-7",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "context",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"name": "results", "value": {"type": "object", "preview": "[Array:0]", "ownProperties": {}}}, {
-        "name": "seed",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object HTMLImageElement]", "ownProperties": {}}}
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -5030,32 +1142,17 @@ var foo = {
     "startColumn": 8,
     "endLine": 2657,
     "endColumn": 36,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2561,
-      "invocationId": "0.656435388373211-2561",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2561",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2657-8-2657-36",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2723,
-      "invocationId": "0.656435388373211-2723",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2657-8-2657-36",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2560", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5071,32 +1168,17 @@ var foo = {
     "startColumn": 10,
     "endLine": 2673,
     "endColumn": 35,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2565,
-      "invocationId": "0.656435388373211-2565",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2565",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2673-10-2673-35",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2727,
-      "invocationId": "0.656435388373211-2727",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2673-10-2673-35",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2560", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5112,12 +1194,12 @@ var foo = {
     "startColumn": 15,
     "endLine": 2674,
     "endColumn": 54,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2566,
-      "invocationId": "0.656435388373211-2566",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2566",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2674-15-2674-54",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
         "value": {
@@ -5132,34 +1214,8 @@ var foo = {
         }
       }, {"value": {"type": "boolean", "value": false}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2728,
-      "invocationId": "0.656435388373211-2728",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2674-15-2674-54",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2560", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5175,12 +1231,12 @@ var foo = {
     "startColumn": 2,
     "endLine": 2683,
     "endColumn": 3,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2560,
-      "invocationId": "0.656435388373211-2560",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2560",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2656-2-2683-3",
       "arguments": [{
         "name": "elements",
@@ -5198,37 +1254,8 @@ var foo = {
         "name": "not",
         "value": {"type": "boolean", "value": false}
       }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2722,
-      "invocationId": "0.656435388373211-2722",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2656-2-2683-3",
-      "arguments": [{
-        "name": "elements",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"name": "qualifier", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "not",
-        "value": {"type": "boolean", "value": false}
-      }],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2559", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5244,12 +1271,12 @@ var foo = {
     "startColumn": 6,
     "endLine": 2693,
     "endColumn": 45,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359114,
+      "timestamp": 1440994137384,
       "tick": 2568,
-      "invocationId": "0.656435388373211-2568",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2568",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2693-6-2693-45",
       "arguments": [{
         "value": {
@@ -5259,29 +1286,8 @@ var foo = {
         }
       }, {"value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2730,
-      "invocationId": "0.656435388373211-2730",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2693-6-2693-45",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2567", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5297,12 +1303,12 @@ var foo = {
     "startColumn": 18,
     "endLine": 2697,
     "endColumn": 3,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2567,
-      "invocationId": "0.656435388373211-2567",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2567",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2685-18-2697-3",
       "arguments": [{"name": "expr", "value": {"type": "string", "value": ":visible"}}, {
         "name": "elems",
@@ -5318,35 +1324,8 @@ var foo = {
         }
       }, {"name": "not", "value": {"type": "boolean", "value": false}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359280,
-      "tick": 2729,
-      "invocationId": "0.656435388373211-2729",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2685-18-2697-3",
-      "arguments": [{"name": "expr", "value": {"type": "string", "value": ":visible"}}, {
-        "name": "elems",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"name": "not", "value": {"type": "boolean", "value": false}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2566", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5362,32 +1341,17 @@ var foo = {
     "startColumn": 40,
     "endLine": 2737,
     "endColumn": 68,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2558,
-      "invocationId": "0.656435388373211-2558",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2558",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2737-40-2737-68",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359279,
-      "tick": 2720,
-      "invocationId": "0.656435388373211-2720",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2737-40-2737-68",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2557", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5403,12 +1367,12 @@ var foo = {
     "startColumn": 15,
     "endLine": 2741,
     "endColumn": 7,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2559,
-      "invocationId": "0.656435388373211-2559",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2559",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2732-15-2741-7",
       "arguments": [{
         "value": {
@@ -5422,33 +1386,8 @@ var foo = {
           }
         }
       }, {"value": {"type": "string", "value": ":visible"}}, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359279,
-      "tick": 2721,
-      "invocationId": "0.656435388373211-2721",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2732-15-2741-7",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"value": {"type": "string", "value": ":visible"}}, {"value": {"type": "boolean", "value": false}}],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2557", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5464,12 +1403,12 @@ var foo = {
     "startColumn": 8,
     "endLine": 2742,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137384,
       "tick": 2557,
-      "invocationId": "0.656435388373211-2557",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2557",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2731-8-2742-5",
       "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}],
       "this": {
@@ -5482,32 +1421,8 @@ var foo = {
           "selector": {"type": "string", "value": "#effect1"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359279,
-      "tick": 2719,
-      "invocationId": "0.656435388373211-2719",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2731-8-2742-5",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": ":visible"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2556", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5523,32 +1438,17 @@ var foo = {
     "startColumn": 18,
     "endLine": 2772,
     "endColumn": 43,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2554,
-      "invocationId": "0.656435388373211-2554",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2554",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2772-18-2772-43",
       "arguments": [{"value": {"type": "string", "value": "#effect1"}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2716,
-      "invocationId": "0.656435388373211-2716",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2772-18-2772-43",
-      "arguments": [{"value": {"type": "string", "value": "#effect1"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2553", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5564,12 +1464,12 @@ var foo = {
     "startColumn": 19,
     "endLine": 2808,
     "endColumn": 52,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2555,
-      "invocationId": "0.656435388373211-2555",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2555",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2808-19-2808-52",
       "arguments": [{"value": {"type": "string", "value": "effect1"}}],
       "this": {
@@ -5647,97 +1547,8 @@ var foo = {
         },
         "truncated": {"keys": {"amount": 33}}
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2717,
-      "invocationId": "0.656435388373211-2717",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-2808-19-2808-52",
-      "arguments": [{"value": {"type": "string", "value": "effect1"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "location": {"type": "object", "preview": "http://localhost:9000/"},
-          "effect1": {"type": "undefined", "value": null},
-          "effect3": {"type": "undefined", "value": null},
-          "open": {"type": "function"},
-          "close": {"type": "function"},
-          "write": {"type": "function"},
-          "writeln": {"type": "function"},
-          "clear": {"type": "function"},
-          "captureEvents": {"type": "function"},
-          "releaseEvents": {"type": "function"},
-          "getElementsByTagName": {"type": "function"},
-          "getElementsByTagNameNS": {"type": "function"},
-          "getElementsByClassName": {"type": "function"},
-          "createDocumentFragment": {"type": "function"},
-          "createTextNode": {"type": "function"},
-          "createComment": {"type": "function"},
-          "createProcessingInstruction": {"type": "function"},
-          "importNode": {"type": "function"},
-          "adoptNode": {"type": "function"},
-          "createAttribute": {"type": "function"},
-          "createAttributeNS": {"type": "function"},
-          "createEvent": {"type": "function"},
-          "createRange": {"type": "function"},
-          "createNodeIterator": {"type": "function"},
-          "createTreeWalker": {"type": "function"},
-          "createCDATASection": {"type": "function"},
-          "getElementsByName": {"type": "function"},
-          "hasFocus": {"type": "function"},
-          "execCommand": {"type": "function"},
-          "queryCommandEnabled": {"type": "function"},
-          "queryCommandIndeterm": {"type": "function"},
-          "queryCommandState": {"type": "function"},
-          "queryCommandSupported": {"type": "function"},
-          "queryCommandValue": {"type": "function"},
-          "elementFromPoint": {"type": "function"},
-          "elementsFromPoint": {"type": "function"},
-          "getSelection": {"type": "function"},
-          "exitPointerLock": {"type": "function"},
-          "registerElement": {"type": "function"},
-          "createElement": {"type": "function"},
-          "createElementNS": {"type": "function"},
-          "caretRangeFromPoint": {"type": "function"},
-          "getCSSCanvasContext": {"type": "function"},
-          "webkitCancelFullScreen": {"type": "function"},
-          "webkitExitFullscreen": {"type": "function"},
-          "getElementById": {"type": "function"},
-          "querySelector": {"type": "function"},
-          "querySelectorAll": {"type": "function"},
-          "createExpression": {"type": "function"},
-          "createNSResolver": {"type": "function"},
-          "evaluate": {"type": "function"},
-          "hasChildNodes": {"type": "function"},
-          "normalize": {"type": "function"},
-          "cloneNode": {"type": "function"},
-          "isEqualNode": {"type": "function"},
-          "compareDocumentPosition": {"type": "function"},
-          "contains": {"type": "function"},
-          "lookupPrefix": {"type": "function"},
-          "lookupNamespaceURI": {"type": "function"},
-          "isDefaultNamespace": {"type": "function"},
-          "insertBefore": {"type": "function"},
-          "appendChild": {"type": "function"},
-          "replaceChild": {"type": "function"},
-          "removeChild": {"type": "function"},
-          "isSameNode": {"type": "function"},
-          "addEventListener": {"type": "function"},
-          "removeEventListener": {"type": "function"},
-          "dispatchEvent": {"type": "function"}
-        },
-        "truncated": {"keys": {"amount": 33}}
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2553", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5753,38 +1564,20 @@ var foo = {
     "startColumn": 28,
     "endLine": 2854,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2553,
-      "invocationId": "0.656435388373211-2553",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2553",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2757-28-2854-5",
       "arguments": [{"name": "selector", "value": {"type": "string", "value": "#effect1"}}, {
         "name": "context",
         "value": {"type": "undefined", "value": null}
       }],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2715,
-      "invocationId": "0.656435388373211-2715",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-2757-28-2854-5",
-      "arguments": [{"name": "selector", "value": {"type": "string", "value": "#effect1"}}, {
-        "name": "context",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2552", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5800,80 +1593,17 @@ var foo = {
     "startColumn": 22,
     "endLine": 3552,
     "endColumn": 3,
-    "hits": 5,
+    "hits": 3,
     "invokes": [{
-      "timestamp": 1440990359108,
+      "timestamp": 1440994137378,
       "tick": 2536,
-      "invocationId": "0.656435388373211-2536",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2536",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3543-22-3552-3",
       "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359126,
-      "tick": 2640,
-      "invocationId": "0.656435388373211-2640",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3543-22-3552-3",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359146,
-      "tick": 2682,
-      "invocationId": "0.656435388373211-2682",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3543-22-3552-3",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359275,
-      "tick": 2698,
-      "invocationId": "0.656435388373211-2698",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3543-22-3552-3",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359289,
-      "tick": 2761,
-      "invocationId": "0.656435388373211-2761",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3543-22-3552-3",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2535", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5889,80 +1619,17 @@ var foo = {
     "startColumn": 11,
     "endLine": 3576,
     "endColumn": 30,
-    "hits": 5,
+    "hits": 3,
     "invokes": [{
-      "timestamp": 1440990359108,
+      "timestamp": 1440994137378,
       "tick": 2535,
-      "invocationId": "0.656435388373211-2535",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2535",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3576-11-3576-30",
       "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359126,
-      "tick": 2639,
-      "invocationId": "0.656435388373211-2639",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3576-11-3576-30",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359146,
-      "tick": 2681,
-      "invocationId": "0.656435388373211-2681",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3576-11-3576-30",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359275,
-      "tick": 2697,
-      "invocationId": "0.656435388373211-2697",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3576-11-3576-30",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359288,
-      "tick": 2760,
-      "invocationId": "0.656435388373211-2760",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3576-11-3576-30",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2534", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -5978,36 +1645,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 3593,
     "endColumn": 52,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359127,
-      "tick": 2641,
-      "invocationId": "0.656435388373211-2641",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3593-10-3593-52",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"jQuery214065915300161577761": {"type": "object", "preview": "[object Object]"}}
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -6015,12 +1653,12 @@ var foo = {
     "startColumn": 9,
     "endLine": 3609,
     "endColumn": 5,
-    "hits": 5,
+    "hits": 3,
     "invokes": [{
-      "timestamp": 1440990359107,
+      "timestamp": 1440994137377,
       "tick": 2534,
-      "invocationId": "0.656435388373211-2534",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2534",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3572-9-3609-5",
       "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {
@@ -6028,102 +1666,11 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {
           "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
+          "expando": {"type": "string", "value": "jQuery214062676725303754211"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359125,
-      "tick": 2638,
-      "invocationId": "0.656435388373211-2638",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3572-9-3609-5",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359145,
-      "tick": 2680,
-      "invocationId": "0.656435388373211-2680",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3572-9-3609-5",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359274,
-      "tick": 2696,
-      "invocationId": "0.656435388373211-2696",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3572-9-3609-5",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359288,
-      "tick": 2759,
-      "invocationId": "0.656435388373211-2759",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3572-9-3609-5",
-      "arguments": [{"name": "owner", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2533", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6139,31 +1686,7 @@ var foo = {
     "startColumn": 17,
     "endLine": 3615,
     "endColumn": 32,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359145,
-      "tick": 2679,
-      "invocationId": "0.656435388373211-2679",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3615-17-3615-32",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -6171,37 +1694,7 @@ var foo = {
     "startColumn": 9,
     "endLine": 3635,
     "endColumn": 5,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359145,
-      "tick": 2678,
-      "invocationId": "0.656435388373211-2678",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3610-9-3635-5",
-      "arguments": [{
-        "name": "owner",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "data", "value": {"type": "string", "value": "olddisplay"}}, {
-        "name": "value",
-        "value": {"type": "string", "value": "inline"}
-      }],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -6209,12 +1702,12 @@ var foo = {
     "startColumn": 29,
     "endLine": 3641,
     "endColumn": 44,
-    "hits": 4,
+    "hits": 2,
     "invokes": [{
-      "timestamp": 1440990359107,
+      "timestamp": 1440994137377,
       "tick": 2533,
-      "invocationId": "0.656435388373211-2533",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2533",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3641-29-3641-44",
       "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {
@@ -6222,79 +1715,11 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {
           "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
+          "expando": {"type": "string", "value": "jQuery214062676725303754211"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359125,
-      "tick": 2637,
-      "invocationId": "0.656435388373211-2637",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3641-29-3641-44",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359274,
-      "tick": 2695,
-      "invocationId": "0.656435388373211-2695",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3641-29-3641-44",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359288,
-      "tick": 2758,
-      "invocationId": "0.656435388373211-2758",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-3641-29-3641-44",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2532", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6310,12 +1735,12 @@ var foo = {
     "startColumn": 9,
     "endLine": 3645,
     "endColumn": 5,
-    "hits": 4,
+    "hits": 2,
     "invokes": [{
-      "timestamp": 1440990359107,
+      "timestamp": 1440994137376,
       "tick": 2532,
-      "invocationId": "0.656435388373211-2532",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2532",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3636-9-3645-5",
       "arguments": [{
         "name": "owner",
@@ -6326,88 +1751,11 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {
           "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
+          "expando": {"type": "string", "value": "jQuery214062676725303754211"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359125,
-      "tick": 2636,
-      "invocationId": "0.656435388373211-2636",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3636-9-3645-5",
-      "arguments": [{
-        "name": "owner",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "key", "value": {"type": "string", "value": "olddisplay"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359274,
-      "tick": 2694,
-      "invocationId": "0.656435388373211-2694",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3636-9-3645-5",
-      "arguments": [{
-        "name": "owner",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "key", "value": {"type": "string", "value": "events"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359288,
-      "tick": 2757,
-      "invocationId": "0.656435388373211-2757",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-3636-9-3645-5",
-      "arguments": [{
-        "name": "owner",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "key", "value": {"type": "string", "value": "olddisplay"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2531", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6423,30 +1771,7 @@ var foo = {
     "startColumn": 11,
     "endLine": 4042,
     "endColumn": 38,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359128,
-      "tick": 2644,
-      "invocationId": "0.656435388373211-2644",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4042-11-4042-38",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -6454,100 +1779,7 @@ var foo = {
     "startColumn": 54,
     "endLine": 4042,
     "endColumn": 95,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359134,
-      "tick": 2659,
-      "invocationId": "0.656435388373211-2659",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4042-54-4042-95",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -6555,26 +1787,7 @@ var foo = {
     "startColumn": 17,
     "endLine": 4043,
     "endColumn": 3,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359128,
-      "tick": 2643,
-      "invocationId": "0.656435388373211-2643",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4038-17-4043-3",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "el", "value": {"type": "undefined", "value": null}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -6582,12 +1795,12 @@ var foo = {
     "startColumn": 2,
     "endLine": 4090,
     "endColumn": 3,
-    "hits": 4,
+    "hits": 2,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2542,
-      "invocationId": "0.656435388373211-2542",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2542",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4088-2-4090-3",
       "arguments": [],
       "this": {
@@ -6597,17 +1810,17 @@ var foo = {
           "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
           "type": {"type": "string", "value": "click"},
           "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359102},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
+          "timeStamp": {"type": "number", "value": 1440994137371},
+          "jQuery21406267672530375421": {"type": "boolean", "value": true},
           "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
+          "screenY": {"type": "number", "value": 218},
+          "screenX": {"type": "number", "value": 2115},
+          "pageY": {"type": "number", "value": 111},
+          "pageX": {"type": "number", "value": 177},
+          "offsetY": {"type": "number", "value": 14},
+          "offsetX": {"type": "number", "value": 164},
+          "clientY": {"type": "number", "value": 111},
+          "clientX": {"type": "number", "value": 177},
           "buttons": {"type": "number", "value": 0},
           "button": {"type": "number", "value": 0},
           "which": {"type": "number", "value": 1},
@@ -6625,7 +1838,8 @@ var foo = {
           "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
         }
       },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2541", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6634,10 +1848,10 @@ var foo = {
         "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
       }
     }, {
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2544,
-      "invocationId": "0.656435388373211-2544",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2544",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4088-2-4090-3",
       "arguments": [],
       "this": {
@@ -6647,17 +1861,17 @@ var foo = {
           "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
           "type": {"type": "string", "value": "click"},
           "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359102},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
+          "timeStamp": {"type": "number", "value": 1440994137371},
+          "jQuery21406267672530375421": {"type": "boolean", "value": true},
           "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
+          "screenY": {"type": "number", "value": 218},
+          "screenX": {"type": "number", "value": 2115},
+          "pageY": {"type": "number", "value": 111},
+          "pageX": {"type": "number", "value": 177},
+          "offsetY": {"type": "number", "value": 14},
+          "offsetX": {"type": "number", "value": 164},
+          "clientY": {"type": "number", "value": 111},
+          "clientX": {"type": "number", "value": 177},
           "buttons": {"type": "number", "value": 0},
           "button": {"type": "number", "value": 0},
           "which": {"type": "number", "value": 1},
@@ -6675,107 +1889,8 @@ var foo = {
           "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2704,
-      "invocationId": "0.656435388373211-2704",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4088-2-4090-3",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-          "type": {"type": "string", "value": "click"},
-          "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359271},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
-          "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
-          "buttons": {"type": "number", "value": 0},
-          "button": {"type": "number", "value": 0},
-          "which": {"type": "number", "value": 1},
-          "view": {"type": "object", "preview": "[object Window]"},
-          "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "shiftKey": {"type": "boolean", "value": false},
-          "relatedTarget": {"type": "null", "preview": "null"},
-          "metaKey": {"type": "boolean", "value": false},
-          "eventPhase": {"type": "number", "value": 2},
-          "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "ctrlKey": {"type": "boolean", "value": false},
-          "cancelable": {"type": "boolean", "value": true},
-          "bubbles": {"type": "boolean", "value": true},
-          "altKey": {"type": "boolean", "value": false},
-          "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2706,
-      "invocationId": "0.656435388373211-2706",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4088-2-4090-3",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-          "type": {"type": "string", "value": "click"},
-          "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359271},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
-          "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
-          "buttons": {"type": "number", "value": 0},
-          "button": {"type": "number", "value": 0},
-          "which": {"type": "number", "value": 1},
-          "view": {"type": "object", "preview": "[object Window]"},
-          "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "shiftKey": {"type": "boolean", "value": false},
-          "relatedTarget": {"type": "null", "preview": "null"},
-          "metaKey": {"type": "boolean", "value": false},
-          "eventPhase": {"type": "number", "value": 2},
-          "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "ctrlKey": {"type": "boolean", "value": false},
-          "cancelable": {"type": "boolean", "value": true},
-          "bubbles": {"type": "boolean", "value": true},
-          "altKey": {"type": "boolean", "value": false},
-          "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2543", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6791,12 +1906,12 @@ var foo = {
     "startColumn": 12,
     "endLine": 4139,
     "endColumn": 56,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359104,
+      "timestamp": 1440994137373,
       "tick": 2521,
-      "invocationId": "0.656435388373211-2521",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2521",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4139-12-4139-56",
       "arguments": [{
         "value": {
@@ -6812,35 +1927,8 @@ var foo = {
         }
       }],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359272,
-      "tick": 2684,
-      "invocationId": "0.656435388373211-2684",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4139-12-4139-56",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object MouseEvent]"}}
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2520", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6856,39 +1944,15 @@ var foo = {
     "startColumn": 40,
     "endLine": 4140,
     "endColumn": 9,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359104,
+      "timestamp": 1440994137372,
       "tick": 2520,
-      "invocationId": "0.656435388373211-2683",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2568",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
       "arguments": [{"name": "e", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359271,
-      "tick": 2683,
-      "invocationId": "0.656435388373211-2683",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-      "arguments": [{"name": "e", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
+      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
     }]
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
@@ -6897,12 +1961,12 @@ var foo = {
     "startColumn": 14,
     "endLine": 4416,
     "endColumn": 37,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137374,
       "tick": 2523,
-      "invocationId": "0.656435388373211-2523",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2523",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4416-14-4416-37",
       "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {
@@ -6924,41 +1988,8 @@ var foo = {
           "simulate": {"type": "function"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2686,
-      "invocationId": "0.656435388373211-2686",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4416-14-4416-37",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "global": {"type": "object", "preview": "[object Object]"},
-          "add": {"type": "function"},
-          "remove": {"type": "function"},
-          "trigger": {"type": "function"},
-          "dispatch": {"type": "function"},
-          "handlers": {"type": "function"},
-          "props": {"type": "object", "preview": "[Array:13]"},
-          "fixHooks": {"type": "object", "preview": "[object Object]"},
-          "keyHooks": {"type": "object", "preview": "[object Object]"},
-          "mouseHooks": {"type": "object", "preview": "[object Object]"},
-          "fix": {"type": "function"},
-          "special": {"type": "object", "preview": "[object Object]"},
-          "simulate": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -6974,12 +2005,12 @@ var foo = {
     "startColumn": 15,
     "endLine": 4420,
     "endColumn": 36,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359107,
+      "timestamp": 1440994137376,
       "tick": 2530,
-      "invocationId": "0.656435388373211-2530",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2530",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4420-15-4420-36",
       "arguments": [{
         "value": {
@@ -6989,29 +2020,8 @@ var foo = {
         }
       }],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359274,
-      "tick": 2692,
-      "invocationId": "0.656435388373211-2692",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4420-15-4420-36",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {"0": {"type": "object", "preview": "[object Object]"}}
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7027,12 +2037,12 @@ var foo = {
     "startColumn": 20,
     "endLine": 4421,
     "endColumn": 49,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359107,
+      "timestamp": 1440994137376,
       "tick": 2531,
-      "invocationId": "0.656435388373211-2531",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2531",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4421-20-4421-49",
       "arguments": [{
         "value": {
@@ -7046,39 +2056,11 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {
           "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
+          "expando": {"type": "string", "value": "jQuery214062676725303754211"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359274,
-      "tick": 2693,
-      "invocationId": "0.656435388373211-2693",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4421-20-4421-49",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "events"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7094,12 +2076,12 @@ var foo = {
     "startColumn": 21,
     "endLine": 4434,
     "endColumn": 70,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359108,
+      "timestamp": 1440994137378,
       "tick": 2537,
-      "invocationId": "0.656435388373211-2537",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2537",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4434-21-4434-70",
       "arguments": [{
         "value": {
@@ -7115,17 +2097,17 @@ var foo = {
             "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
             "type": {"type": "string", "value": "click"},
             "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359102},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
+            "timeStamp": {"type": "number", "value": 1440994137371},
+            "jQuery21406267672530375421": {"type": "boolean", "value": true},
             "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
+            "screenY": {"type": "number", "value": 218},
+            "screenX": {"type": "number", "value": 2115},
+            "pageY": {"type": "number", "value": 111},
+            "pageX": {"type": "number", "value": 177},
+            "offsetY": {"type": "number", "value": 14},
+            "offsetX": {"type": "number", "value": 164},
+            "clientY": {"type": "number", "value": 111},
+            "clientX": {"type": "number", "value": 177},
             "buttons": {"type": "number", "value": 0},
             "button": {"type": "number", "value": 0},
             "which": {"type": "number", "value": 1},
@@ -7166,86 +2148,8 @@ var foo = {
         }
       }],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359275,
-      "tick": 2699,
-      "invocationId": "0.656435388373211-2699",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4434-21-4434-70",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-            "type": {"type": "string", "value": "click"},
-            "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359271},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
-            "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
-            "buttons": {"type": "number", "value": 0},
-            "button": {"type": "number", "value": 0},
-            "which": {"type": "number", "value": 1},
-            "view": {"type": "object", "preview": "[object Window]"},
-            "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "shiftKey": {"type": "boolean", "value": false},
-            "relatedTarget": {"type": "null", "preview": "null"},
-            "metaKey": {"type": "boolean", "value": false},
-            "eventPhase": {"type": "number", "value": 2},
-            "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "ctrlKey": {"type": "boolean", "value": false},
-            "cancelable": {"type": "boolean", "value": true},
-            "bubbles": {"type": "boolean", "value": true},
-            "altKey": {"type": "boolean", "value": false},
-            "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-          }
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[object Object]",
-              "ownProperties": {
-                "type": {"type": "string", "value": "click"},
-                "origType": {"type": "string", "value": "click"},
-                "data": {"type": "null", "preview": "null"},
-                "handler": {"type": "function"},
-                "guid": {"type": "number", "value": 1},
-                "selector": {"type": "undefined", "value": null},
-                "needsContext": {"type": "undefined", "value": null},
-                "namespace": {"type": "string", "value": ""}
-              }
-            }, "delegateCount": {"type": "number", "value": 0}
-          }
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7261,12 +2165,12 @@ var foo = {
     "startColumn": 47,
     "endLine": 4438,
     "endColumn": 75,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2541,
-      "invocationId": "0.656435388373211-2541",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2541",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4438-47-4438-75",
       "arguments": [],
       "this": {
@@ -7276,17 +2180,17 @@ var foo = {
           "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
           "type": {"type": "string", "value": "click"},
           "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359102},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
+          "timeStamp": {"type": "number", "value": 1440994137371},
+          "jQuery21406267672530375421": {"type": "boolean", "value": true},
           "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
+          "screenY": {"type": "number", "value": 218},
+          "screenX": {"type": "number", "value": 2115},
+          "pageY": {"type": "number", "value": 111},
+          "pageX": {"type": "number", "value": 177},
+          "offsetY": {"type": "number", "value": 14},
+          "offsetX": {"type": "number", "value": 164},
+          "clientY": {"type": "number", "value": 111},
+          "clientX": {"type": "number", "value": 177},
           "buttons": {"type": "number", "value": 0},
           "button": {"type": "number", "value": 0},
           "which": {"type": "number", "value": 1},
@@ -7304,57 +2208,8 @@ var foo = {
           "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2703,
-      "invocationId": "0.656435388373211-2703",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4438-47-4438-75",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-          "type": {"type": "string", "value": "click"},
-          "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359271},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
-          "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
-          "buttons": {"type": "number", "value": 0},
-          "button": {"type": "number", "value": 0},
-          "which": {"type": "number", "value": 1},
-          "view": {"type": "object", "preview": "[object Window]"},
-          "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "shiftKey": {"type": "boolean", "value": false},
-          "relatedTarget": {"type": "null", "preview": "null"},
-          "metaKey": {"type": "boolean", "value": false},
-          "eventPhase": {"type": "number", "value": 2},
-          "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "ctrlKey": {"type": "boolean", "value": false},
-          "cancelable": {"type": "boolean", "value": true},
-          "bubbles": {"type": "boolean", "value": true},
-          "altKey": {"type": "boolean", "value": false},
-          "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7370,12 +2225,12 @@ var foo = {
     "startColumn": 55,
     "endLine": 4442,
     "endColumn": 92,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2543,
-      "invocationId": "0.656435388373211-2543",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2543",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4442-55-4442-92",
       "arguments": [],
       "this": {
@@ -7385,17 +2240,17 @@ var foo = {
           "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
           "type": {"type": "string", "value": "click"},
           "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359102},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
+          "timeStamp": {"type": "number", "value": 1440994137371},
+          "jQuery21406267672530375421": {"type": "boolean", "value": true},
           "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
+          "screenY": {"type": "number", "value": 218},
+          "screenX": {"type": "number", "value": 2115},
+          "pageY": {"type": "number", "value": 111},
+          "pageX": {"type": "number", "value": 177},
+          "offsetY": {"type": "number", "value": 14},
+          "offsetX": {"type": "number", "value": 164},
+          "clientY": {"type": "number", "value": 111},
+          "clientX": {"type": "number", "value": 177},
           "buttons": {"type": "number", "value": 0},
           "button": {"type": "number", "value": 0},
           "which": {"type": "number", "value": 1},
@@ -7413,57 +2268,8 @@ var foo = {
           "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2705,
-      "invocationId": "0.656435388373211-2705",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4442-55-4442-92",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-          "type": {"type": "string", "value": "click"},
-          "isDefaultPrevented": {"type": "function"},
-          "timeStamp": {"type": "number", "value": 1440990359271},
-          "jQuery21406591530016157776": {"type": "boolean", "value": true},
-          "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "screenY": {"type": "number", "value": 229},
-          "screenX": {"type": "number", "value": 2042},
-          "pageY": {"type": "number", "value": 121},
-          "pageX": {"type": "number", "value": 110},
-          "offsetY": {"type": "number", "value": 24},
-          "offsetX": {"type": "number", "value": 97},
-          "clientY": {"type": "number", "value": 121},
-          "clientX": {"type": "number", "value": 110},
-          "buttons": {"type": "number", "value": 0},
-          "button": {"type": "number", "value": 0},
-          "which": {"type": "number", "value": 1},
-          "view": {"type": "object", "preview": "[object Window]"},
-          "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "shiftKey": {"type": "boolean", "value": false},
-          "relatedTarget": {"type": "null", "preview": "null"},
-          "metaKey": {"type": "boolean", "value": false},
-          "eventPhase": {"type": "number", "value": 2},
-          "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-          "ctrlKey": {"type": "boolean", "value": false},
-          "cancelable": {"type": "boolean", "value": true},
-          "bubbles": {"type": "boolean", "value": true},
-          "altKey": {"type": "boolean", "value": false},
-          "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7479,12 +2285,12 @@ var foo = {
     "startColumn": 18,
     "endLine": 4452,
     "endColumn": 40,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2545,
-      "invocationId": "0.656435388373211-2545",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2545",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4451-18-4452-40",
       "arguments": [{
         "value": {
@@ -7504,17 +2310,17 @@ var foo = {
                 "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
                 "type": {"type": "string", "value": "click"},
                 "isDefaultPrevented": {"type": "function"},
-                "timeStamp": {"type": "number", "value": 1440990359102},
-                "jQuery21406591530016157776": {"type": "boolean", "value": true},
+                "timeStamp": {"type": "number", "value": 1440994137371},
+                "jQuery21406267672530375421": {"type": "boolean", "value": true},
                 "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-                "screenY": {"type": "number", "value": 229},
-                "screenX": {"type": "number", "value": 2042},
-                "pageY": {"type": "number", "value": 121},
-                "pageX": {"type": "number", "value": 110},
-                "offsetY": {"type": "number", "value": 24},
-                "offsetX": {"type": "number", "value": 97},
-                "clientY": {"type": "number", "value": 121},
-                "clientX": {"type": "number", "value": 110},
+                "screenY": {"type": "number", "value": 218},
+                "screenX": {"type": "number", "value": 2115},
+                "pageY": {"type": "number", "value": 111},
+                "pageX": {"type": "number", "value": 177},
+                "offsetY": {"type": "number", "value": 14},
+                "offsetX": {"type": "number", "value": 164},
+                "clientY": {"type": "number", "value": 111},
+                "clientX": {"type": "number", "value": 177},
                 "buttons": {"type": "number", "value": 0},
                 "button": {"type": "number", "value": 0},
                 "which": {"type": "number", "value": 1},
@@ -7538,73 +2344,8 @@ var foo = {
         }
       }],
       "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2707,
-      "invocationId": "0.656435388373211-2707",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4451-18-4452-40",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[object Object]",
-              "ownProperties": {
-                "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-                "type": {"type": "string", "value": "click"},
-                "isDefaultPrevented": {"type": "function"},
-                "timeStamp": {"type": "number", "value": 1440990359271},
-                "jQuery21406591530016157776": {"type": "boolean", "value": true},
-                "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-                "screenY": {"type": "number", "value": 229},
-                "screenX": {"type": "number", "value": 2042},
-                "pageY": {"type": "number", "value": 121},
-                "pageX": {"type": "number", "value": 110},
-                "offsetY": {"type": "number", "value": 24},
-                "offsetX": {"type": "number", "value": 97},
-                "clientY": {"type": "number", "value": 121},
-                "clientX": {"type": "number", "value": 110},
-                "buttons": {"type": "number", "value": 0},
-                "button": {"type": "number", "value": 0},
-                "which": {"type": "number", "value": 1},
-                "view": {"type": "object", "preview": "[object Window]"},
-                "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-                "shiftKey": {"type": "boolean", "value": false},
-                "relatedTarget": {"type": "null", "preview": "null"},
-                "metaKey": {"type": "boolean", "value": false},
-                "eventPhase": {"type": "number", "value": 2},
-                "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-                "ctrlKey": {"type": "boolean", "value": false},
-                "cancelable": {"type": "boolean", "value": true},
-                "bubbles": {"type": "boolean", "value": true},
-                "altKey": {"type": "boolean", "value": false},
-                "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-                "handleObj": {"type": "object", "preview": "[object Object]"},
-                "data": {"type": "null", "preview": "null"}
-              }
-            }
-          }
-        }
-      }],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2522", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7620,32 +2361,17 @@ var foo = {
     "startColumn": 14,
     "endLine": 4470,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137373,
       "tick": 2522,
-      "invocationId": "0.656435388373211-2522",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2522",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4413-14-4470-5",
       "arguments": [{"name": "event", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359272,
-      "tick": 2685,
-      "invocationId": "0.656435388373211-2685",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4413-14-4470-5",
-      "arguments": [{"name": "event", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2521", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7661,12 +2387,12 @@ var foo = {
     "startColumn": 20,
     "endLine": 4517,
     "endColumn": 49,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2539,
-      "invocationId": "0.656435388373211-2539",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2539",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4517-20-4517-49",
       "arguments": [{"value": {"type": "number", "value": 0}}],
       "this": {
@@ -7689,42 +2415,8 @@ var foo = {
           }, "delegateCount": {"type": "number", "value": 0}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2701,
-      "invocationId": "0.656435388373211-2701",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4517-20-4517-49",
-      "arguments": [{"value": {"type": "number", "value": 0}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:1]",
-        "ownProperties": {
-          "0": {
-            "type": "object",
-            "preview": "[object Object]",
-            "ownProperties": {
-              "type": {"type": "string", "value": "click"},
-              "origType": {"type": "string", "value": "click"},
-              "data": {"type": "null", "preview": "null"},
-              "handler": {"type": "function"},
-              "guid": {"type": "number", "value": 1},
-              "selector": {"type": "undefined", "value": null},
-              "needsContext": {"type": "undefined", "value": null},
-              "namespace": {"type": "string", "value": ""}
-            }
-          }, "delegateCount": {"type": "number", "value": 0}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2538", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7740,12 +2432,12 @@ var foo = {
     "startColumn": 8,
     "endLine": 4518,
     "endColumn": 10,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2540,
-      "invocationId": "0.656435388373211-2540",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2540",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4515-8-4518-10",
       "arguments": [{
         "value": {
@@ -7758,32 +2450,8 @@ var foo = {
         }
       }],
       "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2702,
-      "invocationId": "0.656435388373211-2702",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4515-8-4518-10",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "elem": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "handlers": {"type": "object", "preview": "[Array:1]"}
-          }
-        }
-      }],
-      "this": {"type": "object", "preview": "[Array:0]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2538", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7799,12 +2467,12 @@ var foo = {
     "startColumn": 14,
     "endLine": 4522,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137379,
       "tick": 2538,
-      "invocationId": "0.656435388373211-2538",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2538",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4472-14-4522-5",
       "arguments": [{
         "name": "event",
@@ -7815,17 +2483,17 @@ var foo = {
             "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
             "type": {"type": "string", "value": "click"},
             "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359102},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
+            "timeStamp": {"type": "number", "value": 1440994137371},
+            "jQuery21406267672530375421": {"type": "boolean", "value": true},
             "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
+            "screenY": {"type": "number", "value": 218},
+            "screenX": {"type": "number", "value": 2115},
+            "pageY": {"type": "number", "value": 111},
+            "pageX": {"type": "number", "value": 177},
+            "offsetY": {"type": "number", "value": 14},
+            "offsetX": {"type": "number", "value": 164},
+            "clientY": {"type": "number", "value": 111},
+            "clientX": {"type": "number", "value": 177},
             "buttons": {"type": "number", "value": 0},
             "button": {"type": "number", "value": 0},
             "which": {"type": "number", "value": 1},
@@ -7867,82 +2535,8 @@ var foo = {
         }
       }],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359276,
-      "tick": 2700,
-      "invocationId": "0.656435388373211-2700",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4472-14-4522-5",
-      "arguments": [{
-        "name": "event",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-            "type": {"type": "string", "value": "click"},
-            "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359271},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
-            "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
-            "buttons": {"type": "number", "value": 0},
-            "button": {"type": "number", "value": 0},
-            "which": {"type": "number", "value": 1},
-            "view": {"type": "object", "preview": "[object Window]"},
-            "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "shiftKey": {"type": "boolean", "value": false},
-            "relatedTarget": {"type": "null", "preview": "null"},
-            "metaKey": {"type": "boolean", "value": false},
-            "eventPhase": {"type": "number", "value": 2},
-            "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "ctrlKey": {"type": "boolean", "value": false},
-            "cancelable": {"type": "boolean", "value": true},
-            "bubbles": {"type": "boolean", "value": true},
-            "altKey": {"type": "boolean", "value": false},
-            "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"}
-          }
-        }
-      }, {
-        "name": "handlers",
-        "value": {
-          "type": "object",
-          "preview": "[Array:1]",
-          "ownProperties": {
-            "0": {
-              "type": "object",
-              "preview": "[object Object]",
-              "ownProperties": {
-                "type": {"type": "string", "value": "click"},
-                "origType": {"type": "string", "value": "click"},
-                "data": {"type": "null", "preview": "null"},
-                "handler": {"type": "function"},
-                "guid": {"type": "number", "value": 1},
-                "selector": {"type": "undefined", "value": null},
-                "needsContext": {"type": "undefined", "value": null},
-                "namespace": {"type": "string", "value": ""}
-              }
-            }, "delegateCount": {"type": "number", "value": 0}
-          }
-        }
-      }],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2537", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -7958,12 +2552,12 @@ var foo = {
     "startColumn": 14,
     "endLine": 4568,
     "endColumn": 7,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359106,
+      "timestamp": 1440994137376,
       "tick": 2529,
-      "invocationId": "0.656435388373211-2529",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2529",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4545-14-4568-7",
       "arguments": [{
         "name": "event",
@@ -7974,17 +2568,17 @@ var foo = {
             "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
             "type": {"type": "string", "value": "click"},
             "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359102},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
+            "timeStamp": {"type": "number", "value": 1440994137371},
+            "jQuery21406267672530375421": {"type": "boolean", "value": true},
             "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
+            "screenY": {"type": "number", "value": 218},
+            "screenX": {"type": "number", "value": 2115},
+            "pageY": {"type": "number", "value": 111},
+            "pageX": {"type": "number", "value": 177},
+            "offsetY": {"type": "number", "value": 14},
+            "offsetX": {"type": "number", "value": 164},
+            "clientY": {"type": "number", "value": 111},
+            "clientX": {"type": "number", "value": 177},
             "buttons": {"type": "number", "value": 0},
             "button": {"type": "number", "value": 0},
             "which": {"type": "number", "value": 1},
@@ -8007,63 +2601,8 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {"props": {"type": "object", "preview": "[Array:11]"}, "filter": {"type": "function"}}
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2691,
-      "invocationId": "0.656435388373211-2691",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4545-14-4568-7",
-      "arguments": [{
-        "name": "event",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-            "type": {"type": "string", "value": "click"},
-            "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359271},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
-            "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
-            "buttons": {"type": "number", "value": 0},
-            "button": {"type": "number", "value": 0},
-            "which": {"type": "number", "value": 1},
-            "view": {"type": "object", "preview": "[object Window]"},
-            "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "shiftKey": {"type": "boolean", "value": false},
-            "relatedTarget": {"type": "null", "preview": "null"},
-            "metaKey": {"type": "boolean", "value": false},
-            "eventPhase": {"type": "number", "value": 2},
-            "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "ctrlKey": {"type": "boolean", "value": false},
-            "cancelable": {"type": "boolean", "value": true},
-            "bubbles": {"type": "boolean", "value": true},
-            "altKey": {"type": "boolean", "value": false}
-          }
-        }
-      }, {"name": "original", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {"props": {"type": "object", "preview": "[Array:11]"}, "filter": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2528", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8081,14 +2620,15 @@ var foo = {
     "endColumn": 32,
     "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137374,
       "tick": 2525,
-      "invocationId": "0.656435388373211-2525",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2525",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4584-10-4584-32",
       "arguments": [{"value": {"type": "string", "value": "click"}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2524", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8104,12 +2644,12 @@ var foo = {
     "startColumn": 29,
     "endLine": 4587,
     "endColumn": 61,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137374,
       "tick": 2526,
-      "invocationId": "0.656435388373211-2526",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2526",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4587-29-4587-61",
       "arguments": [{
         "value": {
@@ -8149,59 +2689,8 @@ var foo = {
           "12": {"type": "string", "value": "which"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2688,
-      "invocationId": "0.656435388373211-2688",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4587-29-4587-61",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[Array:11]",
-          "ownProperties": {
-            "0": {"type": "string", "value": "button"},
-            "1": {"type": "string", "value": "buttons"},
-            "2": {"type": "string", "value": "clientX"},
-            "3": {"type": "string", "value": "clientY"},
-            "4": {"type": "string", "value": "offsetX"},
-            "5": {"type": "string", "value": "offsetY"},
-            "6": {"type": "string", "value": "pageX"},
-            "7": {"type": "string", "value": "pageY"},
-            "8": {"type": "string", "value": "screenX"},
-            "9": {"type": "string", "value": "screenY"},
-            "10": {"type": "string", "value": "toElement"}
-          }
-        }
-      }],
-      "this": {
-        "type": "object",
-        "preview": "[Array:13]",
-        "ownProperties": {
-          "0": {"type": "string", "value": "altKey"},
-          "1": {"type": "string", "value": "bubbles"},
-          "2": {"type": "string", "value": "cancelable"},
-          "3": {"type": "string", "value": "ctrlKey"},
-          "4": {"type": "string", "value": "currentTarget"},
-          "5": {"type": "string", "value": "eventPhase"},
-          "6": {"type": "string", "value": "metaKey"},
-          "7": {"type": "string", "value": "relatedTarget"},
-          "8": {"type": "string", "value": "shiftKey"},
-          "9": {"type": "string", "value": "target"},
-          "10": {"type": "string", "value": "timeStamp"},
-          "11": {"type": "string", "value": "view"},
-          "12": {"type": "string", "value": "which"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2524", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8217,12 +2706,12 @@ var foo = {
     "startColumn": 30,
     "endLine": 4609,
     "endColumn": 66,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359106,
+      "timestamp": 1440994137376,
       "tick": 2528,
-      "invocationId": "0.656435388373211-2528",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2528",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4609-30-4609-66",
       "arguments": [{
         "value": {
@@ -8232,17 +2721,17 @@ var foo = {
             "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
             "type": {"type": "string", "value": "click"},
             "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359102},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
+            "timeStamp": {"type": "number", "value": 1440994137371},
+            "jQuery21406267672530375421": {"type": "boolean", "value": true},
             "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
+            "screenY": {"type": "number", "value": 218},
+            "screenX": {"type": "number", "value": 2115},
+            "pageY": {"type": "number", "value": 111},
+            "pageX": {"type": "number", "value": 177},
+            "offsetY": {"type": "number", "value": 14},
+            "offsetX": {"type": "number", "value": 164},
+            "clientY": {"type": "number", "value": 111},
+            "clientX": {"type": "number", "value": 177},
             "buttons": {"type": "number", "value": 0},
             "button": {"type": "number", "value": 0},
             "which": {"type": "number", "value": 1},
@@ -8265,62 +2754,8 @@ var foo = {
         "preview": "[object Object]",
         "ownProperties": {"props": {"type": "object", "preview": "[Array:11]"}, "filter": {"type": "function"}}
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2690,
-      "invocationId": "0.656435388373211-2690",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-4609-30-4609-66",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-            "type": {"type": "string", "value": "click"},
-            "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359271},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
-            "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
-            "buttons": {"type": "number", "value": 0},
-            "button": {"type": "number", "value": 0},
-            "which": {"type": "number", "value": 1},
-            "view": {"type": "object", "preview": "[object Window]"},
-            "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "shiftKey": {"type": "boolean", "value": false},
-            "relatedTarget": {"type": "null", "preview": "null"},
-            "metaKey": {"type": "boolean", "value": false},
-            "eventPhase": {"type": "number", "value": 2},
-            "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "ctrlKey": {"type": "boolean", "value": false},
-            "cancelable": {"type": "boolean", "value": true},
-            "bubbles": {"type": "boolean", "value": true},
-            "altKey": {"type": "boolean", "value": false}
-          }
-        }
-      }, {"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {"props": {"type": "object", "preview": "[Array:11]"}, "filter": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2524", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8336,12 +2771,12 @@ var foo = {
     "startColumn": 9,
     "endLine": 4610,
     "endColumn": 5,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137374,
       "tick": 2524,
-      "invocationId": "0.656435388373211-2524",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2524",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4571-9-4610-5",
       "arguments": [{"name": "event", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
       "this": {
@@ -8363,41 +2798,8 @@ var foo = {
           "simulate": {"type": "function"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2687,
-      "invocationId": "0.656435388373211-2687",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4571-9-4610-5",
-      "arguments": [{"name": "event", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "global": {"type": "object", "preview": "[object Object]"},
-          "add": {"type": "function"},
-          "remove": {"type": "function"},
-          "trigger": {"type": "function"},
-          "dispatch": {"type": "function"},
-          "handlers": {"type": "function"},
-          "props": {"type": "object", "preview": "[Array:13]"},
-          "fixHooks": {"type": "object", "preview": "[object Object]"},
-          "keyHooks": {"type": "object", "preview": "[object Object]"},
-          "mouseHooks": {"type": "object", "preview": "[object Object]"},
-          "fix": {"type": "function"},
-          "special": {"type": "object", "preview": "[object Object]"},
-          "simulate": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2523", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8413,38 +2815,20 @@ var foo = {
     "startColumn": 17,
     "endLine": 4727,
     "endColumn": 3,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359105,
+      "timestamp": 1440994137374,
       "tick": 2527,
-      "invocationId": "0.656435388373211-2527",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2527",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4692-17-4727-3",
       "arguments": [{
         "name": "src",
         "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
       }, {"name": "props", "value": {"type": "undefined", "value": null}}],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359273,
-      "tick": 2689,
-      "invocationId": "0.656435388373211-2689",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-4692-17-4727-3",
-      "arguments": [{
-        "name": "src",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "props", "value": {"type": "undefined", "value": null}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2524", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -8460,50 +2844,7 @@ var foo = {
     "startColumn": 11,
     "endLine": 5578,
     "endColumn": 46,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359132,
-      "tick": 2656,
-      "invocationId": "0.656435388373211-2656",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5578-11-5578-46",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "null", "preview": "null"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359142,
-      "tick": 2674,
-      "invocationId": "0.656435388373211-2674",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5578-11-5578-46",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "null", "preview": "null"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -8511,38 +2852,7 @@ var foo = {
     "startColumn": 18,
     "endLine": 5579,
     "endColumn": 3,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359132,
-      "tick": 2655,
-      "invocationId": "0.656435388373211-2655",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5570-18-5579-3",
-      "arguments": [{"name": "elem", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359141,
-      "tick": 2673,
-      "invocationId": "0.656435388373211-2673",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5570-18-5579-3",
-      "arguments": [{"name": "elem", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -8550,38 +2860,7 @@ var foo = {
     "startColumn": 27,
     "endLine": 5586,
     "endColumn": 42,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359131,
-      "tick": 2654,
-      "invocationId": "0.656435388373211-2654",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5586-27-5586-42",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359141,
-      "tick": 2672,
-      "invocationId": "0.656435388373211-2672",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5586-27-5586-42",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -8589,1286 +2868,7 @@ var foo = {
     "startColumn": 12,
     "endLine": 5591,
     "endColumn": 43,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359132,
-      "tick": 2657,
-      "invocationId": "0.656435388373211-2657",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5591-12-5591-43",
-      "arguments": [{"value": {"type": "string", "value": "display"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "string", "value": "animation-delay"},
-          "1": {"type": "string", "value": "animation-direction"},
-          "2": {"type": "string", "value": "animation-duration"},
-          "3": {"type": "string", "value": "animation-fill-mode"},
-          "4": {"type": "string", "value": "animation-iteration-count"},
-          "5": {"type": "string", "value": "animation-name"},
-          "6": {"type": "string", "value": "animation-play-state"},
-          "7": {"type": "string", "value": "animation-timing-function"},
-          "8": {"type": "string", "value": "background-attachment"},
-          "9": {"type": "string", "value": "background-blend-mode"},
-          "10": {"type": "string", "value": "background-clip"},
-          "11": {"type": "string", "value": "background-color"},
-          "12": {"type": "string", "value": "background-image"},
-          "13": {"type": "string", "value": "background-origin"},
-          "14": {"type": "string", "value": "background-position"},
-          "15": {"type": "string", "value": "background-repeat"},
-          "16": {"type": "string", "value": "background-size"},
-          "17": {"type": "string", "value": "border-bottom-color"},
-          "18": {"type": "string", "value": "border-bottom-left-radius"},
-          "19": {"type": "string", "value": "border-bottom-right-radius"},
-          "20": {"type": "string", "value": "border-bottom-style"},
-          "21": {"type": "string", "value": "border-bottom-width"},
-          "22": {"type": "string", "value": "border-collapse"},
-          "23": {"type": "string", "value": "border-image-outset"},
-          "24": {"type": "string", "value": "border-image-repeat"},
-          "25": {"type": "string", "value": "border-image-slice"},
-          "26": {"type": "string", "value": "border-image-source"},
-          "27": {"type": "string", "value": "border-image-width"},
-          "28": {"type": "string", "value": "border-left-color"},
-          "29": {"type": "string", "value": "border-left-style"},
-          "30": {"type": "string", "value": "border-left-width"},
-          "31": {"type": "string", "value": "border-right-color"},
-          "32": {"type": "string", "value": "border-right-style"},
-          "33": {"type": "string", "value": "border-right-width"},
-          "34": {"type": "string", "value": "border-top-color"},
-          "35": {"type": "string", "value": "border-top-left-radius"},
-          "36": {"type": "string", "value": "border-top-right-radius"},
-          "37": {"type": "string", "value": "border-top-style"},
-          "38": {"type": "string", "value": "border-top-width"},
-          "39": {"type": "string", "value": "bottom"},
-          "40": {"type": "string", "value": "box-shadow"},
-          "41": {"type": "string", "value": "box-sizing"},
-          "42": {"type": "string", "value": "caption-side"},
-          "43": {"type": "string", "value": "clear"},
-          "44": {"type": "string", "value": "clip"},
-          "45": {"type": "string", "value": "color"},
-          "46": {"type": "string", "value": "cursor"},
-          "47": {"type": "string", "value": "direction"},
-          "48": {"type": "string", "value": "display"},
-          "49": {"type": "string", "value": "empty-cells"},
-          "50": {"type": "string", "value": "float"},
-          "51": {"type": "string", "value": "font-family"},
-          "52": {"type": "string", "value": "font-kerning"},
-          "53": {"type": "string", "value": "font-size"},
-          "54": {"type": "string", "value": "font-stretch"},
-          "55": {"type": "string", "value": "font-style"},
-          "56": {"type": "string", "value": "font-variant"},
-          "57": {"type": "string", "value": "font-variant-ligatures"},
-          "58": {"type": "string", "value": "font-weight"},
-          "59": {"type": "string", "value": "height"},
-          "60": {"type": "string", "value": "image-rendering"},
-          "61": {"type": "string", "value": "isolation"},
-          "62": {"type": "string", "value": "left"},
-          "63": {"type": "string", "value": "letter-spacing"},
-          "64": {"type": "string", "value": "line-height"},
-          "65": {"type": "string", "value": "list-style-image"},
-          "66": {"type": "string", "value": "list-style-position"},
-          "67": {"type": "string", "value": "list-style-type"},
-          "68": {"type": "string", "value": "margin-bottom"},
-          "69": {"type": "string", "value": "margin-left"},
-          "70": {"type": "string", "value": "margin-right"},
-          "71": {"type": "string", "value": "margin-top"},
-          "72": {"type": "string", "value": "max-height"},
-          "73": {"type": "string", "value": "max-width"},
-          "74": {"type": "string", "value": "min-height"},
-          "75": {"type": "string", "value": "min-width"},
-          "76": {"type": "string", "value": "mix-blend-mode"},
-          "77": {"type": "string", "value": "object-fit"},
-          "78": {"type": "string", "value": "object-position"},
-          "79": {"type": "string", "value": "opacity"},
-          "80": {"type": "string", "value": "orphans"},
-          "81": {"type": "string", "value": "outline-color"},
-          "82": {"type": "string", "value": "outline-offset"},
-          "83": {"type": "string", "value": "outline-style"},
-          "84": {"type": "string", "value": "outline-width"},
-          "85": {"type": "string", "value": "overflow-wrap"},
-          "86": {"type": "string", "value": "overflow-x"},
-          "87": {"type": "string", "value": "overflow-y"},
-          "88": {"type": "string", "value": "padding-bottom"},
-          "89": {"type": "string", "value": "padding-left"},
-          "90": {"type": "string", "value": "padding-right"},
-          "91": {"type": "string", "value": "padding-top"},
-          "92": {"type": "string", "value": "page-break-after"},
-          "93": {"type": "string", "value": "page-break-before"},
-          "94": {"type": "string", "value": "page-break-inside"},
-          "95": {"type": "string", "value": "pointer-events"},
-          "96": {"type": "string", "value": "position"},
-          "97": {"type": "string", "value": "resize"},
-          "98": {"type": "string", "value": "right"},
-          "99": {"type": "string", "value": "speak"},
-          "100": {"type": "string", "value": "table-layout"},
-          "101": {"type": "string", "value": "tab-size"},
-          "102": {"type": "string", "value": "text-align"},
-          "103": {"type": "string", "value": "text-decoration"},
-          "104": {"type": "string", "value": "text-indent"},
-          "105": {"type": "string", "value": "text-rendering"},
-          "106": {"type": "string", "value": "text-shadow"},
-          "107": {"type": "string", "value": "text-overflow"},
-          "108": {"type": "string", "value": "text-transform"},
-          "109": {"type": "string", "value": "top"},
-          "110": {"type": "string", "value": "touch-action"},
-          "111": {"type": "string", "value": "transition-delay"},
-          "112": {"type": "string", "value": "transition-duration"},
-          "113": {"type": "string", "value": "transition-property"},
-          "114": {"type": "string", "value": "transition-timing-function"},
-          "115": {"type": "string", "value": "unicode-bidi"},
-          "116": {"type": "string", "value": "vertical-align"},
-          "117": {"type": "string", "value": "visibility"},
-          "118": {"type": "string", "value": "white-space"},
-          "119": {"type": "string", "value": "widows"},
-          "120": {"type": "string", "value": "width"},
-          "121": {"type": "string", "value": "will-change"},
-          "122": {"type": "string", "value": "word-break"},
-          "123": {"type": "string", "value": "word-spacing"},
-          "124": {"type": "string", "value": "word-wrap"},
-          "125": {"type": "string", "value": "z-index"},
-          "126": {"type": "string", "value": "zoom"},
-          "127": {"type": "string", "value": "-webkit-appearance"},
-          "128": {"type": "string", "value": "backface-visibility"},
-          "129": {"type": "string", "value": "-webkit-background-clip"},
-          "130": {"type": "string", "value": "-webkit-background-composite"},
-          "131": {"type": "string", "value": "-webkit-background-origin"},
-          "132": {"type": "string", "value": "-webkit-border-horizontal-spacing"},
-          "133": {"type": "string", "value": "-webkit-border-image"},
-          "134": {"type": "string", "value": "-webkit-border-vertical-spacing"},
-          "135": {"type": "string", "value": "-webkit-box-align"},
-          "136": {"type": "string", "value": "-webkit-box-decoration-break"},
-          "137": {"type": "string", "value": "-webkit-box-direction"},
-          "138": {"type": "string", "value": "-webkit-box-flex"},
-          "139": {"type": "string", "value": "-webkit-box-flex-group"},
-          "140": {"type": "string", "value": "-webkit-box-lines"},
-          "141": {"type": "string", "value": "-webkit-box-ordinal-group"},
-          "142": {"type": "string", "value": "-webkit-box-orient"},
-          "143": {"type": "string", "value": "-webkit-box-pack"},
-          "144": {"type": "string", "value": "-webkit-box-reflect"},
-          "145": {"type": "string", "value": "-webkit-clip-path"},
-          "146": {"type": "string", "value": "-webkit-column-break-after"},
-          "147": {"type": "string", "value": "-webkit-column-break-before"},
-          "148": {"type": "string", "value": "-webkit-column-break-inside"},
-          "149": {"type": "string", "value": "-webkit-column-count"},
-          "150": {"type": "string", "value": "-webkit-column-gap"},
-          "151": {"type": "string", "value": "-webkit-column-rule-color"},
-          "152": {"type": "string", "value": "-webkit-column-rule-style"},
-          "153": {"type": "string", "value": "-webkit-column-rule-width"},
-          "154": {"type": "string", "value": "-webkit-column-span"},
-          "155": {"type": "string", "value": "-webkit-column-width"},
-          "156": {"type": "string", "value": "-webkit-filter"},
-          "157": {"type": "string", "value": "align-content"},
-          "158": {"type": "string", "value": "align-items"},
-          "159": {"type": "string", "value": "align-self"},
-          "160": {"type": "string", "value": "flex-basis"},
-          "161": {"type": "string", "value": "flex-grow"},
-          "162": {"type": "string", "value": "flex-shrink"},
-          "163": {"type": "string", "value": "flex-direction"},
-          "164": {"type": "string", "value": "flex-wrap"},
-          "165": {"type": "string", "value": "justify-content"},
-          "166": {"type": "string", "value": "-webkit-font-smoothing"},
-          "167": {"type": "string", "value": "-webkit-highlight"},
-          "168": {"type": "string", "value": "-webkit-hyphenate-character"},
-          "169": {"type": "string", "value": "-webkit-line-box-contain"},
-          "170": {"type": "string", "value": "-webkit-line-break"},
-          "171": {"type": "string", "value": "-webkit-line-clamp"},
-          "172": {"type": "string", "value": "-webkit-locale"},
-          "173": {"type": "string", "value": "-webkit-margin-before-collapse"},
-          "174": {"type": "string", "value": "-webkit-margin-after-collapse"},
-          "175": {"type": "string", "value": "-webkit-mask-box-image"},
-          "176": {"type": "string", "value": "-webkit-mask-box-image-outset"},
-          "177": {"type": "string", "value": "-webkit-mask-box-image-repeat"},
-          "178": {"type": "string", "value": "-webkit-mask-box-image-slice"},
-          "179": {"type": "string", "value": "-webkit-mask-box-image-source"},
-          "180": {"type": "string", "value": "-webkit-mask-box-image-width"},
-          "181": {"type": "string", "value": "-webkit-mask-clip"},
-          "182": {"type": "string", "value": "-webkit-mask-composite"},
-          "183": {"type": "string", "value": "-webkit-mask-image"},
-          "184": {"type": "string", "value": "-webkit-mask-origin"},
-          "185": {"type": "string", "value": "-webkit-mask-position"},
-          "186": {"type": "string", "value": "-webkit-mask-repeat"},
-          "187": {"type": "string", "value": "-webkit-mask-size"},
-          "188": {"type": "string", "value": "order"},
-          "189": {"type": "string", "value": "perspective"},
-          "190": {"type": "string", "value": "perspective-origin"},
-          "191": {"type": "string", "value": "-webkit-print-color-adjust"},
-          "192": {"type": "string", "value": "-webkit-rtl-ordering"},
-          "193": {"type": "string", "value": "shape-outside"},
-          "194": {"type": "string", "value": "shape-image-threshold"},
-          "195": {"type": "string", "value": "shape-margin"},
-          "196": {"type": "string", "value": "-webkit-tap-highlight-color"},
-          "197": {"type": "string", "value": "-webkit-text-combine"},
-          "198": {"type": "string", "value": "-webkit-text-decorations-in-effect"},
-          "199": {"type": "string", "value": "-webkit-text-emphasis-color"},
-          "200": {"type": "string", "value": "-webkit-text-emphasis-position"},
-          "201": {"type": "string", "value": "-webkit-text-emphasis-style"},
-          "202": {"type": "string", "value": "-webkit-text-fill-color"},
-          "203": {"type": "string", "value": "-webkit-text-orientation"},
-          "204": {"type": "string", "value": "-webkit-text-security"},
-          "205": {"type": "string", "value": "-webkit-text-stroke-color"},
-          "206": {"type": "string", "value": "-webkit-text-stroke-width"},
-          "207": {"type": "string", "value": "transform"},
-          "208": {"type": "string", "value": "transform-origin"},
-          "209": {"type": "string", "value": "transform-style"},
-          "210": {"type": "string", "value": "-webkit-user-drag"},
-          "211": {"type": "string", "value": "-webkit-user-modify"},
-          "212": {"type": "string", "value": "-webkit-user-select"},
-          "213": {"type": "string", "value": "-webkit-writing-mode"},
-          "214": {"type": "string", "value": "-webkit-app-region"},
-          "215": {"type": "string", "value": "buffered-rendering"},
-          "216": {"type": "string", "value": "clip-path"},
-          "217": {"type": "string", "value": "clip-rule"},
-          "218": {"type": "string", "value": "mask"},
-          "219": {"type": "string", "value": "filter"},
-          "220": {"type": "string", "value": "flood-color"},
-          "221": {"type": "string", "value": "flood-opacity"},
-          "222": {"type": "string", "value": "lighting-color"},
-          "223": {"type": "string", "value": "stop-color"},
-          "224": {"type": "string", "value": "stop-opacity"},
-          "225": {"type": "string", "value": "color-interpolation"},
-          "226": {"type": "string", "value": "color-interpolation-filters"},
-          "227": {"type": "string", "value": "color-rendering"},
-          "228": {"type": "string", "value": "fill"},
-          "229": {"type": "string", "value": "fill-opacity"},
-          "230": {"type": "string", "value": "fill-rule"},
-          "231": {"type": "string", "value": "marker-end"},
-          "232": {"type": "string", "value": "marker-mid"},
-          "233": {"type": "string", "value": "marker-start"},
-          "234": {"type": "string", "value": "mask-type"},
-          "235": {"type": "string", "value": "shape-rendering"},
-          "236": {"type": "string", "value": "stroke"},
-          "237": {"type": "string", "value": "stroke-dasharray"},
-          "238": {"type": "string", "value": "stroke-dashoffset"},
-          "239": {"type": "string", "value": "stroke-linecap"},
-          "240": {"type": "string", "value": "stroke-linejoin"},
-          "241": {"type": "string", "value": "stroke-miterlimit"},
-          "242": {"type": "string", "value": "stroke-opacity"},
-          "243": {"type": "string", "value": "stroke-width"},
-          "244": {"type": "string", "value": "alignment-baseline"},
-          "245": {"type": "string", "value": "baseline-shift"},
-          "246": {"type": "string", "value": "dominant-baseline"},
-          "247": {"type": "string", "value": "text-anchor"},
-          "248": {"type": "string", "value": "writing-mode"},
-          "249": {"type": "string", "value": "glyph-orientation-horizontal"},
-          "250": {"type": "string", "value": "glyph-orientation-vertical"},
-          "251": {"type": "string", "value": "vector-effect"},
-          "252": {"type": "string", "value": "paint-order"},
-          "253": {"type": "string", "value": "cx"},
-          "254": {"type": "string", "value": "cy"},
-          "255": {"type": "string", "value": "x"},
-          "256": {"type": "string", "value": "y"},
-          "257": {"type": "string", "value": "r"},
-          "258": {"type": "string", "value": "rx"},
-          "259": {"type": "string", "value": "ry"},
-          "alignContent": {"type": "string", "value": "start"},
-          "alignItems": {"type": "string", "value": "start"},
-          "alignSelf": {"type": "string", "value": "start"},
-          "alignmentBaseline": {"type": "string", "value": "auto"},
-          "all": {"type": "string", "value": ""},
-          "animation": {"type": "string", "value": "none 0s ease 0s 1 normal none running"},
-          "animationDelay": {"type": "string", "value": "0s"},
-          "animationDirection": {"type": "string", "value": "normal"},
-          "animationDuration": {"type": "string", "value": "0s"},
-          "animationFillMode": {"type": "string", "value": "none"},
-          "animationIterationCount": {"type": "string", "value": "1"},
-          "animationName": {"type": "string", "value": "none"},
-          "animationPlayState": {"type": "string", "value": "running"},
-          "animationTimingFunction": {"type": "string", "value": "ease"},
-          "backfaceVisibility": {"type": "string", "value": "visible"},
-          "background": {
-            "type": "string",
-            "value": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box"
-          },
-          "backgroundAttachment": {"type": "string", "value": "scroll"},
-          "backgroundBlendMode": {"type": "string", "value": "normal"},
-          "backgroundClip": {"type": "string", "value": "border-box"},
-          "backgroundColor": {"type": "string", "value": "rgba(0, 0, 0, 0)"},
-          "backgroundImage": {"type": "string", "value": "none"},
-          "backgroundOrigin": {"type": "string", "value": "padding-box"},
-          "backgroundPosition": {"type": "string", "value": "0% 0%"},
-          "backgroundPositionX": {"type": "string", "value": "0%"},
-          "backgroundPositionY": {"type": "string", "value": "0%"},
-          "backgroundRepeat": {"type": "string", "value": "repeat"},
-          "backgroundRepeatX": {"type": "string", "value": ""},
-          "backgroundRepeatY": {"type": "string", "value": ""},
-          "backgroundSize": {"type": "string", "value": "auto"},
-          "baselineShift": {"type": "string", "value": "0px"},
-          "border": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderBottom": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderBottomColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderBottomLeftRadius": {"type": "string", "value": "0px"},
-          "borderBottomRightRadius": {"type": "string", "value": "0px"},
-          "borderBottomStyle": {"type": "string", "value": "none"},
-          "borderBottomWidth": {"type": "string", "value": "0px"},
-          "borderCollapse": {"type": "string", "value": "separate"},
-          "borderColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderImage": {"type": "string", "value": "none"},
-          "borderImageOutset": {"type": "string", "value": "0px"},
-          "borderImageRepeat": {"type": "string", "value": "stretch"},
-          "borderImageSlice": {"type": "string", "value": "100%"},
-          "borderImageSource": {"type": "string", "value": "none"},
-          "borderImageWidth": {"type": "string", "value": "1"},
-          "borderLeft": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderLeftColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderLeftStyle": {"type": "string", "value": "none"},
-          "borderLeftWidth": {"type": "string", "value": "0px"},
-          "borderRadius": {"type": "string", "value": "0px"},
-          "borderRight": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderRightColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderRightStyle": {"type": "string", "value": "none"},
-          "borderRightWidth": {"type": "string", "value": "0px"},
-          "borderSpacing": {"type": "string", "value": "0px 0px"},
-          "borderStyle": {"type": "string", "value": "none"},
-          "borderTop": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderTopColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderTopLeftRadius": {"type": "string", "value": "0px"},
-          "borderTopRightRadius": {"type": "string", "value": "0px"},
-          "borderTopStyle": {"type": "string", "value": "none"},
-          "borderTopWidth": {"type": "string", "value": "0px"},
-          "borderWidth": {"type": "string", "value": "0px"},
-          "bottom": {"type": "string", "value": "auto"},
-          "boxShadow": {"type": "string", "value": "none"},
-          "boxSizing": {"type": "string", "value": "border-box"},
-          "bufferedRendering": {"type": "string", "value": "auto"},
-          "captionSide": {"type": "string", "value": "top"},
-          "clear": {"type": "string", "value": "none"},
-          "clip": {"type": "string", "value": "auto"},
-          "clipPath": {"type": "string", "value": "none"},
-          "clipRule": {"type": "string", "value": "nonzero"},
-          "color": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "colorInterpolation": {"type": "string", "value": "sRGB"},
-          "colorInterpolationFilters": {"type": "string", "value": "linearRGB"},
-          "colorRendering": {"type": "string", "value": "auto"},
-          "content": {"type": "string", "value": ""},
-          "counterIncrement": {"type": "string", "value": "none"},
-          "counterReset": {"type": "string", "value": "none"},
-          "cursor": {"type": "string", "value": "auto"},
-          "cx": {"type": "string", "value": "0px"},
-          "cy": {"type": "string", "value": "0px"},
-          "direction": {"type": "string", "value": "ltr"},
-          "display": {"type": "string", "value": "inline"},
-          "dominantBaseline": {"type": "string", "value": "auto"},
-          "emptyCells": {"type": "string", "value": "show"},
-          "enableBackground": {"type": "string", "value": ""},
-          "fill": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "fillOpacity": {"type": "string", "value": "1"},
-          "fillRule": {"type": "string", "value": "nonzero"},
-          "filter": {"type": "string", "value": "none"},
-          "flex": {"type": "string", "value": "0 1 auto"},
-          "flexBasis": {"type": "string", "value": "auto"},
-          "flexDirection": {"type": "string", "value": "row"},
-          "flexFlow": {"type": "string", "value": "row nowrap"},
-          "flexGrow": {"type": "string", "value": "0"},
-          "flexShrink": {"type": "string", "value": "1"},
-          "flexWrap": {"type": "string", "value": "nowrap"},
-          "float": {"type": "string", "value": "none"},
-          "floodColor": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "floodOpacity": {"type": "string", "value": "1"},
-          "font": {
-            "type": "string",
-            "value": "normal normal normal normal 13px/21.8163642883301px Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          },
-          "fontFamily": {"type": "string", "value": "Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"},
-          "fontKerning": {"type": "string", "value": "auto"},
-          "fontSize": {"type": "string", "value": "13px"},
-          "fontStretch": {"type": "string", "value": "normal"},
-          "fontStyle": {"type": "string", "value": "normal"},
-          "fontVariant": {"type": "string", "value": "normal"},
-          "fontVariantLigatures": {"type": "string", "value": "normal"},
-          "fontWeight": {"type": "string", "value": "normal"},
-          "glyphOrientationHorizontal": {"type": "string", "value": "0deg"},
-          "glyphOrientationVertical": {"type": "string", "value": "auto"},
-          "height": {"type": "string", "value": "127.99715423584px"},
-          "imageRendering": {"type": "string", "value": "auto"},
-          "isolation": {"type": "string", "value": "auto"},
-          "justifyContent": {"type": "string", "value": "start"},
-          "left": {"type": "string", "value": "auto"},
-          "letterSpacing": {"type": "string", "value": "0.0999999940395355px"},
-          "lightingColor": {"type": "string", "value": "rgb(255, 255, 255)"},
-          "lineHeight": {"type": "string", "value": "21.8163642883301px"},
-          "listStyle": {"type": "string", "value": "disc outside none"},
-          "listStyleImage": {"type": "string", "value": "none"},
-          "listStylePosition": {"type": "string", "value": "outside"},
-          "listStyleType": {"type": "string", "value": "disc"},
-          "margin": {"type": "string", "value": "0px"},
-          "marginBottom": {"type": "string", "value": "0px"},
-          "marginLeft": {"type": "string", "value": "0px"},
-          "marginRight": {"type": "string", "value": "0px"},
-          "marginTop": {"type": "string", "value": "0px"},
-          "marker": {"type": "string", "value": ""},
-          "markerEnd": {"type": "string", "value": "none"},
-          "markerMid": {"type": "string", "value": "none"},
-          "markerStart": {"type": "string", "value": "none"},
-          "mask": {"type": "string", "value": "none"},
-          "maskType": {"type": "string", "value": "luminance"},
-          "maxHeight": {"type": "string", "value": "none"},
-          "maxWidth": {"type": "string", "value": "none"},
-          "maxZoom": {"type": "string", "value": ""},
-          "minHeight": {"type": "string", "value": "0px"},
-          "minWidth": {"type": "string", "value": "0px"},
-          "minZoom": {"type": "string", "value": ""},
-          "mixBlendMode": {"type": "string", "value": "normal"},
-          "objectFit": {"type": "string", "value": "fill"},
-          "objectPosition": {"type": "string", "value": "50% 50%"},
-          "opacity": {"type": "string", "value": "1"},
-          "order": {"type": "string", "value": "0"},
-          "orientation": {"type": "string", "value": ""},
-          "orphans": {"type": "string", "value": "auto"},
-          "outline": {"type": "string", "value": "rgb(66, 66, 66) none 0px"},
-          "outlineColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "outlineOffset": {"type": "string", "value": "0px"},
-          "outlineStyle": {"type": "string", "value": "none"},
-          "outlineWidth": {"type": "string", "value": "0px"},
-          "overflow": {"type": "string", "value": "visible"},
-          "overflowWrap": {"type": "string", "value": "normal"},
-          "overflowX": {"type": "string", "value": "visible"},
-          "overflowY": {"type": "string", "value": "visible"},
-          "padding": {"type": "string", "value": "0px"},
-          "paddingBottom": {"type": "string", "value": "0px"},
-          "paddingLeft": {"type": "string", "value": "0px"},
-          "paddingRight": {"type": "string", "value": "0px"},
-          "paddingTop": {"type": "string", "value": "0px"},
-          "page": {"type": "string", "value": ""},
-          "pageBreakAfter": {"type": "string", "value": "auto"},
-          "pageBreakBefore": {"type": "string", "value": "auto"},
-          "pageBreakInside": {"type": "string", "value": "auto"},
-          "paintOrder": {"type": "string", "value": "fill stroke markers"},
-          "perspective": {"type": "string", "value": "none"},
-          "perspectiveOrigin": {"type": "string", "value": "63.9914741516113px 63.9914741516113px"},
-          "pointerEvents": {"type": "string", "value": "auto"},
-          "position": {"type": "string", "value": "static"},
-          "quotes": {"type": "string", "value": ""},
-          "r": {"type": "string", "value": "0px"},
-          "resize": {"type": "string", "value": "none"},
-          "right": {"type": "string", "value": "auto"},
-          "rx": {"type": "string", "value": "0px"},
-          "ry": {"type": "string", "value": "0px"},
-          "shapeImageThreshold": {"type": "string", "value": "0"},
-          "shapeMargin": {"type": "string", "value": "0px"},
-          "shapeOutside": {"type": "string", "value": "none"},
-          "shapeRendering": {"type": "string", "value": "auto"},
-          "size": {"type": "string", "value": ""},
-          "speak": {"type": "string", "value": "normal"},
-          "src": {"type": "string", "value": ""},
-          "stopColor": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "stopOpacity": {"type": "string", "value": "1"},
-          "stroke": {"type": "string", "value": "none"},
-          "strokeDasharray": {"type": "string", "value": "none"},
-          "strokeDashoffset": {"type": "string", "value": "0px"},
-          "strokeLinecap": {"type": "string", "value": "butt"},
-          "strokeLinejoin": {"type": "string", "value": "miter"},
-          "strokeMiterlimit": {"type": "string", "value": "4"},
-          "strokeOpacity": {"type": "string", "value": "1"},
-          "strokeWidth": {"type": "string", "value": "1px"},
-          "tabSize": {"type": "string", "value": "8"},
-          "tableLayout": {"type": "string", "value": "auto"},
-          "textAlign": {"type": "string", "value": "start"},
-          "textAnchor": {"type": "string", "value": "start"},
-          "textDecoration": {"type": "string", "value": "none"},
-          "textIndent": {"type": "string", "value": "0px"},
-          "textOverflow": {"type": "string", "value": "clip"},
-          "textRendering": {"type": "string", "value": "optimizeLegibility"},
-          "textShadow": {"type": "string", "value": "none"},
-          "textTransform": {"type": "string", "value": "none"},
-          "top": {"type": "string", "value": "auto"},
-          "touchAction": {"type": "string", "value": "auto"},
-          "transform": {"type": "string", "value": "none"},
-          "transformOrigin": {"type": "string", "value": "63.9914741516113px 63.9914741516113px"},
-          "transformStyle": {"type": "string", "value": "flat"},
-          "transition": {"type": "string", "value": "all 0s ease 0s"},
-          "transitionDelay": {"type": "string", "value": "0s"},
-          "transitionDuration": {"type": "string", "value": "0s"},
-          "transitionProperty": {"type": "string", "value": "all"},
-          "transitionTimingFunction": {"type": "string", "value": "ease"},
-          "unicodeBidi": {"type": "string", "value": "normal"},
-          "unicodeRange": {"type": "string", "value": ""},
-          "userZoom": {"type": "string", "value": ""},
-          "vectorEffect": {"type": "string", "value": "none"},
-          "verticalAlign": {"type": "string", "value": "middle"},
-          "visibility": {"type": "string", "value": "visible"},
-          "webkitAppRegion": {"type": "string", "value": "no-drag"},
-          "webkitAppearance": {"type": "string", "value": "none"},
-          "webkitBackgroundClip": {"type": "string", "value": "border-box"},
-          "webkitBackgroundComposite": {"type": "string", "value": "source-over"},
-          "webkitBackgroundOrigin": {"type": "string", "value": "padding-box"},
-          "webkitBorderAfter": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderAfterColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderAfterStyle": {"type": "string", "value": "none"},
-          "webkitBorderAfterWidth": {"type": "string", "value": "0px"},
-          "webkitBorderBefore": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderBeforeColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderBeforeStyle": {"type": "string", "value": "none"},
-          "webkitBorderBeforeWidth": {"type": "string", "value": "0px"},
-          "webkitBorderEnd": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderEndColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderEndStyle": {"type": "string", "value": "none"},
-          "webkitBorderEndWidth": {"type": "string", "value": "0px"},
-          "webkitBorderHorizontalSpacing": {"type": "string", "value": "0px"},
-          "webkitBorderImage": {"type": "string", "value": "none"},
-          "webkitBorderStart": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderStartColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderStartStyle": {"type": "string", "value": "none"},
-          "webkitBorderStartWidth": {"type": "string", "value": "0px"},
-          "webkitBorderVerticalSpacing": {"type": "string", "value": "0px"},
-          "webkitBoxAlign": {"type": "string", "value": "stretch"},
-          "webkitBoxDecorationBreak": {"type": "string", "value": "slice"},
-          "webkitBoxDirection": {"type": "string", "value": "normal"},
-          "webkitBoxFlex": {"type": "string", "value": "0"},
-          "webkitBoxFlexGroup": {"type": "string", "value": "1"},
-          "webkitBoxLines": {"type": "string", "value": "single"},
-          "webkitBoxOrdinalGroup": {"type": "string", "value": "1"},
-          "webkitBoxOrient": {"type": "string", "value": "horizontal"},
-          "webkitBoxPack": {"type": "string", "value": "start"},
-          "webkitBoxReflect": {"type": "string", "value": "none"},
-          "webkitClipPath": {"type": "string", "value": "none"},
-          "webkitColumnBreakAfter": {"type": "string", "value": "auto"},
-          "webkitColumnBreakBefore": {"type": "string", "value": "auto"},
-          "webkitColumnBreakInside": {"type": "string", "value": "auto"},
-          "webkitColumnCount": {"type": "string", "value": "auto"},
-          "webkitColumnGap": {"type": "string", "value": "normal"},
-          "webkitColumnRule": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitColumnRuleColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitColumnRuleStyle": {"type": "string", "value": "none"},
-          "webkitColumnRuleWidth": {"type": "string", "value": "0px"},
-          "webkitColumnSpan": {"type": "string", "value": "none"},
-          "webkitColumnWidth": {"type": "string", "value": "auto"},
-          "webkitColumns": {"type": "string", "value": "auto auto"},
-          "webkitFilter": {"type": "string", "value": "none"},
-          "webkitFontFeatureSettings": {"type": "string", "value": "normal"},
-          "webkitFontSizeDelta": {"type": "string", "value": ""},
-          "webkitFontSmoothing": {"type": "string", "value": "antialiased"},
-          "webkitHighlight": {"type": "string", "value": "none"},
-          "webkitHyphenateCharacter": {"type": "string", "value": "auto"},
-          "webkitLineBoxContain": {"type": "string", "value": "block inline replaced"},
-          "webkitLineBreak": {"type": "string", "value": "auto"},
-          "webkitLineClamp": {"type": "string", "value": "none"},
-          "webkitLocale": {"type": "string", "value": "\"en\""},
-          "webkitLogicalHeight": {"type": "string", "value": "127.99715423584px"},
-          "webkitLogicalWidth": {"type": "string", "value": "127.99715423584px"},
-          "webkitMarginAfter": {"type": "string", "value": "0px"},
-          "webkitMarginAfterCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginBefore": {"type": "string", "value": "0px"},
-          "webkitMarginBeforeCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginBottomCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginCollapse": {"type": "string", "value": ""},
-          "webkitMarginEnd": {"type": "string", "value": "0px"},
-          "webkitMarginStart": {"type": "string", "value": "0px"},
-          "webkitMarginTopCollapse": {"type": "string", "value": "collapse"},
-          "webkitMask": {"type": "string", "value": ""},
-          "webkitMaskBoxImage": {"type": "string", "value": "none"},
-          "webkitMaskBoxImageOutset": {"type": "string", "value": "0px"},
-          "webkitMaskBoxImageRepeat": {"type": "string", "value": "stretch"},
-          "webkitMaskBoxImageSlice": {"type": "string", "value": "0 fill"},
-          "webkitMaskBoxImageSource": {"type": "string", "value": "none"},
-          "webkitMaskBoxImageWidth": {"type": "string", "value": "auto"},
-          "webkitMaskClip": {"type": "string", "value": "border-box"},
-          "webkitMaskComposite": {"type": "string", "value": "source-over"},
-          "webkitMaskImage": {"type": "string", "value": "none"},
-          "webkitMaskOrigin": {"type": "string", "value": "border-box"},
-          "webkitMaskPosition": {"type": "string", "value": "0% 0%"},
-          "webkitMaskPositionX": {"type": "string", "value": "0%"},
-          "webkitMaskPositionY": {"type": "string", "value": "0%"},
-          "webkitMaskRepeat": {"type": "string", "value": "repeat"},
-          "webkitMaskRepeatX": {"type": "string", "value": ""},
-          "webkitMaskRepeatY": {"type": "string", "value": ""},
-          "webkitMaskSize": {"type": "string", "value": "auto"},
-          "webkitMaxLogicalHeight": {"type": "string", "value": "none"},
-          "webkitMaxLogicalWidth": {"type": "string", "value": "none"},
-          "webkitMinLogicalHeight": {"type": "string", "value": "0px"},
-          "webkitMinLogicalWidth": {"type": "string", "value": "0px"},
-          "webkitPaddingAfter": {"type": "string", "value": "0px"},
-          "webkitPaddingBefore": {"type": "string", "value": "0px"},
-          "webkitPaddingEnd": {"type": "string", "value": "0px"},
-          "webkitPaddingStart": {"type": "string", "value": "0px"},
-          "webkitPerspectiveOriginX": {"type": "string", "value": ""},
-          "webkitPerspectiveOriginY": {"type": "string", "value": ""},
-          "webkitPrintColorAdjust": {"type": "string", "value": "economy"},
-          "webkitRtlOrdering": {"type": "string", "value": "logical"},
-          "webkitRubyPosition": {"type": "string", "value": "before"},
-          "webkitTapHighlightColor": {"type": "string", "value": "rgba(0, 0, 0, 0)"},
-          "webkitTextCombine": {"type": "string", "value": "none"},
-          "webkitTextDecorationsInEffect": {"type": "string", "value": "none"},
-          "webkitTextEmphasis": {"type": "string", "value": ""},
-          "webkitTextEmphasisColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextEmphasisPosition": {"type": "string", "value": "over"},
-          "webkitTextEmphasisStyle": {"type": "string", "value": "none"},
-          "webkitTextFillColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextOrientation": {"type": "string", "value": "vertical-right"},
-          "webkitTextSecurity": {"type": "string", "value": "none"},
-          "webkitTextStroke": {"type": "string", "value": ""},
-          "webkitTextStrokeColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextStrokeWidth": {"type": "string", "value": "0px"},
-          "webkitTransformOriginX": {"type": "string", "value": ""},
-          "webkitTransformOriginY": {"type": "string", "value": ""},
-          "webkitTransformOriginZ": {"type": "string", "value": ""},
-          "webkitUserDrag": {"type": "string", "value": "auto"},
-          "webkitUserModify": {"type": "string", "value": "read-only"},
-          "webkitUserSelect": {"type": "string", "value": "text"},
-          "webkitWritingMode": {"type": "string", "value": "horizontal-tb"},
-          "whiteSpace": {"type": "string", "value": "normal"},
-          "widows": {"type": "string", "value": "1"},
-          "width": {"type": "string", "value": "127.99715423584px"},
-          "willChange": {"type": "string", "value": "auto"},
-          "wordBreak": {"type": "string", "value": "normal"},
-          "wordSpacing": {"type": "string", "value": "0px"},
-          "wordWrap": {"type": "string", "value": "normal"},
-          "writingMode": {"type": "string", "value": "lr-tb"},
-          "x": {"type": "string", "value": "0px"},
-          "y": {"type": "string", "value": "0px"},
-          "zIndex": {"type": "string", "value": "auto"},
-          "zoom": {"type": "string", "value": "1"}
-        },
-        "truncated": {"keys": {"amount": 586}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359142,
-      "tick": 2675,
-      "invocationId": "0.656435388373211-2675",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5591-12-5591-43",
-      "arguments": [{"value": {"type": "string", "value": "display"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "string", "value": "animation-delay"},
-          "1": {"type": "string", "value": "animation-direction"},
-          "2": {"type": "string", "value": "animation-duration"},
-          "3": {"type": "string", "value": "animation-fill-mode"},
-          "4": {"type": "string", "value": "animation-iteration-count"},
-          "5": {"type": "string", "value": "animation-name"},
-          "6": {"type": "string", "value": "animation-play-state"},
-          "7": {"type": "string", "value": "animation-timing-function"},
-          "8": {"type": "string", "value": "background-attachment"},
-          "9": {"type": "string", "value": "background-blend-mode"},
-          "10": {"type": "string", "value": "background-clip"},
-          "11": {"type": "string", "value": "background-color"},
-          "12": {"type": "string", "value": "background-image"},
-          "13": {"type": "string", "value": "background-origin"},
-          "14": {"type": "string", "value": "background-position"},
-          "15": {"type": "string", "value": "background-repeat"},
-          "16": {"type": "string", "value": "background-size"},
-          "17": {"type": "string", "value": "border-bottom-color"},
-          "18": {"type": "string", "value": "border-bottom-left-radius"},
-          "19": {"type": "string", "value": "border-bottom-right-radius"},
-          "20": {"type": "string", "value": "border-bottom-style"},
-          "21": {"type": "string", "value": "border-bottom-width"},
-          "22": {"type": "string", "value": "border-collapse"},
-          "23": {"type": "string", "value": "border-image-outset"},
-          "24": {"type": "string", "value": "border-image-repeat"},
-          "25": {"type": "string", "value": "border-image-slice"},
-          "26": {"type": "string", "value": "border-image-source"},
-          "27": {"type": "string", "value": "border-image-width"},
-          "28": {"type": "string", "value": "border-left-color"},
-          "29": {"type": "string", "value": "border-left-style"},
-          "30": {"type": "string", "value": "border-left-width"},
-          "31": {"type": "string", "value": "border-right-color"},
-          "32": {"type": "string", "value": "border-right-style"},
-          "33": {"type": "string", "value": "border-right-width"},
-          "34": {"type": "string", "value": "border-top-color"},
-          "35": {"type": "string", "value": "border-top-left-radius"},
-          "36": {"type": "string", "value": "border-top-right-radius"},
-          "37": {"type": "string", "value": "border-top-style"},
-          "38": {"type": "string", "value": "border-top-width"},
-          "39": {"type": "string", "value": "bottom"},
-          "40": {"type": "string", "value": "box-shadow"},
-          "41": {"type": "string", "value": "box-sizing"},
-          "42": {"type": "string", "value": "caption-side"},
-          "43": {"type": "string", "value": "clear"},
-          "44": {"type": "string", "value": "clip"},
-          "45": {"type": "string", "value": "color"},
-          "46": {"type": "string", "value": "cursor"},
-          "47": {"type": "string", "value": "direction"},
-          "48": {"type": "string", "value": "display"},
-          "49": {"type": "string", "value": "empty-cells"},
-          "50": {"type": "string", "value": "float"},
-          "51": {"type": "string", "value": "font-family"},
-          "52": {"type": "string", "value": "font-kerning"},
-          "53": {"type": "string", "value": "font-size"},
-          "54": {"type": "string", "value": "font-stretch"},
-          "55": {"type": "string", "value": "font-style"},
-          "56": {"type": "string", "value": "font-variant"},
-          "57": {"type": "string", "value": "font-variant-ligatures"},
-          "58": {"type": "string", "value": "font-weight"},
-          "59": {"type": "string", "value": "height"},
-          "60": {"type": "string", "value": "image-rendering"},
-          "61": {"type": "string", "value": "isolation"},
-          "62": {"type": "string", "value": "left"},
-          "63": {"type": "string", "value": "letter-spacing"},
-          "64": {"type": "string", "value": "line-height"},
-          "65": {"type": "string", "value": "list-style-image"},
-          "66": {"type": "string", "value": "list-style-position"},
-          "67": {"type": "string", "value": "list-style-type"},
-          "68": {"type": "string", "value": "margin-bottom"},
-          "69": {"type": "string", "value": "margin-left"},
-          "70": {"type": "string", "value": "margin-right"},
-          "71": {"type": "string", "value": "margin-top"},
-          "72": {"type": "string", "value": "max-height"},
-          "73": {"type": "string", "value": "max-width"},
-          "74": {"type": "string", "value": "min-height"},
-          "75": {"type": "string", "value": "min-width"},
-          "76": {"type": "string", "value": "mix-blend-mode"},
-          "77": {"type": "string", "value": "object-fit"},
-          "78": {"type": "string", "value": "object-position"},
-          "79": {"type": "string", "value": "opacity"},
-          "80": {"type": "string", "value": "orphans"},
-          "81": {"type": "string", "value": "outline-color"},
-          "82": {"type": "string", "value": "outline-offset"},
-          "83": {"type": "string", "value": "outline-style"},
-          "84": {"type": "string", "value": "outline-width"},
-          "85": {"type": "string", "value": "overflow-wrap"},
-          "86": {"type": "string", "value": "overflow-x"},
-          "87": {"type": "string", "value": "overflow-y"},
-          "88": {"type": "string", "value": "padding-bottom"},
-          "89": {"type": "string", "value": "padding-left"},
-          "90": {"type": "string", "value": "padding-right"},
-          "91": {"type": "string", "value": "padding-top"},
-          "92": {"type": "string", "value": "page-break-after"},
-          "93": {"type": "string", "value": "page-break-before"},
-          "94": {"type": "string", "value": "page-break-inside"},
-          "95": {"type": "string", "value": "pointer-events"},
-          "96": {"type": "string", "value": "position"},
-          "97": {"type": "string", "value": "resize"},
-          "98": {"type": "string", "value": "right"},
-          "99": {"type": "string", "value": "speak"},
-          "100": {"type": "string", "value": "table-layout"},
-          "101": {"type": "string", "value": "tab-size"},
-          "102": {"type": "string", "value": "text-align"},
-          "103": {"type": "string", "value": "text-decoration"},
-          "104": {"type": "string", "value": "text-indent"},
-          "105": {"type": "string", "value": "text-rendering"},
-          "106": {"type": "string", "value": "text-shadow"},
-          "107": {"type": "string", "value": "text-overflow"},
-          "108": {"type": "string", "value": "text-transform"},
-          "109": {"type": "string", "value": "top"},
-          "110": {"type": "string", "value": "touch-action"},
-          "111": {"type": "string", "value": "transition-delay"},
-          "112": {"type": "string", "value": "transition-duration"},
-          "113": {"type": "string", "value": "transition-property"},
-          "114": {"type": "string", "value": "transition-timing-function"},
-          "115": {"type": "string", "value": "unicode-bidi"},
-          "116": {"type": "string", "value": "vertical-align"},
-          "117": {"type": "string", "value": "visibility"},
-          "118": {"type": "string", "value": "white-space"},
-          "119": {"type": "string", "value": "widows"},
-          "120": {"type": "string", "value": "width"},
-          "121": {"type": "string", "value": "will-change"},
-          "122": {"type": "string", "value": "word-break"},
-          "123": {"type": "string", "value": "word-spacing"},
-          "124": {"type": "string", "value": "word-wrap"},
-          "125": {"type": "string", "value": "z-index"},
-          "126": {"type": "string", "value": "zoom"},
-          "127": {"type": "string", "value": "-webkit-appearance"},
-          "128": {"type": "string", "value": "backface-visibility"},
-          "129": {"type": "string", "value": "-webkit-background-clip"},
-          "130": {"type": "string", "value": "-webkit-background-composite"},
-          "131": {"type": "string", "value": "-webkit-background-origin"},
-          "132": {"type": "string", "value": "-webkit-border-horizontal-spacing"},
-          "133": {"type": "string", "value": "-webkit-border-image"},
-          "134": {"type": "string", "value": "-webkit-border-vertical-spacing"},
-          "135": {"type": "string", "value": "-webkit-box-align"},
-          "136": {"type": "string", "value": "-webkit-box-decoration-break"},
-          "137": {"type": "string", "value": "-webkit-box-direction"},
-          "138": {"type": "string", "value": "-webkit-box-flex"},
-          "139": {"type": "string", "value": "-webkit-box-flex-group"},
-          "140": {"type": "string", "value": "-webkit-box-lines"},
-          "141": {"type": "string", "value": "-webkit-box-ordinal-group"},
-          "142": {"type": "string", "value": "-webkit-box-orient"},
-          "143": {"type": "string", "value": "-webkit-box-pack"},
-          "144": {"type": "string", "value": "-webkit-box-reflect"},
-          "145": {"type": "string", "value": "-webkit-clip-path"},
-          "146": {"type": "string", "value": "-webkit-column-break-after"},
-          "147": {"type": "string", "value": "-webkit-column-break-before"},
-          "148": {"type": "string", "value": "-webkit-column-break-inside"},
-          "149": {"type": "string", "value": "-webkit-column-count"},
-          "150": {"type": "string", "value": "-webkit-column-gap"},
-          "151": {"type": "string", "value": "-webkit-column-rule-color"},
-          "152": {"type": "string", "value": "-webkit-column-rule-style"},
-          "153": {"type": "string", "value": "-webkit-column-rule-width"},
-          "154": {"type": "string", "value": "-webkit-column-span"},
-          "155": {"type": "string", "value": "-webkit-column-width"},
-          "156": {"type": "string", "value": "-webkit-filter"},
-          "157": {"type": "string", "value": "align-content"},
-          "158": {"type": "string", "value": "align-items"},
-          "159": {"type": "string", "value": "align-self"},
-          "160": {"type": "string", "value": "flex-basis"},
-          "161": {"type": "string", "value": "flex-grow"},
-          "162": {"type": "string", "value": "flex-shrink"},
-          "163": {"type": "string", "value": "flex-direction"},
-          "164": {"type": "string", "value": "flex-wrap"},
-          "165": {"type": "string", "value": "justify-content"},
-          "166": {"type": "string", "value": "-webkit-font-smoothing"},
-          "167": {"type": "string", "value": "-webkit-highlight"},
-          "168": {"type": "string", "value": "-webkit-hyphenate-character"},
-          "169": {"type": "string", "value": "-webkit-line-box-contain"},
-          "170": {"type": "string", "value": "-webkit-line-break"},
-          "171": {"type": "string", "value": "-webkit-line-clamp"},
-          "172": {"type": "string", "value": "-webkit-locale"},
-          "173": {"type": "string", "value": "-webkit-margin-before-collapse"},
-          "174": {"type": "string", "value": "-webkit-margin-after-collapse"},
-          "175": {"type": "string", "value": "-webkit-mask-box-image"},
-          "176": {"type": "string", "value": "-webkit-mask-box-image-outset"},
-          "177": {"type": "string", "value": "-webkit-mask-box-image-repeat"},
-          "178": {"type": "string", "value": "-webkit-mask-box-image-slice"},
-          "179": {"type": "string", "value": "-webkit-mask-box-image-source"},
-          "180": {"type": "string", "value": "-webkit-mask-box-image-width"},
-          "181": {"type": "string", "value": "-webkit-mask-clip"},
-          "182": {"type": "string", "value": "-webkit-mask-composite"},
-          "183": {"type": "string", "value": "-webkit-mask-image"},
-          "184": {"type": "string", "value": "-webkit-mask-origin"},
-          "185": {"type": "string", "value": "-webkit-mask-position"},
-          "186": {"type": "string", "value": "-webkit-mask-repeat"},
-          "187": {"type": "string", "value": "-webkit-mask-size"},
-          "188": {"type": "string", "value": "order"},
-          "189": {"type": "string", "value": "perspective"},
-          "190": {"type": "string", "value": "perspective-origin"},
-          "191": {"type": "string", "value": "-webkit-print-color-adjust"},
-          "192": {"type": "string", "value": "-webkit-rtl-ordering"},
-          "193": {"type": "string", "value": "shape-outside"},
-          "194": {"type": "string", "value": "shape-image-threshold"},
-          "195": {"type": "string", "value": "shape-margin"},
-          "196": {"type": "string", "value": "-webkit-tap-highlight-color"},
-          "197": {"type": "string", "value": "-webkit-text-combine"},
-          "198": {"type": "string", "value": "-webkit-text-decorations-in-effect"},
-          "199": {"type": "string", "value": "-webkit-text-emphasis-color"},
-          "200": {"type": "string", "value": "-webkit-text-emphasis-position"},
-          "201": {"type": "string", "value": "-webkit-text-emphasis-style"},
-          "202": {"type": "string", "value": "-webkit-text-fill-color"},
-          "203": {"type": "string", "value": "-webkit-text-orientation"},
-          "204": {"type": "string", "value": "-webkit-text-security"},
-          "205": {"type": "string", "value": "-webkit-text-stroke-color"},
-          "206": {"type": "string", "value": "-webkit-text-stroke-width"},
-          "207": {"type": "string", "value": "transform"},
-          "208": {"type": "string", "value": "transform-origin"},
-          "209": {"type": "string", "value": "transform-style"},
-          "210": {"type": "string", "value": "-webkit-user-drag"},
-          "211": {"type": "string", "value": "-webkit-user-modify"},
-          "212": {"type": "string", "value": "-webkit-user-select"},
-          "213": {"type": "string", "value": "-webkit-writing-mode"},
-          "214": {"type": "string", "value": "-webkit-app-region"},
-          "215": {"type": "string", "value": "buffered-rendering"},
-          "216": {"type": "string", "value": "clip-path"},
-          "217": {"type": "string", "value": "clip-rule"},
-          "218": {"type": "string", "value": "mask"},
-          "219": {"type": "string", "value": "filter"},
-          "220": {"type": "string", "value": "flood-color"},
-          "221": {"type": "string", "value": "flood-opacity"},
-          "222": {"type": "string", "value": "lighting-color"},
-          "223": {"type": "string", "value": "stop-color"},
-          "224": {"type": "string", "value": "stop-opacity"},
-          "225": {"type": "string", "value": "color-interpolation"},
-          "226": {"type": "string", "value": "color-interpolation-filters"},
-          "227": {"type": "string", "value": "color-rendering"},
-          "228": {"type": "string", "value": "fill"},
-          "229": {"type": "string", "value": "fill-opacity"},
-          "230": {"type": "string", "value": "fill-rule"},
-          "231": {"type": "string", "value": "marker-end"},
-          "232": {"type": "string", "value": "marker-mid"},
-          "233": {"type": "string", "value": "marker-start"},
-          "234": {"type": "string", "value": "mask-type"},
-          "235": {"type": "string", "value": "shape-rendering"},
-          "236": {"type": "string", "value": "stroke"},
-          "237": {"type": "string", "value": "stroke-dasharray"},
-          "238": {"type": "string", "value": "stroke-dashoffset"},
-          "239": {"type": "string", "value": "stroke-linecap"},
-          "240": {"type": "string", "value": "stroke-linejoin"},
-          "241": {"type": "string", "value": "stroke-miterlimit"},
-          "242": {"type": "string", "value": "stroke-opacity"},
-          "243": {"type": "string", "value": "stroke-width"},
-          "244": {"type": "string", "value": "alignment-baseline"},
-          "245": {"type": "string", "value": "baseline-shift"},
-          "246": {"type": "string", "value": "dominant-baseline"},
-          "247": {"type": "string", "value": "text-anchor"},
-          "248": {"type": "string", "value": "writing-mode"},
-          "249": {"type": "string", "value": "glyph-orientation-horizontal"},
-          "250": {"type": "string", "value": "glyph-orientation-vertical"},
-          "251": {"type": "string", "value": "vector-effect"},
-          "252": {"type": "string", "value": "paint-order"},
-          "253": {"type": "string", "value": "cx"},
-          "254": {"type": "string", "value": "cy"},
-          "255": {"type": "string", "value": "x"},
-          "256": {"type": "string", "value": "y"},
-          "257": {"type": "string", "value": "r"},
-          "258": {"type": "string", "value": "rx"},
-          "259": {"type": "string", "value": "ry"},
-          "alignContent": {"type": "string", "value": "start"},
-          "alignItems": {"type": "string", "value": "start"},
-          "alignSelf": {"type": "string", "value": "start"},
-          "alignmentBaseline": {"type": "string", "value": "auto"},
-          "all": {"type": "string", "value": ""},
-          "animation": {"type": "string", "value": "none 0s ease 0s 1 normal none running"},
-          "animationDelay": {"type": "string", "value": "0s"},
-          "animationDirection": {"type": "string", "value": "normal"},
-          "animationDuration": {"type": "string", "value": "0s"},
-          "animationFillMode": {"type": "string", "value": "none"},
-          "animationIterationCount": {"type": "string", "value": "1"},
-          "animationName": {"type": "string", "value": "none"},
-          "animationPlayState": {"type": "string", "value": "running"},
-          "animationTimingFunction": {"type": "string", "value": "ease"},
-          "backfaceVisibility": {"type": "string", "value": "visible"},
-          "background": {
-            "type": "string",
-            "value": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box"
-          },
-          "backgroundAttachment": {"type": "string", "value": "scroll"},
-          "backgroundBlendMode": {"type": "string", "value": "normal"},
-          "backgroundClip": {"type": "string", "value": "border-box"},
-          "backgroundColor": {"type": "string", "value": "rgba(0, 0, 0, 0)"},
-          "backgroundImage": {"type": "string", "value": "none"},
-          "backgroundOrigin": {"type": "string", "value": "padding-box"},
-          "backgroundPosition": {"type": "string", "value": "0% 0%"},
-          "backgroundPositionX": {"type": "string", "value": "0%"},
-          "backgroundPositionY": {"type": "string", "value": "0%"},
-          "backgroundRepeat": {"type": "string", "value": "repeat"},
-          "backgroundRepeatX": {"type": "string", "value": ""},
-          "backgroundRepeatY": {"type": "string", "value": ""},
-          "backgroundSize": {"type": "string", "value": "auto"},
-          "baselineShift": {"type": "string", "value": "0px"},
-          "border": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderBottom": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderBottomColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderBottomLeftRadius": {"type": "string", "value": "0px"},
-          "borderBottomRightRadius": {"type": "string", "value": "0px"},
-          "borderBottomStyle": {"type": "string", "value": "none"},
-          "borderBottomWidth": {"type": "string", "value": "0px"},
-          "borderCollapse": {"type": "string", "value": "separate"},
-          "borderColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderImage": {"type": "string", "value": "none"},
-          "borderImageOutset": {"type": "string", "value": "0px"},
-          "borderImageRepeat": {"type": "string", "value": "stretch"},
-          "borderImageSlice": {"type": "string", "value": "100%"},
-          "borderImageSource": {"type": "string", "value": "none"},
-          "borderImageWidth": {"type": "string", "value": "1"},
-          "borderLeft": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderLeftColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderLeftStyle": {"type": "string", "value": "none"},
-          "borderLeftWidth": {"type": "string", "value": "0px"},
-          "borderRadius": {"type": "string", "value": "0px"},
-          "borderRight": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderRightColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderRightStyle": {"type": "string", "value": "none"},
-          "borderRightWidth": {"type": "string", "value": "0px"},
-          "borderSpacing": {"type": "string", "value": "0px 0px"},
-          "borderStyle": {"type": "string", "value": "none"},
-          "borderTop": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "borderTopColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "borderTopLeftRadius": {"type": "string", "value": "0px"},
-          "borderTopRightRadius": {"type": "string", "value": "0px"},
-          "borderTopStyle": {"type": "string", "value": "none"},
-          "borderTopWidth": {"type": "string", "value": "0px"},
-          "borderWidth": {"type": "string", "value": "0px"},
-          "bottom": {"type": "string", "value": "auto"},
-          "boxShadow": {"type": "string", "value": "none"},
-          "boxSizing": {"type": "string", "value": "border-box"},
-          "bufferedRendering": {"type": "string", "value": "auto"},
-          "captionSide": {"type": "string", "value": "top"},
-          "clear": {"type": "string", "value": "none"},
-          "clip": {"type": "string", "value": "auto"},
-          "clipPath": {"type": "string", "value": "none"},
-          "clipRule": {"type": "string", "value": "nonzero"},
-          "color": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "colorInterpolation": {"type": "string", "value": "sRGB"},
-          "colorInterpolationFilters": {"type": "string", "value": "linearRGB"},
-          "colorRendering": {"type": "string", "value": "auto"},
-          "content": {"type": "string", "value": ""},
-          "counterIncrement": {"type": "string", "value": "none"},
-          "counterReset": {"type": "string", "value": "none"},
-          "cursor": {"type": "string", "value": "auto"},
-          "cx": {"type": "string", "value": "0px"},
-          "cy": {"type": "string", "value": "0px"},
-          "direction": {"type": "string", "value": "ltr"},
-          "display": {"type": "string", "value": "inline"},
-          "dominantBaseline": {"type": "string", "value": "auto"},
-          "emptyCells": {"type": "string", "value": "show"},
-          "enableBackground": {"type": "string", "value": ""},
-          "fill": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "fillOpacity": {"type": "string", "value": "1"},
-          "fillRule": {"type": "string", "value": "nonzero"},
-          "filter": {"type": "string", "value": "none"},
-          "flex": {"type": "string", "value": "0 1 auto"},
-          "flexBasis": {"type": "string", "value": "auto"},
-          "flexDirection": {"type": "string", "value": "row"},
-          "flexFlow": {"type": "string", "value": "row nowrap"},
-          "flexGrow": {"type": "string", "value": "0"},
-          "flexShrink": {"type": "string", "value": "1"},
-          "flexWrap": {"type": "string", "value": "nowrap"},
-          "float": {"type": "string", "value": "none"},
-          "floodColor": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "floodOpacity": {"type": "string", "value": "1"},
-          "font": {
-            "type": "string",
-            "value": "normal normal normal normal 13px/21.8163642883301px Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          },
-          "fontFamily": {"type": "string", "value": "Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"},
-          "fontKerning": {"type": "string", "value": "auto"},
-          "fontSize": {"type": "string", "value": "13px"},
-          "fontStretch": {"type": "string", "value": "normal"},
-          "fontStyle": {"type": "string", "value": "normal"},
-          "fontVariant": {"type": "string", "value": "normal"},
-          "fontVariantLigatures": {"type": "string", "value": "normal"},
-          "fontWeight": {"type": "string", "value": "normal"},
-          "glyphOrientationHorizontal": {"type": "string", "value": "0deg"},
-          "glyphOrientationVertical": {"type": "string", "value": "auto"},
-          "height": {"type": "string", "value": "127.99715423584px"},
-          "imageRendering": {"type": "string", "value": "auto"},
-          "isolation": {"type": "string", "value": "auto"},
-          "justifyContent": {"type": "string", "value": "start"},
-          "left": {"type": "string", "value": "auto"},
-          "letterSpacing": {"type": "string", "value": "0.0999999940395355px"},
-          "lightingColor": {"type": "string", "value": "rgb(255, 255, 255)"},
-          "lineHeight": {"type": "string", "value": "21.8163642883301px"},
-          "listStyle": {"type": "string", "value": "disc outside none"},
-          "listStyleImage": {"type": "string", "value": "none"},
-          "listStylePosition": {"type": "string", "value": "outside"},
-          "listStyleType": {"type": "string", "value": "disc"},
-          "margin": {"type": "string", "value": "0px"},
-          "marginBottom": {"type": "string", "value": "0px"},
-          "marginLeft": {"type": "string", "value": "0px"},
-          "marginRight": {"type": "string", "value": "0px"},
-          "marginTop": {"type": "string", "value": "0px"},
-          "marker": {"type": "string", "value": ""},
-          "markerEnd": {"type": "string", "value": "none"},
-          "markerMid": {"type": "string", "value": "none"},
-          "markerStart": {"type": "string", "value": "none"},
-          "mask": {"type": "string", "value": "none"},
-          "maskType": {"type": "string", "value": "luminance"},
-          "maxHeight": {"type": "string", "value": "none"},
-          "maxWidth": {"type": "string", "value": "none"},
-          "maxZoom": {"type": "string", "value": ""},
-          "minHeight": {"type": "string", "value": "0px"},
-          "minWidth": {"type": "string", "value": "0px"},
-          "minZoom": {"type": "string", "value": ""},
-          "mixBlendMode": {"type": "string", "value": "normal"},
-          "objectFit": {"type": "string", "value": "fill"},
-          "objectPosition": {"type": "string", "value": "50% 50%"},
-          "opacity": {"type": "string", "value": "1"},
-          "order": {"type": "string", "value": "0"},
-          "orientation": {"type": "string", "value": ""},
-          "orphans": {"type": "string", "value": "auto"},
-          "outline": {"type": "string", "value": "rgb(66, 66, 66) none 0px"},
-          "outlineColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "outlineOffset": {"type": "string", "value": "0px"},
-          "outlineStyle": {"type": "string", "value": "none"},
-          "outlineWidth": {"type": "string", "value": "0px"},
-          "overflow": {"type": "string", "value": "visible"},
-          "overflowWrap": {"type": "string", "value": "normal"},
-          "overflowX": {"type": "string", "value": "visible"},
-          "overflowY": {"type": "string", "value": "visible"},
-          "padding": {"type": "string", "value": "0px"},
-          "paddingBottom": {"type": "string", "value": "0px"},
-          "paddingLeft": {"type": "string", "value": "0px"},
-          "paddingRight": {"type": "string", "value": "0px"},
-          "paddingTop": {"type": "string", "value": "0px"},
-          "page": {"type": "string", "value": ""},
-          "pageBreakAfter": {"type": "string", "value": "auto"},
-          "pageBreakBefore": {"type": "string", "value": "auto"},
-          "pageBreakInside": {"type": "string", "value": "auto"},
-          "paintOrder": {"type": "string", "value": "fill stroke markers"},
-          "perspective": {"type": "string", "value": "none"},
-          "perspectiveOrigin": {"type": "string", "value": "63.9914741516113px 63.9914741516113px"},
-          "pointerEvents": {"type": "string", "value": "auto"},
-          "position": {"type": "string", "value": "static"},
-          "quotes": {"type": "string", "value": ""},
-          "r": {"type": "string", "value": "0px"},
-          "resize": {"type": "string", "value": "none"},
-          "right": {"type": "string", "value": "auto"},
-          "rx": {"type": "string", "value": "0px"},
-          "ry": {"type": "string", "value": "0px"},
-          "shapeImageThreshold": {"type": "string", "value": "0"},
-          "shapeMargin": {"type": "string", "value": "0px"},
-          "shapeOutside": {"type": "string", "value": "none"},
-          "shapeRendering": {"type": "string", "value": "auto"},
-          "size": {"type": "string", "value": ""},
-          "speak": {"type": "string", "value": "normal"},
-          "src": {"type": "string", "value": ""},
-          "stopColor": {"type": "string", "value": "rgb(0, 0, 0)"},
-          "stopOpacity": {"type": "string", "value": "1"},
-          "stroke": {"type": "string", "value": "none"},
-          "strokeDasharray": {"type": "string", "value": "none"},
-          "strokeDashoffset": {"type": "string", "value": "0px"},
-          "strokeLinecap": {"type": "string", "value": "butt"},
-          "strokeLinejoin": {"type": "string", "value": "miter"},
-          "strokeMiterlimit": {"type": "string", "value": "4"},
-          "strokeOpacity": {"type": "string", "value": "1"},
-          "strokeWidth": {"type": "string", "value": "1px"},
-          "tabSize": {"type": "string", "value": "8"},
-          "tableLayout": {"type": "string", "value": "auto"},
-          "textAlign": {"type": "string", "value": "start"},
-          "textAnchor": {"type": "string", "value": "start"},
-          "textDecoration": {"type": "string", "value": "none"},
-          "textIndent": {"type": "string", "value": "0px"},
-          "textOverflow": {"type": "string", "value": "clip"},
-          "textRendering": {"type": "string", "value": "optimizeLegibility"},
-          "textShadow": {"type": "string", "value": "none"},
-          "textTransform": {"type": "string", "value": "none"},
-          "top": {"type": "string", "value": "auto"},
-          "touchAction": {"type": "string", "value": "auto"},
-          "transform": {"type": "string", "value": "none"},
-          "transformOrigin": {"type": "string", "value": "63.9914741516113px 63.9914741516113px"},
-          "transformStyle": {"type": "string", "value": "flat"},
-          "transition": {"type": "string", "value": "all 0s ease 0s"},
-          "transitionDelay": {"type": "string", "value": "0s"},
-          "transitionDuration": {"type": "string", "value": "0s"},
-          "transitionProperty": {"type": "string", "value": "all"},
-          "transitionTimingFunction": {"type": "string", "value": "ease"},
-          "unicodeBidi": {"type": "string", "value": "normal"},
-          "unicodeRange": {"type": "string", "value": ""},
-          "userZoom": {"type": "string", "value": ""},
-          "vectorEffect": {"type": "string", "value": "none"},
-          "verticalAlign": {"type": "string", "value": "middle"},
-          "visibility": {"type": "string", "value": "visible"},
-          "webkitAppRegion": {"type": "string", "value": "no-drag"},
-          "webkitAppearance": {"type": "string", "value": "none"},
-          "webkitBackgroundClip": {"type": "string", "value": "border-box"},
-          "webkitBackgroundComposite": {"type": "string", "value": "source-over"},
-          "webkitBackgroundOrigin": {"type": "string", "value": "padding-box"},
-          "webkitBorderAfter": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderAfterColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderAfterStyle": {"type": "string", "value": "none"},
-          "webkitBorderAfterWidth": {"type": "string", "value": "0px"},
-          "webkitBorderBefore": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderBeforeColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderBeforeStyle": {"type": "string", "value": "none"},
-          "webkitBorderBeforeWidth": {"type": "string", "value": "0px"},
-          "webkitBorderEnd": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderEndColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderEndStyle": {"type": "string", "value": "none"},
-          "webkitBorderEndWidth": {"type": "string", "value": "0px"},
-          "webkitBorderHorizontalSpacing": {"type": "string", "value": "0px"},
-          "webkitBorderImage": {"type": "string", "value": "none"},
-          "webkitBorderStart": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitBorderStartColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitBorderStartStyle": {"type": "string", "value": "none"},
-          "webkitBorderStartWidth": {"type": "string", "value": "0px"},
-          "webkitBorderVerticalSpacing": {"type": "string", "value": "0px"},
-          "webkitBoxAlign": {"type": "string", "value": "stretch"},
-          "webkitBoxDecorationBreak": {"type": "string", "value": "slice"},
-          "webkitBoxDirection": {"type": "string", "value": "normal"},
-          "webkitBoxFlex": {"type": "string", "value": "0"},
-          "webkitBoxFlexGroup": {"type": "string", "value": "1"},
-          "webkitBoxLines": {"type": "string", "value": "single"},
-          "webkitBoxOrdinalGroup": {"type": "string", "value": "1"},
-          "webkitBoxOrient": {"type": "string", "value": "horizontal"},
-          "webkitBoxPack": {"type": "string", "value": "start"},
-          "webkitBoxReflect": {"type": "string", "value": "none"},
-          "webkitClipPath": {"type": "string", "value": "none"},
-          "webkitColumnBreakAfter": {"type": "string", "value": "auto"},
-          "webkitColumnBreakBefore": {"type": "string", "value": "auto"},
-          "webkitColumnBreakInside": {"type": "string", "value": "auto"},
-          "webkitColumnCount": {"type": "string", "value": "auto"},
-          "webkitColumnGap": {"type": "string", "value": "normal"},
-          "webkitColumnRule": {"type": "string", "value": "0px none rgb(66, 66, 66)"},
-          "webkitColumnRuleColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitColumnRuleStyle": {"type": "string", "value": "none"},
-          "webkitColumnRuleWidth": {"type": "string", "value": "0px"},
-          "webkitColumnSpan": {"type": "string", "value": "none"},
-          "webkitColumnWidth": {"type": "string", "value": "auto"},
-          "webkitColumns": {"type": "string", "value": "auto auto"},
-          "webkitFilter": {"type": "string", "value": "none"},
-          "webkitFontFeatureSettings": {"type": "string", "value": "normal"},
-          "webkitFontSizeDelta": {"type": "string", "value": ""},
-          "webkitFontSmoothing": {"type": "string", "value": "antialiased"},
-          "webkitHighlight": {"type": "string", "value": "none"},
-          "webkitHyphenateCharacter": {"type": "string", "value": "auto"},
-          "webkitLineBoxContain": {"type": "string", "value": "block inline replaced"},
-          "webkitLineBreak": {"type": "string", "value": "auto"},
-          "webkitLineClamp": {"type": "string", "value": "none"},
-          "webkitLocale": {"type": "string", "value": "\"en\""},
-          "webkitLogicalHeight": {"type": "string", "value": "127.99715423584px"},
-          "webkitLogicalWidth": {"type": "string", "value": "127.99715423584px"},
-          "webkitMarginAfter": {"type": "string", "value": "0px"},
-          "webkitMarginAfterCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginBefore": {"type": "string", "value": "0px"},
-          "webkitMarginBeforeCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginBottomCollapse": {"type": "string", "value": "collapse"},
-          "webkitMarginCollapse": {"type": "string", "value": ""},
-          "webkitMarginEnd": {"type": "string", "value": "0px"},
-          "webkitMarginStart": {"type": "string", "value": "0px"},
-          "webkitMarginTopCollapse": {"type": "string", "value": "collapse"},
-          "webkitMask": {"type": "string", "value": ""},
-          "webkitMaskBoxImage": {"type": "string", "value": "none"},
-          "webkitMaskBoxImageOutset": {"type": "string", "value": "0px"},
-          "webkitMaskBoxImageRepeat": {"type": "string", "value": "stretch"},
-          "webkitMaskBoxImageSlice": {"type": "string", "value": "0 fill"},
-          "webkitMaskBoxImageSource": {"type": "string", "value": "none"},
-          "webkitMaskBoxImageWidth": {"type": "string", "value": "auto"},
-          "webkitMaskClip": {"type": "string", "value": "border-box"},
-          "webkitMaskComposite": {"type": "string", "value": "source-over"},
-          "webkitMaskImage": {"type": "string", "value": "none"},
-          "webkitMaskOrigin": {"type": "string", "value": "border-box"},
-          "webkitMaskPosition": {"type": "string", "value": "0% 0%"},
-          "webkitMaskPositionX": {"type": "string", "value": "0%"},
-          "webkitMaskPositionY": {"type": "string", "value": "0%"},
-          "webkitMaskRepeat": {"type": "string", "value": "repeat"},
-          "webkitMaskRepeatX": {"type": "string", "value": ""},
-          "webkitMaskRepeatY": {"type": "string", "value": ""},
-          "webkitMaskSize": {"type": "string", "value": "auto"},
-          "webkitMaxLogicalHeight": {"type": "string", "value": "none"},
-          "webkitMaxLogicalWidth": {"type": "string", "value": "none"},
-          "webkitMinLogicalHeight": {"type": "string", "value": "0px"},
-          "webkitMinLogicalWidth": {"type": "string", "value": "0px"},
-          "webkitPaddingAfter": {"type": "string", "value": "0px"},
-          "webkitPaddingBefore": {"type": "string", "value": "0px"},
-          "webkitPaddingEnd": {"type": "string", "value": "0px"},
-          "webkitPaddingStart": {"type": "string", "value": "0px"},
-          "webkitPerspectiveOriginX": {"type": "string", "value": ""},
-          "webkitPerspectiveOriginY": {"type": "string", "value": ""},
-          "webkitPrintColorAdjust": {"type": "string", "value": "economy"},
-          "webkitRtlOrdering": {"type": "string", "value": "logical"},
-          "webkitRubyPosition": {"type": "string", "value": "before"},
-          "webkitTapHighlightColor": {"type": "string", "value": "rgba(0, 0, 0, 0)"},
-          "webkitTextCombine": {"type": "string", "value": "none"},
-          "webkitTextDecorationsInEffect": {"type": "string", "value": "none"},
-          "webkitTextEmphasis": {"type": "string", "value": ""},
-          "webkitTextEmphasisColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextEmphasisPosition": {"type": "string", "value": "over"},
-          "webkitTextEmphasisStyle": {"type": "string", "value": "none"},
-          "webkitTextFillColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextOrientation": {"type": "string", "value": "vertical-right"},
-          "webkitTextSecurity": {"type": "string", "value": "none"},
-          "webkitTextStroke": {"type": "string", "value": ""},
-          "webkitTextStrokeColor": {"type": "string", "value": "rgb(66, 66, 66)"},
-          "webkitTextStrokeWidth": {"type": "string", "value": "0px"},
-          "webkitTransformOriginX": {"type": "string", "value": ""},
-          "webkitTransformOriginY": {"type": "string", "value": ""},
-          "webkitTransformOriginZ": {"type": "string", "value": ""},
-          "webkitUserDrag": {"type": "string", "value": "auto"},
-          "webkitUserModify": {"type": "string", "value": "read-only"},
-          "webkitUserSelect": {"type": "string", "value": "text"},
-          "webkitWritingMode": {"type": "string", "value": "horizontal-tb"},
-          "whiteSpace": {"type": "string", "value": "normal"},
-          "widows": {"type": "string", "value": "1"},
-          "width": {"type": "string", "value": "127.99715423584px"},
-          "willChange": {"type": "string", "value": "auto"},
-          "wordBreak": {"type": "string", "value": "normal"},
-          "wordSpacing": {"type": "string", "value": "0px"},
-          "wordWrap": {"type": "string", "value": "normal"},
-          "writingMode": {"type": "string", "value": "lr-tb"},
-          "x": {"type": "string", "value": "0px"},
-          "y": {"type": "string", "value": "0px"},
-          "zIndex": {"type": "string", "value": "auto"},
-          "zoom": {"type": "string", "value": "1"}
-        },
-        "truncated": {"keys": {"amount": 586}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -9876,40 +2876,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 5604,
     "endColumn": 29,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359134,
-      "tick": 2658,
-      "invocationId": "0.656435388373211-2658",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5604-10-5604-29",
-      "arguments": [{"value": {"type": "string", "value": "inline"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359144,
-      "tick": 2676,
-      "invocationId": "0.656435388373211-2676",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5604-10-5604-29",
-      "arguments": [{"value": {"type": "string", "value": "inline"}}],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -9917,50 +2884,7 @@ var foo = {
     "startColumn": 2,
     "endLine": 5627,
     "endColumn": 3,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359131,
-      "tick": 2653,
-      "invocationId": "0.656435388373211-2653",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5582-2-5627-3",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "name", "value": {"type": "string", "value": "display"}}, {
-        "name": "computed",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359140,
-      "tick": 2671,
-      "invocationId": "0.656435388373211-2671",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5582-2-5627-3",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "name", "value": {"type": "string", "value": "display"}}, {
-        "name": "computed",
-        "value": {"type": "undefined", "value": null}
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -9968,383 +2892,7 @@ var foo = {
     "startColumn": 2,
     "endLine": 5799,
     "endColumn": 3,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359130,
-      "tick": 2651,
-      "invocationId": "0.656435388373211-2651",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5779-2-5799-3",
-      "arguments": [{
-        "name": "style",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "alignContent": {"type": "string", "value": ""},
-            "alignItems": {"type": "string", "value": ""},
-            "alignSelf": {"type": "string", "value": ""},
-            "alignmentBaseline": {"type": "string", "value": ""},
-            "all": {"type": "string", "value": ""},
-            "animation": {"type": "string", "value": ""},
-            "animationDelay": {"type": "string", "value": ""},
-            "animationDirection": {"type": "string", "value": ""},
-            "animationDuration": {"type": "string", "value": ""},
-            "animationFillMode": {"type": "string", "value": ""},
-            "animationIterationCount": {"type": "string", "value": ""},
-            "animationName": {"type": "string", "value": ""},
-            "animationPlayState": {"type": "string", "value": ""},
-            "animationTimingFunction": {"type": "string", "value": ""},
-            "backfaceVisibility": {"type": "string", "value": ""},
-            "background": {"type": "string", "value": ""},
-            "backgroundAttachment": {"type": "string", "value": ""},
-            "backgroundBlendMode": {"type": "string", "value": ""},
-            "backgroundClip": {"type": "string", "value": ""},
-            "backgroundColor": {"type": "string", "value": ""},
-            "backgroundImage": {"type": "string", "value": ""},
-            "backgroundOrigin": {"type": "string", "value": ""},
-            "backgroundPosition": {"type": "string", "value": ""},
-            "backgroundPositionX": {"type": "string", "value": ""},
-            "backgroundPositionY": {"type": "string", "value": ""},
-            "backgroundRepeat": {"type": "string", "value": ""},
-            "backgroundRepeatX": {"type": "string", "value": ""},
-            "backgroundRepeatY": {"type": "string", "value": ""},
-            "backgroundSize": {"type": "string", "value": ""},
-            "baselineShift": {"type": "string", "value": ""},
-            "border": {"type": "string", "value": ""},
-            "borderBottom": {"type": "string", "value": ""},
-            "borderBottomColor": {"type": "string", "value": ""},
-            "borderBottomLeftRadius": {"type": "string", "value": ""},
-            "borderBottomRightRadius": {"type": "string", "value": ""},
-            "borderBottomStyle": {"type": "string", "value": ""},
-            "borderBottomWidth": {"type": "string", "value": ""},
-            "borderCollapse": {"type": "string", "value": ""},
-            "borderColor": {"type": "string", "value": ""},
-            "borderImage": {"type": "string", "value": ""},
-            "borderImageOutset": {"type": "string", "value": ""},
-            "borderImageRepeat": {"type": "string", "value": ""},
-            "borderImageSlice": {"type": "string", "value": ""},
-            "borderImageSource": {"type": "string", "value": ""},
-            "borderImageWidth": {"type": "string", "value": ""},
-            "borderLeft": {"type": "string", "value": ""},
-            "borderLeftColor": {"type": "string", "value": ""},
-            "borderLeftStyle": {"type": "string", "value": ""},
-            "borderLeftWidth": {"type": "string", "value": ""},
-            "borderRadius": {"type": "string", "value": ""},
-            "borderRight": {"type": "string", "value": ""},
-            "borderRightColor": {"type": "string", "value": ""},
-            "borderRightStyle": {"type": "string", "value": ""},
-            "borderRightWidth": {"type": "string", "value": ""},
-            "borderSpacing": {"type": "string", "value": ""},
-            "borderStyle": {"type": "string", "value": ""},
-            "borderTop": {"type": "string", "value": ""},
-            "borderTopColor": {"type": "string", "value": ""},
-            "borderTopLeftRadius": {"type": "string", "value": ""},
-            "borderTopRightRadius": {"type": "string", "value": ""},
-            "borderTopStyle": {"type": "string", "value": ""},
-            "borderTopWidth": {"type": "string", "value": ""},
-            "borderWidth": {"type": "string", "value": ""},
-            "bottom": {"type": "string", "value": ""},
-            "boxShadow": {"type": "string", "value": ""},
-            "boxSizing": {"type": "string", "value": ""},
-            "bufferedRendering": {"type": "string", "value": ""},
-            "captionSide": {"type": "string", "value": ""},
-            "clear": {"type": "string", "value": ""},
-            "clip": {"type": "string", "value": ""},
-            "clipPath": {"type": "string", "value": ""},
-            "clipRule": {"type": "string", "value": ""},
-            "color": {"type": "string", "value": ""},
-            "colorInterpolation": {"type": "string", "value": ""},
-            "colorInterpolationFilters": {"type": "string", "value": ""},
-            "colorRendering": {"type": "string", "value": ""},
-            "content": {"type": "string", "value": ""},
-            "counterIncrement": {"type": "string", "value": ""},
-            "counterReset": {"type": "string", "value": ""},
-            "cursor": {"type": "string", "value": ""},
-            "cx": {"type": "string", "value": ""},
-            "cy": {"type": "string", "value": ""},
-            "direction": {"type": "string", "value": ""},
-            "display": {"type": "string", "value": ""},
-            "dominantBaseline": {"type": "string", "value": ""},
-            "emptyCells": {"type": "string", "value": ""},
-            "enableBackground": {"type": "string", "value": ""},
-            "fill": {"type": "string", "value": ""},
-            "fillOpacity": {"type": "string", "value": ""},
-            "fillRule": {"type": "string", "value": ""},
-            "filter": {"type": "string", "value": ""},
-            "flex": {"type": "string", "value": ""},
-            "flexBasis": {"type": "string", "value": ""},
-            "flexDirection": {"type": "string", "value": ""},
-            "flexFlow": {"type": "string", "value": ""},
-            "flexGrow": {"type": "string", "value": ""},
-            "flexShrink": {"type": "string", "value": ""},
-            "flexWrap": {"type": "string", "value": ""},
-            "float": {"type": "string", "value": ""},
-            "floodColor": {"type": "string", "value": ""},
-            "floodOpacity": {"type": "string", "value": ""},
-            "font": {"type": "string", "value": ""},
-            "fontFamily": {"type": "string", "value": ""},
-            "fontKerning": {"type": "string", "value": ""},
-            "fontSize": {"type": "string", "value": ""},
-            "fontStretch": {"type": "string", "value": ""},
-            "fontStyle": {"type": "string", "value": ""},
-            "fontVariant": {"type": "string", "value": ""},
-            "fontVariantLigatures": {"type": "string", "value": ""},
-            "fontWeight": {"type": "string", "value": ""},
-            "glyphOrientationHorizontal": {"type": "string", "value": ""},
-            "glyphOrientationVertical": {"type": "string", "value": ""},
-            "height": {"type": "string", "value": ""},
-            "imageRendering": {"type": "string", "value": ""},
-            "isolation": {"type": "string", "value": ""},
-            "justifyContent": {"type": "string", "value": ""},
-            "left": {"type": "string", "value": ""},
-            "letterSpacing": {"type": "string", "value": ""},
-            "lightingColor": {"type": "string", "value": ""},
-            "lineHeight": {"type": "string", "value": ""},
-            "listStyle": {"type": "string", "value": ""},
-            "listStyleImage": {"type": "string", "value": ""},
-            "listStylePosition": {"type": "string", "value": ""},
-            "listStyleType": {"type": "string", "value": ""},
-            "margin": {"type": "string", "value": ""},
-            "marginBottom": {"type": "string", "value": ""},
-            "marginLeft": {"type": "string", "value": ""},
-            "marginRight": {"type": "string", "value": ""},
-            "marginTop": {"type": "string", "value": ""},
-            "marker": {"type": "string", "value": ""},
-            "markerEnd": {"type": "string", "value": ""},
-            "markerMid": {"type": "string", "value": ""},
-            "markerStart": {"type": "string", "value": ""},
-            "mask": {"type": "string", "value": ""},
-            "maskType": {"type": "string", "value": ""},
-            "maxHeight": {"type": "string", "value": ""},
-            "maxWidth": {"type": "string", "value": ""},
-            "maxZoom": {"type": "string", "value": ""},
-            "minHeight": {"type": "string", "value": ""},
-            "minWidth": {"type": "string", "value": ""},
-            "minZoom": {"type": "string", "value": ""},
-            "mixBlendMode": {"type": "string", "value": ""},
-            "objectFit": {"type": "string", "value": ""},
-            "objectPosition": {"type": "string", "value": ""},
-            "opacity": {"type": "string", "value": ""},
-            "order": {"type": "string", "value": ""},
-            "orientation": {"type": "string", "value": ""},
-            "orphans": {"type": "string", "value": ""},
-            "outline": {"type": "string", "value": ""},
-            "outlineColor": {"type": "string", "value": ""},
-            "outlineOffset": {"type": "string", "value": ""},
-            "outlineStyle": {"type": "string", "value": ""},
-            "outlineWidth": {"type": "string", "value": ""},
-            "overflow": {"type": "string", "value": ""},
-            "overflowWrap": {"type": "string", "value": ""},
-            "overflowX": {"type": "string", "value": ""},
-            "overflowY": {"type": "string", "value": ""},
-            "padding": {"type": "string", "value": ""},
-            "paddingBottom": {"type": "string", "value": ""},
-            "paddingLeft": {"type": "string", "value": ""},
-            "paddingRight": {"type": "string", "value": ""},
-            "paddingTop": {"type": "string", "value": ""},
-            "page": {"type": "string", "value": ""},
-            "pageBreakAfter": {"type": "string", "value": ""},
-            "pageBreakBefore": {"type": "string", "value": ""},
-            "pageBreakInside": {"type": "string", "value": ""},
-            "paintOrder": {"type": "string", "value": ""},
-            "perspective": {"type": "string", "value": ""},
-            "perspectiveOrigin": {"type": "string", "value": ""},
-            "pointerEvents": {"type": "string", "value": ""},
-            "position": {"type": "string", "value": ""},
-            "quotes": {"type": "string", "value": ""},
-            "r": {"type": "string", "value": ""},
-            "resize": {"type": "string", "value": ""},
-            "right": {"type": "string", "value": ""},
-            "rx": {"type": "string", "value": ""},
-            "ry": {"type": "string", "value": ""},
-            "shapeImageThreshold": {"type": "string", "value": ""},
-            "shapeMargin": {"type": "string", "value": ""},
-            "shapeOutside": {"type": "string", "value": ""},
-            "shapeRendering": {"type": "string", "value": ""},
-            "size": {"type": "string", "value": ""},
-            "speak": {"type": "string", "value": ""},
-            "src": {"type": "string", "value": ""},
-            "stopColor": {"type": "string", "value": ""},
-            "stopOpacity": {"type": "string", "value": ""},
-            "stroke": {"type": "string", "value": ""},
-            "strokeDasharray": {"type": "string", "value": ""},
-            "strokeDashoffset": {"type": "string", "value": ""},
-            "strokeLinecap": {"type": "string", "value": ""},
-            "strokeLinejoin": {"type": "string", "value": ""},
-            "strokeMiterlimit": {"type": "string", "value": ""},
-            "strokeOpacity": {"type": "string", "value": ""},
-            "strokeWidth": {"type": "string", "value": ""},
-            "tabSize": {"type": "string", "value": ""},
-            "tableLayout": {"type": "string", "value": ""},
-            "textAlign": {"type": "string", "value": ""},
-            "textAnchor": {"type": "string", "value": ""},
-            "textDecoration": {"type": "string", "value": ""},
-            "textIndent": {"type": "string", "value": ""},
-            "textOverflow": {"type": "string", "value": ""},
-            "textRendering": {"type": "string", "value": ""},
-            "textShadow": {"type": "string", "value": ""},
-            "textTransform": {"type": "string", "value": ""},
-            "top": {"type": "string", "value": ""},
-            "touchAction": {"type": "string", "value": ""},
-            "transform": {"type": "string", "value": ""},
-            "transformOrigin": {"type": "string", "value": ""},
-            "transformStyle": {"type": "string", "value": ""},
-            "transition": {"type": "string", "value": ""},
-            "transitionDelay": {"type": "string", "value": ""},
-            "transitionDuration": {"type": "string", "value": ""},
-            "transitionProperty": {"type": "string", "value": ""},
-            "transitionTimingFunction": {"type": "string", "value": ""},
-            "unicodeBidi": {"type": "string", "value": ""},
-            "unicodeRange": {"type": "string", "value": ""},
-            "userZoom": {"type": "string", "value": ""},
-            "vectorEffect": {"type": "string", "value": ""},
-            "verticalAlign": {"type": "string", "value": ""},
-            "visibility": {"type": "string", "value": ""},
-            "webkitAppRegion": {"type": "string", "value": ""},
-            "webkitAppearance": {"type": "string", "value": ""},
-            "webkitBackgroundClip": {"type": "string", "value": ""},
-            "webkitBackgroundComposite": {"type": "string", "value": ""},
-            "webkitBackgroundOrigin": {"type": "string", "value": ""},
-            "webkitBorderAfter": {"type": "string", "value": ""},
-            "webkitBorderAfterColor": {"type": "string", "value": ""},
-            "webkitBorderAfterStyle": {"type": "string", "value": ""},
-            "webkitBorderAfterWidth": {"type": "string", "value": ""},
-            "webkitBorderBefore": {"type": "string", "value": ""},
-            "webkitBorderBeforeColor": {"type": "string", "value": ""},
-            "webkitBorderBeforeStyle": {"type": "string", "value": ""},
-            "webkitBorderBeforeWidth": {"type": "string", "value": ""},
-            "webkitBorderEnd": {"type": "string", "value": ""},
-            "webkitBorderEndColor": {"type": "string", "value": ""},
-            "webkitBorderEndStyle": {"type": "string", "value": ""},
-            "webkitBorderEndWidth": {"type": "string", "value": ""},
-            "webkitBorderHorizontalSpacing": {"type": "string", "value": ""},
-            "webkitBorderImage": {"type": "string", "value": ""},
-            "webkitBorderStart": {"type": "string", "value": ""},
-            "webkitBorderStartColor": {"type": "string", "value": ""},
-            "webkitBorderStartStyle": {"type": "string", "value": ""},
-            "webkitBorderStartWidth": {"type": "string", "value": ""},
-            "webkitBorderVerticalSpacing": {"type": "string", "value": ""},
-            "webkitBoxAlign": {"type": "string", "value": ""},
-            "webkitBoxDecorationBreak": {"type": "string", "value": ""},
-            "webkitBoxDirection": {"type": "string", "value": ""},
-            "webkitBoxFlex": {"type": "string", "value": ""},
-            "webkitBoxFlexGroup": {"type": "string", "value": ""},
-            "webkitBoxLines": {"type": "string", "value": ""},
-            "webkitBoxOrdinalGroup": {"type": "string", "value": ""},
-            "webkitBoxOrient": {"type": "string", "value": ""},
-            "webkitBoxPack": {"type": "string", "value": ""},
-            "webkitBoxReflect": {"type": "string", "value": ""},
-            "webkitClipPath": {"type": "string", "value": ""},
-            "webkitColumnBreakAfter": {"type": "string", "value": ""},
-            "webkitColumnBreakBefore": {"type": "string", "value": ""},
-            "webkitColumnBreakInside": {"type": "string", "value": ""},
-            "webkitColumnCount": {"type": "string", "value": ""},
-            "webkitColumnGap": {"type": "string", "value": ""},
-            "webkitColumnRule": {"type": "string", "value": ""},
-            "webkitColumnRuleColor": {"type": "string", "value": ""},
-            "webkitColumnRuleStyle": {"type": "string", "value": ""},
-            "webkitColumnRuleWidth": {"type": "string", "value": ""},
-            "webkitColumnSpan": {"type": "string", "value": ""},
-            "webkitColumnWidth": {"type": "string", "value": ""},
-            "webkitColumns": {"type": "string", "value": ""},
-            "webkitFilter": {"type": "string", "value": ""},
-            "webkitFontFeatureSettings": {"type": "string", "value": ""},
-            "webkitFontSizeDelta": {"type": "string", "value": ""},
-            "webkitFontSmoothing": {"type": "string", "value": ""},
-            "webkitHighlight": {"type": "string", "value": ""},
-            "webkitHyphenateCharacter": {"type": "string", "value": ""},
-            "webkitLineBoxContain": {"type": "string", "value": ""},
-            "webkitLineBreak": {"type": "string", "value": ""},
-            "webkitLineClamp": {"type": "string", "value": ""},
-            "webkitLocale": {"type": "string", "value": ""},
-            "webkitLogicalHeight": {"type": "string", "value": ""},
-            "webkitLogicalWidth": {"type": "string", "value": ""},
-            "webkitMarginAfter": {"type": "string", "value": ""},
-            "webkitMarginAfterCollapse": {"type": "string", "value": ""},
-            "webkitMarginBefore": {"type": "string", "value": ""},
-            "webkitMarginBeforeCollapse": {"type": "string", "value": ""},
-            "webkitMarginBottomCollapse": {"type": "string", "value": ""},
-            "webkitMarginCollapse": {"type": "string", "value": ""},
-            "webkitMarginEnd": {"type": "string", "value": ""},
-            "webkitMarginStart": {"type": "string", "value": ""},
-            "webkitMarginTopCollapse": {"type": "string", "value": ""},
-            "webkitMask": {"type": "string", "value": ""},
-            "webkitMaskBoxImage": {"type": "string", "value": ""},
-            "webkitMaskBoxImageOutset": {"type": "string", "value": ""},
-            "webkitMaskBoxImageRepeat": {"type": "string", "value": ""},
-            "webkitMaskBoxImageSlice": {"type": "string", "value": ""},
-            "webkitMaskBoxImageSource": {"type": "string", "value": ""},
-            "webkitMaskBoxImageWidth": {"type": "string", "value": ""},
-            "webkitMaskClip": {"type": "string", "value": ""},
-            "webkitMaskComposite": {"type": "string", "value": ""},
-            "webkitMaskImage": {"type": "string", "value": ""},
-            "webkitMaskOrigin": {"type": "string", "value": ""},
-            "webkitMaskPosition": {"type": "string", "value": ""},
-            "webkitMaskPositionX": {"type": "string", "value": ""},
-            "webkitMaskPositionY": {"type": "string", "value": ""},
-            "webkitMaskRepeat": {"type": "string", "value": ""},
-            "webkitMaskRepeatX": {"type": "string", "value": ""},
-            "webkitMaskRepeatY": {"type": "string", "value": ""},
-            "webkitMaskSize": {"type": "string", "value": ""},
-            "webkitMaxLogicalHeight": {"type": "string", "value": ""},
-            "webkitMaxLogicalWidth": {"type": "string", "value": ""},
-            "webkitMinLogicalHeight": {"type": "string", "value": ""},
-            "webkitMinLogicalWidth": {"type": "string", "value": ""},
-            "webkitPaddingAfter": {"type": "string", "value": ""},
-            "webkitPaddingBefore": {"type": "string", "value": ""},
-            "webkitPaddingEnd": {"type": "string", "value": ""},
-            "webkitPaddingStart": {"type": "string", "value": ""},
-            "webkitPerspectiveOriginX": {"type": "string", "value": ""},
-            "webkitPerspectiveOriginY": {"type": "string", "value": ""},
-            "webkitPrintColorAdjust": {"type": "string", "value": ""},
-            "webkitRtlOrdering": {"type": "string", "value": ""},
-            "webkitRubyPosition": {"type": "string", "value": ""},
-            "webkitTapHighlightColor": {"type": "string", "value": ""},
-            "webkitTextCombine": {"type": "string", "value": ""},
-            "webkitTextDecorationsInEffect": {"type": "string", "value": ""},
-            "webkitTextEmphasis": {"type": "string", "value": ""},
-            "webkitTextEmphasisColor": {"type": "string", "value": ""},
-            "webkitTextEmphasisPosition": {"type": "string", "value": ""},
-            "webkitTextEmphasisStyle": {"type": "string", "value": ""},
-            "webkitTextFillColor": {"type": "string", "value": ""},
-            "webkitTextOrientation": {"type": "string", "value": ""},
-            "webkitTextSecurity": {"type": "string", "value": ""},
-            "webkitTextStroke": {"type": "string", "value": ""},
-            "webkitTextStrokeColor": {"type": "string", "value": ""},
-            "webkitTextStrokeWidth": {"type": "string", "value": ""},
-            "webkitTransformOriginX": {"type": "string", "value": ""},
-            "webkitTransformOriginY": {"type": "string", "value": ""},
-            "webkitTransformOriginZ": {"type": "string", "value": ""},
-            "webkitUserDrag": {"type": "string", "value": ""},
-            "webkitUserModify": {"type": "string", "value": ""},
-            "webkitUserSelect": {"type": "string", "value": ""},
-            "webkitWritingMode": {"type": "string", "value": ""},
-            "whiteSpace": {"type": "string", "value": ""},
-            "widows": {"type": "string", "value": ""},
-            "width": {"type": "string", "value": ""},
-            "willChange": {"type": "string", "value": ""},
-            "wordBreak": {"type": "string", "value": ""},
-            "wordSpacing": {"type": "string", "value": ""},
-            "wordWrap": {"type": "string", "value": ""},
-            "writingMode": {"type": "string", "value": ""},
-            "x": {"type": "string", "value": ""},
-            "y": {"type": "string", "value": ""},
-            "zIndex": {"type": "string", "value": ""},
-            "zoom": {"type": "string", "value": ""}
-          },
-          "truncated": {"keys": {"amount": 317}}
-        }
-      }, {"name": "name", "value": {"type": "string", "value": "display"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10352,66 +2900,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 5904,
     "endColumn": 55,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359124,
-      "tick": 2635,
-      "invocationId": "0.656435388373211-2635",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5904-22-5904-55",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "olddisplay"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359287,
-      "tick": 2756,
-      "invocationId": "0.656435388373211-2756",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5904-22-5904-55",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "olddisplay"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10419,23 +2908,7 @@ var foo = {
     "startColumn": 17,
     "endLine": 5920,
     "endColumn": 31,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359128,
-      "tick": 2642,
-      "invocationId": "0.656435388373211-2642",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5920-17-5920-31",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10443,30 +2916,7 @@ var foo = {
     "startColumn": 63,
     "endLine": 5923,
     "endColumn": 90,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359138,
-      "tick": 2664,
-      "invocationId": "0.656435388373211-2664",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5923-63-5923-90",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10474,37 +2924,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 5923,
     "endColumn": 91,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359144,
-      "tick": 2677,
-      "invocationId": "0.656435388373211-2677",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-5923-10-5923-91",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "olddisplay"}}, {"value": {"type": "string", "value": "inline"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "cache": {"type": "object", "preview": "[object Object]"},
-          "expando": {"type": "string", "value": "jQuery214065915300161577761"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -10512,62 +2932,7 @@ var foo = {
     "startColumn": 2,
     "endLine": 5941,
     "endColumn": 3,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359124,
-      "tick": 2634,
-      "invocationId": "0.656435388373211-2634",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5892-2-5941-3",
-      "arguments": [{
-        "name": "elements",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"name": "show", "value": {"type": "undefined", "value": null}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359287,
-      "tick": 2755,
-      "invocationId": "0.656435388373211-2755",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-5892-2-5941-3",
-      "arguments": [{
-        "name": "elements",
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"name": "show", "value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10575,40 +2940,7 @@ var foo = {
     "startColumn": 19,
     "endLine": 6045,
     "endColumn": 41,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359129,
-      "tick": 2646,
-      "invocationId": "0.656435388373211-2646",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6045-19-6045-41",
-      "arguments": [{"value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359139,
-      "tick": 2666,
-      "invocationId": "0.656435388373211-2666",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6045-19-6045-41",
-      "arguments": [{"value": {"type": "string", "value": "display"}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10616,382 +2948,7 @@ var foo = {
     "startColumn": 71,
     "endLine": 6048,
     "endColumn": 107,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359129,
-      "tick": 2650,
-      "invocationId": "0.656435388373211-2650",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6048-71-6048-107",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "alignContent": {"type": "string", "value": ""},
-            "alignItems": {"type": "string", "value": ""},
-            "alignSelf": {"type": "string", "value": ""},
-            "alignmentBaseline": {"type": "string", "value": ""},
-            "all": {"type": "string", "value": ""},
-            "animation": {"type": "string", "value": ""},
-            "animationDelay": {"type": "string", "value": ""},
-            "animationDirection": {"type": "string", "value": ""},
-            "animationDuration": {"type": "string", "value": ""},
-            "animationFillMode": {"type": "string", "value": ""},
-            "animationIterationCount": {"type": "string", "value": ""},
-            "animationName": {"type": "string", "value": ""},
-            "animationPlayState": {"type": "string", "value": ""},
-            "animationTimingFunction": {"type": "string", "value": ""},
-            "backfaceVisibility": {"type": "string", "value": ""},
-            "background": {"type": "string", "value": ""},
-            "backgroundAttachment": {"type": "string", "value": ""},
-            "backgroundBlendMode": {"type": "string", "value": ""},
-            "backgroundClip": {"type": "string", "value": ""},
-            "backgroundColor": {"type": "string", "value": ""},
-            "backgroundImage": {"type": "string", "value": ""},
-            "backgroundOrigin": {"type": "string", "value": ""},
-            "backgroundPosition": {"type": "string", "value": ""},
-            "backgroundPositionX": {"type": "string", "value": ""},
-            "backgroundPositionY": {"type": "string", "value": ""},
-            "backgroundRepeat": {"type": "string", "value": ""},
-            "backgroundRepeatX": {"type": "string", "value": ""},
-            "backgroundRepeatY": {"type": "string", "value": ""},
-            "backgroundSize": {"type": "string", "value": ""},
-            "baselineShift": {"type": "string", "value": ""},
-            "border": {"type": "string", "value": ""},
-            "borderBottom": {"type": "string", "value": ""},
-            "borderBottomColor": {"type": "string", "value": ""},
-            "borderBottomLeftRadius": {"type": "string", "value": ""},
-            "borderBottomRightRadius": {"type": "string", "value": ""},
-            "borderBottomStyle": {"type": "string", "value": ""},
-            "borderBottomWidth": {"type": "string", "value": ""},
-            "borderCollapse": {"type": "string", "value": ""},
-            "borderColor": {"type": "string", "value": ""},
-            "borderImage": {"type": "string", "value": ""},
-            "borderImageOutset": {"type": "string", "value": ""},
-            "borderImageRepeat": {"type": "string", "value": ""},
-            "borderImageSlice": {"type": "string", "value": ""},
-            "borderImageSource": {"type": "string", "value": ""},
-            "borderImageWidth": {"type": "string", "value": ""},
-            "borderLeft": {"type": "string", "value": ""},
-            "borderLeftColor": {"type": "string", "value": ""},
-            "borderLeftStyle": {"type": "string", "value": ""},
-            "borderLeftWidth": {"type": "string", "value": ""},
-            "borderRadius": {"type": "string", "value": ""},
-            "borderRight": {"type": "string", "value": ""},
-            "borderRightColor": {"type": "string", "value": ""},
-            "borderRightStyle": {"type": "string", "value": ""},
-            "borderRightWidth": {"type": "string", "value": ""},
-            "borderSpacing": {"type": "string", "value": ""},
-            "borderStyle": {"type": "string", "value": ""},
-            "borderTop": {"type": "string", "value": ""},
-            "borderTopColor": {"type": "string", "value": ""},
-            "borderTopLeftRadius": {"type": "string", "value": ""},
-            "borderTopRightRadius": {"type": "string", "value": ""},
-            "borderTopStyle": {"type": "string", "value": ""},
-            "borderTopWidth": {"type": "string", "value": ""},
-            "borderWidth": {"type": "string", "value": ""},
-            "bottom": {"type": "string", "value": ""},
-            "boxShadow": {"type": "string", "value": ""},
-            "boxSizing": {"type": "string", "value": ""},
-            "bufferedRendering": {"type": "string", "value": ""},
-            "captionSide": {"type": "string", "value": ""},
-            "clear": {"type": "string", "value": ""},
-            "clip": {"type": "string", "value": ""},
-            "clipPath": {"type": "string", "value": ""},
-            "clipRule": {"type": "string", "value": ""},
-            "color": {"type": "string", "value": ""},
-            "colorInterpolation": {"type": "string", "value": ""},
-            "colorInterpolationFilters": {"type": "string", "value": ""},
-            "colorRendering": {"type": "string", "value": ""},
-            "content": {"type": "string", "value": ""},
-            "counterIncrement": {"type": "string", "value": ""},
-            "counterReset": {"type": "string", "value": ""},
-            "cursor": {"type": "string", "value": ""},
-            "cx": {"type": "string", "value": ""},
-            "cy": {"type": "string", "value": ""},
-            "direction": {"type": "string", "value": ""},
-            "display": {"type": "string", "value": ""},
-            "dominantBaseline": {"type": "string", "value": ""},
-            "emptyCells": {"type": "string", "value": ""},
-            "enableBackground": {"type": "string", "value": ""},
-            "fill": {"type": "string", "value": ""},
-            "fillOpacity": {"type": "string", "value": ""},
-            "fillRule": {"type": "string", "value": ""},
-            "filter": {"type": "string", "value": ""},
-            "flex": {"type": "string", "value": ""},
-            "flexBasis": {"type": "string", "value": ""},
-            "flexDirection": {"type": "string", "value": ""},
-            "flexFlow": {"type": "string", "value": ""},
-            "flexGrow": {"type": "string", "value": ""},
-            "flexShrink": {"type": "string", "value": ""},
-            "flexWrap": {"type": "string", "value": ""},
-            "float": {"type": "string", "value": ""},
-            "floodColor": {"type": "string", "value": ""},
-            "floodOpacity": {"type": "string", "value": ""},
-            "font": {"type": "string", "value": ""},
-            "fontFamily": {"type": "string", "value": ""},
-            "fontKerning": {"type": "string", "value": ""},
-            "fontSize": {"type": "string", "value": ""},
-            "fontStretch": {"type": "string", "value": ""},
-            "fontStyle": {"type": "string", "value": ""},
-            "fontVariant": {"type": "string", "value": ""},
-            "fontVariantLigatures": {"type": "string", "value": ""},
-            "fontWeight": {"type": "string", "value": ""},
-            "glyphOrientationHorizontal": {"type": "string", "value": ""},
-            "glyphOrientationVertical": {"type": "string", "value": ""},
-            "height": {"type": "string", "value": ""},
-            "imageRendering": {"type": "string", "value": ""},
-            "isolation": {"type": "string", "value": ""},
-            "justifyContent": {"type": "string", "value": ""},
-            "left": {"type": "string", "value": ""},
-            "letterSpacing": {"type": "string", "value": ""},
-            "lightingColor": {"type": "string", "value": ""},
-            "lineHeight": {"type": "string", "value": ""},
-            "listStyle": {"type": "string", "value": ""},
-            "listStyleImage": {"type": "string", "value": ""},
-            "listStylePosition": {"type": "string", "value": ""},
-            "listStyleType": {"type": "string", "value": ""},
-            "margin": {"type": "string", "value": ""},
-            "marginBottom": {"type": "string", "value": ""},
-            "marginLeft": {"type": "string", "value": ""},
-            "marginRight": {"type": "string", "value": ""},
-            "marginTop": {"type": "string", "value": ""},
-            "marker": {"type": "string", "value": ""},
-            "markerEnd": {"type": "string", "value": ""},
-            "markerMid": {"type": "string", "value": ""},
-            "markerStart": {"type": "string", "value": ""},
-            "mask": {"type": "string", "value": ""},
-            "maskType": {"type": "string", "value": ""},
-            "maxHeight": {"type": "string", "value": ""},
-            "maxWidth": {"type": "string", "value": ""},
-            "maxZoom": {"type": "string", "value": ""},
-            "minHeight": {"type": "string", "value": ""},
-            "minWidth": {"type": "string", "value": ""},
-            "minZoom": {"type": "string", "value": ""},
-            "mixBlendMode": {"type": "string", "value": ""},
-            "objectFit": {"type": "string", "value": ""},
-            "objectPosition": {"type": "string", "value": ""},
-            "opacity": {"type": "string", "value": ""},
-            "order": {"type": "string", "value": ""},
-            "orientation": {"type": "string", "value": ""},
-            "orphans": {"type": "string", "value": ""},
-            "outline": {"type": "string", "value": ""},
-            "outlineColor": {"type": "string", "value": ""},
-            "outlineOffset": {"type": "string", "value": ""},
-            "outlineStyle": {"type": "string", "value": ""},
-            "outlineWidth": {"type": "string", "value": ""},
-            "overflow": {"type": "string", "value": ""},
-            "overflowWrap": {"type": "string", "value": ""},
-            "overflowX": {"type": "string", "value": ""},
-            "overflowY": {"type": "string", "value": ""},
-            "padding": {"type": "string", "value": ""},
-            "paddingBottom": {"type": "string", "value": ""},
-            "paddingLeft": {"type": "string", "value": ""},
-            "paddingRight": {"type": "string", "value": ""},
-            "paddingTop": {"type": "string", "value": ""},
-            "page": {"type": "string", "value": ""},
-            "pageBreakAfter": {"type": "string", "value": ""},
-            "pageBreakBefore": {"type": "string", "value": ""},
-            "pageBreakInside": {"type": "string", "value": ""},
-            "paintOrder": {"type": "string", "value": ""},
-            "perspective": {"type": "string", "value": ""},
-            "perspectiveOrigin": {"type": "string", "value": ""},
-            "pointerEvents": {"type": "string", "value": ""},
-            "position": {"type": "string", "value": ""},
-            "quotes": {"type": "string", "value": ""},
-            "r": {"type": "string", "value": ""},
-            "resize": {"type": "string", "value": ""},
-            "right": {"type": "string", "value": ""},
-            "rx": {"type": "string", "value": ""},
-            "ry": {"type": "string", "value": ""},
-            "shapeImageThreshold": {"type": "string", "value": ""},
-            "shapeMargin": {"type": "string", "value": ""},
-            "shapeOutside": {"type": "string", "value": ""},
-            "shapeRendering": {"type": "string", "value": ""},
-            "size": {"type": "string", "value": ""},
-            "speak": {"type": "string", "value": ""},
-            "src": {"type": "string", "value": ""},
-            "stopColor": {"type": "string", "value": ""},
-            "stopOpacity": {"type": "string", "value": ""},
-            "stroke": {"type": "string", "value": ""},
-            "strokeDasharray": {"type": "string", "value": ""},
-            "strokeDashoffset": {"type": "string", "value": ""},
-            "strokeLinecap": {"type": "string", "value": ""},
-            "strokeLinejoin": {"type": "string", "value": ""},
-            "strokeMiterlimit": {"type": "string", "value": ""},
-            "strokeOpacity": {"type": "string", "value": ""},
-            "strokeWidth": {"type": "string", "value": ""},
-            "tabSize": {"type": "string", "value": ""},
-            "tableLayout": {"type": "string", "value": ""},
-            "textAlign": {"type": "string", "value": ""},
-            "textAnchor": {"type": "string", "value": ""},
-            "textDecoration": {"type": "string", "value": ""},
-            "textIndent": {"type": "string", "value": ""},
-            "textOverflow": {"type": "string", "value": ""},
-            "textRendering": {"type": "string", "value": ""},
-            "textShadow": {"type": "string", "value": ""},
-            "textTransform": {"type": "string", "value": ""},
-            "top": {"type": "string", "value": ""},
-            "touchAction": {"type": "string", "value": ""},
-            "transform": {"type": "string", "value": ""},
-            "transformOrigin": {"type": "string", "value": ""},
-            "transformStyle": {"type": "string", "value": ""},
-            "transition": {"type": "string", "value": ""},
-            "transitionDelay": {"type": "string", "value": ""},
-            "transitionDuration": {"type": "string", "value": ""},
-            "transitionProperty": {"type": "string", "value": ""},
-            "transitionTimingFunction": {"type": "string", "value": ""},
-            "unicodeBidi": {"type": "string", "value": ""},
-            "unicodeRange": {"type": "string", "value": ""},
-            "userZoom": {"type": "string", "value": ""},
-            "vectorEffect": {"type": "string", "value": ""},
-            "verticalAlign": {"type": "string", "value": ""},
-            "visibility": {"type": "string", "value": ""},
-            "webkitAppRegion": {"type": "string", "value": ""},
-            "webkitAppearance": {"type": "string", "value": ""},
-            "webkitBackgroundClip": {"type": "string", "value": ""},
-            "webkitBackgroundComposite": {"type": "string", "value": ""},
-            "webkitBackgroundOrigin": {"type": "string", "value": ""},
-            "webkitBorderAfter": {"type": "string", "value": ""},
-            "webkitBorderAfterColor": {"type": "string", "value": ""},
-            "webkitBorderAfterStyle": {"type": "string", "value": ""},
-            "webkitBorderAfterWidth": {"type": "string", "value": ""},
-            "webkitBorderBefore": {"type": "string", "value": ""},
-            "webkitBorderBeforeColor": {"type": "string", "value": ""},
-            "webkitBorderBeforeStyle": {"type": "string", "value": ""},
-            "webkitBorderBeforeWidth": {"type": "string", "value": ""},
-            "webkitBorderEnd": {"type": "string", "value": ""},
-            "webkitBorderEndColor": {"type": "string", "value": ""},
-            "webkitBorderEndStyle": {"type": "string", "value": ""},
-            "webkitBorderEndWidth": {"type": "string", "value": ""},
-            "webkitBorderHorizontalSpacing": {"type": "string", "value": ""},
-            "webkitBorderImage": {"type": "string", "value": ""},
-            "webkitBorderStart": {"type": "string", "value": ""},
-            "webkitBorderStartColor": {"type": "string", "value": ""},
-            "webkitBorderStartStyle": {"type": "string", "value": ""},
-            "webkitBorderStartWidth": {"type": "string", "value": ""},
-            "webkitBorderVerticalSpacing": {"type": "string", "value": ""},
-            "webkitBoxAlign": {"type": "string", "value": ""},
-            "webkitBoxDecorationBreak": {"type": "string", "value": ""},
-            "webkitBoxDirection": {"type": "string", "value": ""},
-            "webkitBoxFlex": {"type": "string", "value": ""},
-            "webkitBoxFlexGroup": {"type": "string", "value": ""},
-            "webkitBoxLines": {"type": "string", "value": ""},
-            "webkitBoxOrdinalGroup": {"type": "string", "value": ""},
-            "webkitBoxOrient": {"type": "string", "value": ""},
-            "webkitBoxPack": {"type": "string", "value": ""},
-            "webkitBoxReflect": {"type": "string", "value": ""},
-            "webkitClipPath": {"type": "string", "value": ""},
-            "webkitColumnBreakAfter": {"type": "string", "value": ""},
-            "webkitColumnBreakBefore": {"type": "string", "value": ""},
-            "webkitColumnBreakInside": {"type": "string", "value": ""},
-            "webkitColumnCount": {"type": "string", "value": ""},
-            "webkitColumnGap": {"type": "string", "value": ""},
-            "webkitColumnRule": {"type": "string", "value": ""},
-            "webkitColumnRuleColor": {"type": "string", "value": ""},
-            "webkitColumnRuleStyle": {"type": "string", "value": ""},
-            "webkitColumnRuleWidth": {"type": "string", "value": ""},
-            "webkitColumnSpan": {"type": "string", "value": ""},
-            "webkitColumnWidth": {"type": "string", "value": ""},
-            "webkitColumns": {"type": "string", "value": ""},
-            "webkitFilter": {"type": "string", "value": ""},
-            "webkitFontFeatureSettings": {"type": "string", "value": ""},
-            "webkitFontSizeDelta": {"type": "string", "value": ""},
-            "webkitFontSmoothing": {"type": "string", "value": ""},
-            "webkitHighlight": {"type": "string", "value": ""},
-            "webkitHyphenateCharacter": {"type": "string", "value": ""},
-            "webkitLineBoxContain": {"type": "string", "value": ""},
-            "webkitLineBreak": {"type": "string", "value": ""},
-            "webkitLineClamp": {"type": "string", "value": ""},
-            "webkitLocale": {"type": "string", "value": ""},
-            "webkitLogicalHeight": {"type": "string", "value": ""},
-            "webkitLogicalWidth": {"type": "string", "value": ""},
-            "webkitMarginAfter": {"type": "string", "value": ""},
-            "webkitMarginAfterCollapse": {"type": "string", "value": ""},
-            "webkitMarginBefore": {"type": "string", "value": ""},
-            "webkitMarginBeforeCollapse": {"type": "string", "value": ""},
-            "webkitMarginBottomCollapse": {"type": "string", "value": ""},
-            "webkitMarginCollapse": {"type": "string", "value": ""},
-            "webkitMarginEnd": {"type": "string", "value": ""},
-            "webkitMarginStart": {"type": "string", "value": ""},
-            "webkitMarginTopCollapse": {"type": "string", "value": ""},
-            "webkitMask": {"type": "string", "value": ""},
-            "webkitMaskBoxImage": {"type": "string", "value": ""},
-            "webkitMaskBoxImageOutset": {"type": "string", "value": ""},
-            "webkitMaskBoxImageRepeat": {"type": "string", "value": ""},
-            "webkitMaskBoxImageSlice": {"type": "string", "value": ""},
-            "webkitMaskBoxImageSource": {"type": "string", "value": ""},
-            "webkitMaskBoxImageWidth": {"type": "string", "value": ""},
-            "webkitMaskClip": {"type": "string", "value": ""},
-            "webkitMaskComposite": {"type": "string", "value": ""},
-            "webkitMaskImage": {"type": "string", "value": ""},
-            "webkitMaskOrigin": {"type": "string", "value": ""},
-            "webkitMaskPosition": {"type": "string", "value": ""},
-            "webkitMaskPositionX": {"type": "string", "value": ""},
-            "webkitMaskPositionY": {"type": "string", "value": ""},
-            "webkitMaskRepeat": {"type": "string", "value": ""},
-            "webkitMaskRepeatX": {"type": "string", "value": ""},
-            "webkitMaskRepeatY": {"type": "string", "value": ""},
-            "webkitMaskSize": {"type": "string", "value": ""},
-            "webkitMaxLogicalHeight": {"type": "string", "value": ""},
-            "webkitMaxLogicalWidth": {"type": "string", "value": ""},
-            "webkitMinLogicalHeight": {"type": "string", "value": ""},
-            "webkitMinLogicalWidth": {"type": "string", "value": ""},
-            "webkitPaddingAfter": {"type": "string", "value": ""},
-            "webkitPaddingBefore": {"type": "string", "value": ""},
-            "webkitPaddingEnd": {"type": "string", "value": ""},
-            "webkitPaddingStart": {"type": "string", "value": ""},
-            "webkitPerspectiveOriginX": {"type": "string", "value": ""},
-            "webkitPerspectiveOriginY": {"type": "string", "value": ""},
-            "webkitPrintColorAdjust": {"type": "string", "value": ""},
-            "webkitRtlOrdering": {"type": "string", "value": ""},
-            "webkitRubyPosition": {"type": "string", "value": ""},
-            "webkitTapHighlightColor": {"type": "string", "value": ""},
-            "webkitTextCombine": {"type": "string", "value": ""},
-            "webkitTextDecorationsInEffect": {"type": "string", "value": ""},
-            "webkitTextEmphasis": {"type": "string", "value": ""},
-            "webkitTextEmphasisColor": {"type": "string", "value": ""},
-            "webkitTextEmphasisPosition": {"type": "string", "value": ""},
-            "webkitTextEmphasisStyle": {"type": "string", "value": ""},
-            "webkitTextFillColor": {"type": "string", "value": ""},
-            "webkitTextOrientation": {"type": "string", "value": ""},
-            "webkitTextSecurity": {"type": "string", "value": ""},
-            "webkitTextStroke": {"type": "string", "value": ""},
-            "webkitTextStrokeColor": {"type": "string", "value": ""},
-            "webkitTextStrokeWidth": {"type": "string", "value": ""},
-            "webkitTransformOriginX": {"type": "string", "value": ""},
-            "webkitTransformOriginY": {"type": "string", "value": ""},
-            "webkitTransformOriginZ": {"type": "string", "value": ""},
-            "webkitUserDrag": {"type": "string", "value": ""},
-            "webkitUserModify": {"type": "string", "value": ""},
-            "webkitUserSelect": {"type": "string", "value": ""},
-            "webkitWritingMode": {"type": "string", "value": ""},
-            "whiteSpace": {"type": "string", "value": ""},
-            "widows": {"type": "string", "value": ""},
-            "width": {"type": "string", "value": ""},
-            "willChange": {"type": "string", "value": ""},
-            "wordBreak": {"type": "string", "value": ""},
-            "wordSpacing": {"type": "string", "value": ""},
-            "wordWrap": {"type": "string", "value": ""},
-            "writingMode": {"type": "string", "value": ""},
-            "x": {"type": "string", "value": ""},
-            "y": {"type": "string", "value": ""},
-            "zIndex": {"type": "string", "value": ""},
-            "zoom": {"type": "string", "value": ""}
-          },
-          "truncated": {"keys": {"amount": 317}}
-        }
-      }, {"value": {"type": "string", "value": "display"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -10999,50 +2956,7 @@ var foo = {
     "startColumn": 14,
     "endLine": 6060,
     "endColumn": 40,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359131,
-      "tick": 2652,
-      "invocationId": "0.656435388373211-2652",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6060-14-6060-40",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "display"}}, {"value": {"type": "undefined", "value": null}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359140,
-      "tick": 2670,
-      "invocationId": "0.656435388373211-2670",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6060-14-6060-40",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {}
-        }
-      }, {"value": {"type": "string", "value": "display"}}, {"value": {"type": "undefined", "value": null}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -11050,121 +2964,7 @@ var foo = {
     "startColumn": 9,
     "endLine": 6074,
     "endColumn": 5,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359128,
-      "tick": 2645,
-      "invocationId": "0.656435388373211-2645",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6043-9-6074-5",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "name", "value": {"type": "string", "value": "display"}}, {
-        "name": "extra",
-        "value": {"type": "undefined", "value": null}
-      }, {"name": "styles", "value": {"type": "undefined", "value": null}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359139,
-      "tick": 2665,
-      "invocationId": "0.656435388373211-2665",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6043-9-6074-5",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {"name": "name", "value": {"type": "string", "value": "display"}}, {
-        "name": "extra",
-        "value": {"type": "undefined", "value": null}
-      }, {"name": "styles", "value": {"type": "undefined", "value": null}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
-  }, {
-    "path": "/javascripts/lib/jquery-2.1.4.js",
-    "type": "callsite",
-    "startLine": 6171,
-    "startColumn": 13,
-    "endLine": 6171,
-    "endColumn": 33,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359287,
-      "tick": 2754,
-      "invocationId": "0.656435388373211-2754",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6171-13-6171-33",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"value": {"type": "boolean", "value": true}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
-  }, {
-    "path": "/javascripts/lib/jquery-2.1.4.js",
-    "type": "function",
-    "startLine": 6170,
-    "startColumn": 10,
-    "endLine": 6172,
-    "endColumn": 5,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359287,
-      "tick": 2753,
-      "invocationId": "0.656435388373211-2753",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6170-10-6172-5",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 2
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -11172,34 +2972,7 @@ var foo = {
     "startColumn": 13,
     "endLine": 6174,
     "endColumn": 27,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359124,
-      "tick": 2633,
-      "invocationId": "0.656435388373211-2633",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6174-13-6174-27",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -11207,33 +2980,7 @@ var foo = {
     "startColumn": 10,
     "endLine": 6175,
     "endColumn": 5,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359124,
-      "tick": 2632,
-      "invocationId": "0.656435388373211-2632",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6173-10-6175-5",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -11241,62 +2988,7 @@ var foo = {
     "startColumn": 8,
     "endLine": 6868,
     "endColumn": 36,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359123,
-      "tick": 2631,
-      "invocationId": "0.656435388373211-2631",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6868-8-6868-36",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359287,
-      "tick": 2752,
-      "invocationId": "0.656435388373211-2752",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-6868-8-6868-36",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-            "length": {"type": "number", "value": 1},
-            "context": {"type": "object", "preview": "[object HTMLDocument]"},
-            "selector": {"type": "string", "value": "#effect1"}
-          }
-        }
-      }, {"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {"type": "function"},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -11304,64 +2996,7 @@ var foo = {
     "startColumn": 22,
     "endLine": 6870,
     "endColumn": 5,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359123,
-      "tick": 2630,
-      "invocationId": "0.656435388373211-2630",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6866-22-6870-5",
-      "arguments": [{"name": "speed", "value": {"type": "undefined", "value": null}}, {
-        "name": "easing",
-        "value": {"type": "undefined", "value": null}
-      }, {"name": "callback", "value": {"type": "undefined", "value": null}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359287,
-      "tick": 2751,
-      "invocationId": "0.656435388373211-2751",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-6866-22-6870-5",
-      "arguments": [{"name": "speed", "value": {"type": "undefined", "value": null}}, {
-        "name": "easing",
-        "value": {"type": "undefined", "value": null}
-      }, {"name": "callback", "value": {"type": "undefined", "value": null}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -11369,120 +3004,7 @@ var foo = {
     "startColumn": 31,
     "endLine": 8459,
     "endColumn": 3,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359121,
-      "tick": 2625,
-      "invocationId": "0.656435388373211-2625",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-8455-31-8459-3",
-      "arguments": [{"name": "elem", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "not": {"type": "function"},
-          "has": {"type": "function"},
-          "contains": {"type": "function"},
-          "lang": {"type": "function"},
-          "target": {"type": "function"},
-          "root": {"type": "function"},
-          "focus": {"type": "function"},
-          "enabled": {"type": "function"},
-          "disabled": {"type": "function"},
-          "checked": {"type": "function"},
-          "selected": {"type": "function"},
-          "empty": {"type": "function"},
-          "parent": {"type": "function"},
-          "header": {"type": "function"},
-          "input": {"type": "function"},
-          "button": {"type": "function"},
-          "text": {"type": "function"},
-          "first": {"type": "function"},
-          "last": {"type": "function"},
-          "eq": {"type": "function"},
-          "even": {"type": "function"},
-          "odd": {"type": "function"},
-          "lt": {"type": "function"},
-          "gt": {"type": "function"},
-          "nth": {"type": "function"},
-          "radio": {"type": "function"},
-          "checkbox": {"type": "function"},
-          "file": {"type": "function"},
-          "password": {"type": "function"},
-          "image": {"type": "function"},
-          "submit": {"type": "function"},
-          "reset": {"type": "function"},
-          "hidden": {"type": "function"},
-          "visible": {"type": "function"},
-          "animated": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359286,
-      "tick": 2749,
-      "invocationId": "0.656435388373211-2749",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-8455-31-8459-3",
-      "arguments": [{"name": "elem", "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "not": {"type": "function"},
-          "has": {"type": "function"},
-          "contains": {"type": "function"},
-          "lang": {"type": "function"},
-          "target": {"type": "function"},
-          "root": {"type": "function"},
-          "focus": {"type": "function"},
-          "enabled": {"type": "function"},
-          "disabled": {"type": "function"},
-          "checked": {"type": "function"},
-          "selected": {"type": "function"},
-          "empty": {"type": "function"},
-          "parent": {"type": "function"},
-          "header": {"type": "function"},
-          "input": {"type": "function"},
-          "button": {"type": "function"},
-          "text": {"type": "function"},
-          "first": {"type": "function"},
-          "last": {"type": "function"},
-          "eq": {"type": "function"},
-          "even": {"type": "function"},
-          "odd": {"type": "function"},
-          "lt": {"type": "function"},
-          "gt": {"type": "function"},
-          "nth": {"type": "function"},
-          "radio": {"type": "function"},
-          "checkbox": {"type": "function"},
-          "file": {"type": "function"},
-          "password": {"type": "function"},
-          "image": {"type": "function"},
-          "submit": {"type": "function"},
-          "reset": {"type": "function"},
-          "hidden": {"type": "function"},
-          "visible": {"type": "function"},
-          "animated": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "callsite",
@@ -11490,120 +3012,7 @@ var foo = {
     "startColumn": 12,
     "endLine": 8461,
     "endColumn": 44,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359121,
-      "tick": 2624,
-      "invocationId": "0.656435388373211-2624",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-8461-12-8461-44",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "not": {"type": "function"},
-          "has": {"type": "function"},
-          "contains": {"type": "function"},
-          "lang": {"type": "function"},
-          "target": {"type": "function"},
-          "root": {"type": "function"},
-          "focus": {"type": "function"},
-          "enabled": {"type": "function"},
-          "disabled": {"type": "function"},
-          "checked": {"type": "function"},
-          "selected": {"type": "function"},
-          "empty": {"type": "function"},
-          "parent": {"type": "function"},
-          "header": {"type": "function"},
-          "input": {"type": "function"},
-          "button": {"type": "function"},
-          "text": {"type": "function"},
-          "first": {"type": "function"},
-          "last": {"type": "function"},
-          "eq": {"type": "function"},
-          "even": {"type": "function"},
-          "odd": {"type": "function"},
-          "lt": {"type": "function"},
-          "gt": {"type": "function"},
-          "nth": {"type": "function"},
-          "radio": {"type": "function"},
-          "checkbox": {"type": "function"},
-          "file": {"type": "function"},
-          "password": {"type": "function"},
-          "image": {"type": "function"},
-          "submit": {"type": "function"},
-          "reset": {"type": "function"},
-          "hidden": {"type": "function"},
-          "visible": {"type": "function"},
-          "animated": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359286,
-      "tick": 2748,
-      "invocationId": "0.656435388373211-2748",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-callsite-8461-12-8461-44",
-      "arguments": [{"value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "not": {"type": "function"},
-          "has": {"type": "function"},
-          "contains": {"type": "function"},
-          "lang": {"type": "function"},
-          "target": {"type": "function"},
-          "root": {"type": "function"},
-          "focus": {"type": "function"},
-          "enabled": {"type": "function"},
-          "disabled": {"type": "function"},
-          "checked": {"type": "function"},
-          "selected": {"type": "function"},
-          "empty": {"type": "function"},
-          "parent": {"type": "function"},
-          "header": {"type": "function"},
-          "input": {"type": "function"},
-          "button": {"type": "function"},
-          "text": {"type": "function"},
-          "first": {"type": "function"},
-          "last": {"type": "function"},
-          "eq": {"type": "function"},
-          "even": {"type": "function"},
-          "odd": {"type": "function"},
-          "lt": {"type": "function"},
-          "gt": {"type": "function"},
-          "nth": {"type": "function"},
-          "radio": {"type": "function"},
-          "checkbox": {"type": "function"},
-          "file": {"type": "function"},
-          "password": {"type": "function"},
-          "image": {"type": "function"},
-          "submit": {"type": "function"},
-          "reset": {"type": "function"},
-          "hidden": {"type": "function"},
-          "visible": {"type": "function"},
-          "animated": {"type": "function"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/lib/jquery-2.1.4.js",
     "type": "function",
@@ -11611,206 +3020,7 @@ var foo = {
     "startColumn": 32,
     "endLine": 8462,
     "endColumn": 3,
-    "hits": 2,
-    "invokes": [{
-      "timestamp": 1440990359120,
-      "tick": 2623,
-      "invocationId": "0.656435388373211-2623",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-8460-32-8462-3",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359286,
-      "tick": 2747,
-      "invocationId": "0.656435388373211-2747",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/lib/jquery-2.1.4.js-function-8460-32-8462-3",
-      "arguments": [{
-        "name": "elem",
-        "value": {"type": "object", "preview": "[object Object]", "ownProperties": {}}
-      }, {
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "location": {"type": "object", "preview": "http://localhost:9000/"},
-            "effect1": {"type": "undefined", "value": null},
-            "effect3": {"type": "undefined", "value": null},
-            "open": {"type": "function"},
-            "close": {"type": "function"},
-            "write": {"type": "function"},
-            "writeln": {"type": "function"},
-            "clear": {"type": "function"},
-            "captureEvents": {"type": "function"},
-            "releaseEvents": {"type": "function"},
-            "getElementsByTagName": {"type": "function"},
-            "getElementsByTagNameNS": {"type": "function"},
-            "getElementsByClassName": {"type": "function"},
-            "createDocumentFragment": {"type": "function"},
-            "createTextNode": {"type": "function"},
-            "createComment": {"type": "function"},
-            "createProcessingInstruction": {"type": "function"},
-            "importNode": {"type": "function"},
-            "adoptNode": {"type": "function"},
-            "createAttribute": {"type": "function"},
-            "createAttributeNS": {"type": "function"},
-            "createEvent": {"type": "function"},
-            "createRange": {"type": "function"},
-            "createNodeIterator": {"type": "function"},
-            "createTreeWalker": {"type": "function"},
-            "createCDATASection": {"type": "function"},
-            "getElementsByName": {"type": "function"},
-            "hasFocus": {"type": "function"},
-            "execCommand": {"type": "function"},
-            "queryCommandEnabled": {"type": "function"},
-            "queryCommandIndeterm": {"type": "function"},
-            "queryCommandState": {"type": "function"},
-            "queryCommandSupported": {"type": "function"},
-            "queryCommandValue": {"type": "function"},
-            "elementFromPoint": {"type": "function"},
-            "elementsFromPoint": {"type": "function"},
-            "getSelection": {"type": "function"},
-            "exitPointerLock": {"type": "function"},
-            "registerElement": {"type": "function"},
-            "createElement": {"type": "function"},
-            "createElementNS": {"type": "function"},
-            "caretRangeFromPoint": {"type": "function"},
-            "getCSSCanvasContext": {"type": "function"},
-            "webkitCancelFullScreen": {"type": "function"},
-            "webkitExitFullscreen": {"type": "function"},
-            "getElementById": {"type": "function"},
-            "querySelector": {"type": "function"},
-            "querySelectorAll": {"type": "function"},
-            "createExpression": {"type": "function"},
-            "createNSResolver": {"type": "function"},
-            "evaluate": {"type": "function"},
-            "hasChildNodes": {"type": "function"},
-            "normalize": {"type": "function"},
-            "cloneNode": {"type": "function"},
-            "isEqualNode": {"type": "function"},
-            "compareDocumentPosition": {"type": "function"},
-            "contains": {"type": "function"},
-            "lookupPrefix": {"type": "function"},
-            "lookupNamespaceURI": {"type": "function"},
-            "isDefaultNamespace": {"type": "function"},
-            "insertBefore": {"type": "function"},
-            "appendChild": {"type": "function"},
-            "replaceChild": {"type": "function"},
-            "removeChild": {"type": "function"},
-            "isSameNode": {"type": "function"},
-            "addEventListener": {"type": "function"},
-            "removeEventListener": {"type": "function"},
-            "dispatchEvent": {"type": "function"}
-          },
-          "truncated": {"keys": {"amount": 33}}
-        }
-      }, {"value": {"type": "boolean", "value": false}}],
-      "this": {
-        "type": "object",
-        "preview": "[Array:2]",
-        "ownProperties": {"0": {"type": "function"}, "1": {"type": "function"}}
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/home.js",
     "type": "callsite",
@@ -11818,30 +3028,16 @@ var foo = {
     "startColumn": 2,
     "endLine": 2,
     "endColumn": 7,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2547,
-      "invocationId": "0.656435388373211-2547",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2547",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-callsite-2-2-2-7",
       "arguments": [],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2709,
-      "invocationId": "0.656435388373211-2709",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-callsite-2-2-2-7",
-      "arguments": [],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2546", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -11857,12 +3053,12 @@ var foo = {
     "startColumn": 18,
     "endLine": 3,
     "endColumn": 1,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359109,
+      "timestamp": 1440994137380,
       "tick": 2546,
-      "invocationId": "0.656435388373211-2546",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2546",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-function-1-18-3-1",
       "arguments": [{
         "value": {
@@ -11872,17 +3068,17 @@ var foo = {
             "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
             "type": {"type": "string", "value": "click"},
             "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359102},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
+            "timeStamp": {"type": "number", "value": 1440994137371},
+            "jQuery21406267672530375421": {"type": "boolean", "value": true},
             "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
+            "screenY": {"type": "number", "value": 218},
+            "screenX": {"type": "number", "value": 2115},
+            "pageY": {"type": "number", "value": 111},
+            "pageX": {"type": "number", "value": 177},
+            "offsetY": {"type": "number", "value": 14},
+            "offsetX": {"type": "number", "value": 164},
+            "clientY": {"type": "number", "value": 111},
+            "clientX": {"type": "number", "value": 177},
             "buttons": {"type": "number", "value": 0},
             "button": {"type": "number", "value": 0},
             "which": {"type": "number", "value": 1},
@@ -11904,61 +3100,8 @@ var foo = {
         }
       }],
       "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2708,
-      "invocationId": "0.656435388373211-2708",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-function-1-18-3-1",
-      "arguments": [{
-        "value": {
-          "type": "object",
-          "preview": "[object Object]",
-          "ownProperties": {
-            "originalEvent": {"type": "object", "preview": "[object MouseEvent]"},
-            "type": {"type": "string", "value": "click"},
-            "isDefaultPrevented": {"type": "function"},
-            "timeStamp": {"type": "number", "value": 1440990359271},
-            "jQuery21406591530016157776": {"type": "boolean", "value": true},
-            "toElement": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "screenY": {"type": "number", "value": 229},
-            "screenX": {"type": "number", "value": 2042},
-            "pageY": {"type": "number", "value": 121},
-            "pageX": {"type": "number", "value": 110},
-            "offsetY": {"type": "number", "value": 24},
-            "offsetX": {"type": "number", "value": 97},
-            "clientY": {"type": "number", "value": 121},
-            "clientX": {"type": "number", "value": 110},
-            "buttons": {"type": "number", "value": 0},
-            "button": {"type": "number", "value": 0},
-            "which": {"type": "number", "value": 1},
-            "view": {"type": "object", "preview": "[object Window]"},
-            "target": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "shiftKey": {"type": "boolean", "value": false},
-            "relatedTarget": {"type": "null", "preview": "null"},
-            "metaKey": {"type": "boolean", "value": false},
-            "eventPhase": {"type": "number", "value": 2},
-            "currentTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "ctrlKey": {"type": "boolean", "value": false},
-            "cancelable": {"type": "boolean", "value": true},
-            "bubbles": {"type": "boolean", "value": true},
-            "altKey": {"type": "boolean", "value": false},
-            "delegateTarget": {"type": "object", "preview": "[object HTMLButtonElement]"},
-            "handleObj": {"type": "object", "preview": "[object Object]"},
-            "data": {"type": "null", "preview": "null"}
-          }
-        }
-      }],
-      "this": {"type": "object", "preview": "[object Object]", "ownProperties": {}},
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2545", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -11974,30 +3117,16 @@ var foo = {
     "startColumn": 2,
     "endLine": 7,
     "endColumn": 7,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2549,
-      "invocationId": "0.656435388373211-2549",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2549",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-callsite-7-2-7-7",
       "arguments": [],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2711,
-      "invocationId": "0.656435388373211-2711",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-callsite-7-2-7-7",
-      "arguments": [],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2548", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -12013,30 +3142,16 @@ var foo = {
     "startColumn": 10,
     "endLine": 8,
     "endColumn": 1,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2548,
-      "invocationId": "0.656435388373211-2548",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2548",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-function-6-10-8-1",
       "arguments": [],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2710,
-      "invocationId": "0.656435388373211-2710",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-function-6-10-8-1",
-      "arguments": [],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2547", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -12052,30 +3167,16 @@ var foo = {
     "startColumn": 17,
     "endLine": 11,
     "endColumn": 30,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2551,
-      "invocationId": "0.656435388373211-2551",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2551",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-callsite-11-17-11-30",
       "arguments": [{"value": {"type": "string", "value": "#effect1"}}],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2713,
-      "invocationId": "0.656435388373211-2713",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-callsite-11-17-11-30",
-      "arguments": [{"value": {"type": "string", "value": "#effect1"}}],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2550", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -12091,12 +3192,12 @@ var foo = {
     "startColumn": 6,
     "endLine": 12,
     "endColumn": 29,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359113,
+      "timestamp": 1440994137383,
       "tick": 2556,
-      "invocationId": "0.656435388373211-2556",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2556",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-callsite-12-6-12-29",
       "arguments": [{"value": {"type": "string", "value": ":visible"}}],
       "this": {
@@ -12109,32 +3210,8 @@ var foo = {
           "selector": {"type": "string", "value": "#effect1"}
         }
       },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359279,
-      "tick": 2718,
-      "invocationId": "0.656435388373211-2718",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-callsite-12-6-12-29",
-      "arguments": [{"value": {"type": "string", "value": ":visible"}}],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2550", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
@@ -12150,67 +3227,7 @@ var foo = {
     "startColumn": 4,
     "endLine": 13,
     "endColumn": 19,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359123,
-      "tick": 2629,
-      "invocationId": "0.656435388373211-2629",
-      "topLevelInvocationId": "0.656435388373211-2520",
-      "nodeId": "/javascripts/home.js-callsite-13-4-13-19",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
-  }, {
-    "path": "/javascripts/home.js",
-    "type": "callsite",
-    "startLine": 15,
-    "startColumn": 4,
-    "endLine": 15,
-    "endColumn": 19,
-    "hits": 1,
-    "invokes": [{
-      "timestamp": 1440990359287,
-      "tick": 2750,
-      "invocationId": "0.656435388373211-2750",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-callsite-15-4-15-19",
-      "arguments": [],
-      "this": {
-        "type": "object",
-        "preview": "[object Object]",
-        "ownProperties": {
-          "0": {"type": "object", "preview": "[object HTMLImageElement]"},
-          "length": {"type": "number", "value": 1},
-          "context": {"type": "object", "preview": "[object HTMLDocument]"},
-          "selector": {"type": "string", "value": "#effect1"}
-        }
-      },
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }]
+    "hits": 1
   }, {
     "path": "/javascripts/home.js",
     "type": "function",
@@ -12218,30 +3235,16 @@ var foo = {
     "startColumn": 10,
     "endLine": 17,
     "endColumn": 1,
-    "hits": 2,
+    "hits": 1,
     "invokes": [{
-      "timestamp": 1440990359110,
+      "timestamp": 1440994137380,
       "tick": 2550,
-      "invocationId": "0.656435388373211-2550",
-      "topLevelInvocationId": "0.656435388373211-2520",
+      "invocationId": "0.639470312744379-2550",
+      "topLevelInvocationId": "0.639470312744379-2520",
       "nodeId": "/javascripts/home.js-function-10-10-17-1",
       "arguments": [],
-      "topLevelInvocationNode": {
-        "path": "/javascripts/lib/jquery-2.1.4.js",
-        "start": {"line": 4135, "column": 40},
-        "end": {"line": 4140, "column": 9},
-        "id": "/javascripts/lib/jquery-2.1.4.js-function-4135-40-4140-9",
-        "type": "function",
-        "params": [{"name": "e", "start": {"line": 4135, "column": 49}, "end": {"line": 4135, "column": 50}}]
-      }
-    }, {
-      "timestamp": 1440990359277,
-      "tick": 2712,
-      "invocationId": "0.656435388373211-2712",
-      "topLevelInvocationId": "0.656435388373211-2683",
-      "nodeId": "/javascripts/home.js-function-10-10-17-1",
-      "arguments": [],
-      "topLevelInvocationNode": {
+      "parents": [{"invocationId": "0.639470312744379-2549", "type": "call", "inbetween": []}],
+      "parentNode": {
         "path": "/javascripts/lib/jquery-2.1.4.js",
         "start": {"line": 4135, "column": 40},
         "end": {"line": 4140, "column": 9},
