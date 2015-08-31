@@ -1,12 +1,20 @@
 $("#test1").click(function () {
+  foo();
+});
+
+
+var foo = function(){
+  bar();
+};
+
+var bar = function(){
   var $effect1 = $("#effect1");
   if ($effect1.is(":visible")) {
     $effect1.hide();
   } else {
     $effect1.show();
   }
-});
-
+};
 
 $("#test2").click(function () {
   var $effect2 = $("#effect2");
@@ -58,3 +66,22 @@ var sixthFunction = function () {
 var eighthFunction = function () {
   $effect3.hide("fast");
 };
+
+/*
+
+    var testElement = document.getElementById("test1");
+
+  var eventHandlerFn = function (e) {
+    var effect1 = document.getElementById("effect1");
+    if (effect1.getAttribute("style") == "display: none;") {
+      effect1.setAttribute("style", "display: initial;")
+    } else {
+      effect1.setAttribute("style", "display: none;")
+    }
+
+    console.log(e);
+  };
+
+  testElement.addEventListener("click", eventHandlerFn);
+
+ */
