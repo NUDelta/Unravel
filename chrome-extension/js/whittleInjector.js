@@ -1,6 +1,49 @@
 define([],
   function () {
     return function () {
+      window.unravelAgent.getLocation = function () {
+        return {
+          origin: window.location.origin,
+          path: window.location.pathname,
+          href: window.location.href
+        };
+      };
+
+      window.unravelAgent.metaScripts = function () {
+        var metaScripts = [];
+        var scripts = unravelAgent.$("script");
+
+        unravelAgent._(scripts).each(function (scriptEl, h) {
+          //If its the tracer installer or untraced code, we don't want it
+          if (scriptEl.innerHTML.indexOf("__tracer") === -1 ||
+            scriptEl.innerHTML.indexOf("__tracer = new (function ()") !== -1) {
+            return;
+          }
+
+          var path = "";
+          var url = "";
+
+          var $scriptEl = unravelAgent.$(scriptEl);
+          if (scriptEl.src) {
+            $scriptEl.attr("src", scriptEl.src);
+            url = scriptEl.src;
+          } else {
+            path = scriptEl.innerHTML.split("__tracer.add(\"")[1].split("\"")[0];
+          }
+
+          metaScripts.push({
+            path: path || url.split(window.location.origin)[1],
+            url: url,
+            inline: !scriptEl.src,
+            domPath: $scriptEl.getPath(),
+            order: h
+          });
+        });
+
+
+        return metaScripts;
+      };
+
       window.unravelAgent.gatherCSS = function () {
         var css = "";
         if (document.styleSheets && document.styleSheets.length) {
@@ -118,4 +161,5 @@ define([],
         return unravelAgent.$("html")[0].outerHTML;
       };
     };
-  });
+  })
+;

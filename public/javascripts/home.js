@@ -2,9 +2,8 @@ $("#test1").click(function () {
   foo();
 });
 
-
 var foo = function(){
-  bar();
+  bazz();  //lives on index.jade
 };
 
 var bar = function(){

@@ -88,8 +88,10 @@ define([
       this.whittled = true;
 
       var whittleCallback = function (o) {
+        this.location = o.location;
         this.activeHTML = o.activeHTML;
         this.activeCSS = o.activeCSS;
+        this.metaScripts = o.metaScripts;
 
         if (callback) {
           callback();
@@ -97,10 +99,14 @@ define([
       };
 
       UnravelAgent.runInPage(function (safePaths) {
+        var location = unravelAgent.getLocation();
+        var metaScripts = unravelAgent.metaScripts();
         var activeCSS = unravelAgent.gatherCSS(safePaths);
         var activeHTML = unravelAgent.whittle(safePaths); //important to run _after_ css
 
         return {
+          location: location,
+          metaScripts: metaScripts,
           activeCSS: activeCSS,
           activeHTML: activeHTML
         };
@@ -120,13 +126,26 @@ define([
       http.send();
     },
 
-    //TODO - what about inline scripts on the page
-    //What an async mess!
     fiddle: function () {
       if (!this.whittled) {
         this.whittle(null, this.fiddle);
         return;
       }
+
+      var hitScripts = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
+        var meta = _.find(this.metaScripts, function(s){
+          return s.path === path;
+        }, this);
+
+        return {
+          path: path,
+          url: meta.url + "?theseus=no",
+          inline: meta.inline,
+          domPath: meta.domPath,
+          order: meta.order,
+          js: ""
+        };
+      }, this).value();
 
       var jsBinCallback = _.bind(function (response) {
         var binUrl = response.url;
@@ -147,7 +166,7 @@ define([
             javascript: "",
             fondue: {
               traces: this.arrHitLines,
-              scripts: fileArr
+              scripts: hitScripts
             }
           },
           datatype: "json",
@@ -155,28 +174,64 @@ define([
         }).done(jsBinCallback);
       }, this);
 
-      var fileArr = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
-        return {
-          path: path,
-          url: "http://localhost:9000" + path + "?theseus=no",
-          js: ""
-        };
+      var externalScripts = _(hitScripts).chain().where({
+        inline:false
+      }).sortBy(function(o){
+        return o.order
       }).value();
 
-      var tries = 0;
-      _(fileArr).each(function (fileObj) {
-        this.corsGet(fileObj.url, _.bind(function (http) {
-          var fileObj = _(fileArr).find(function (file) {
-            return file.url === http.responseURL;
-          });
-          fileObj.js = http.responseText;
+      var internalScripts = _(hitScripts).chain().where({
+        inline:true
+      }).sortBy(function(o){
+        return o.order
+      }).value();
 
-          tries++;
-          if (tries == fileArr.length) {
-            postToBin();
-          }
+      var getScriptsFromHTML = _.bind(function (callback) {
+        this.corsGet(this.location.href + "?theseus=no", _.bind(function (http) {
+          var $html = $(http.responseText);
+          var arrEl = [];
+          $html.each(function (i, el) {
+            if (el.tagName === "SCRIPT" && !el.getAttribute("src") && el.innerHTML.indexOf("__tracer") === -1) {
+              arrEl.push(el.innerHTML);
+            }
+          });
+          _(arrEl).each(function (srcJS, i) {
+            internalScripts[i].js = srcJS; //need a better way to tie
+          });
+
+          callback();
         }, this));
       }, this);
+
+      var getScriptsFromExternal = _.bind(function (callback) {
+        //Get external scripts
+        var tries = 0;
+        _(externalScripts).each(function (fileObj) {
+          this.corsGet(fileObj.url, _.bind(function (http) {
+            var fileObj = _(externalScripts).find(function (file) {
+              return file.url === http.responseURL;
+            });
+            fileObj.js = http.responseText;
+
+            tries++;
+            if (tries == externalScripts.length) {
+              callback();
+            }
+          }, this));
+        }, this);
+      }, this);
+
+      if (internalScripts.length > 0) {
+        if (externalScripts.length > 0) {
+          getScriptsFromHTML(_.bind(function () {
+            getScriptsFromExternal(postToBin);
+          }, this));
+        } else {
+          getScriptsFromHTML(postToBin);
+        }
+      } else if (externalScripts.length > 0) {
+        getScriptsFromExternal(postToBin);
+      }
     },
 
     __fiddle: function () {
