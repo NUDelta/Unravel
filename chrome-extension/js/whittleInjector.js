@@ -81,43 +81,38 @@ define([],
       };
 
       window.unravelAgent.whittle = function (safePaths) {
-        console.log(safePaths);
-
         var trashEls = [];
-        Node = Node || {COMMENT_NODE: 8};
+        var allDescendants = function (parentEl) {
+          for (var i = 0; i < parentEl.childNodes.length; i++) {
+            var el = parentEl.childNodes[i];
 
-        unravelAgent.$('*').each(function (i, el) {
-          var path = unravelAgent.$(el).getPath();
+            try {
+              if (el.nodeType === 8) {//comment node
+                trashEls.push(el);
+              } else if (el.nodeType !== 3) {
+                if (el.src) {
+                  unravelAgent.$(el).attr("src", el.src);
+                }
 
-          //Remove all non-head related elements
-          if (safePaths.indexOf(path) < 0 && path.indexOf("head") < 0) {
-            trashEls.push(el);
-            return;
-          }
-
-          //Remove all scripts and styles
-          if (el.tagName === "SCRIPT" || el.tagName === "LINK" || el.tagName === "STYLE") {
-            trashEls.push(el);
-            return;
-          }
-
-          //Remove all comments
-          var children = el.childNodes;
-          for (var i = 0, len = children.length; i < len; i++) {
-            if (children[i].nodeType == Node.COMMENT_NODE) {
-              trashEls.push(children[i]);
+                var path = unravelAgent.$(el).getPath();
+                if (safePaths.indexOf(path) < 0 && path.indexOf("head") < 0) {
+                  trashEls.push(el);
+                } else if (el.tagName === "SCRIPT" || el.tagName === "LINK" || el.tagName === "STYLE") {
+                  trashEls.push(el);
+                }
+              }
+            } catch (er) {
+              console.warn("Skipping whittle on node type", el.nodeType);
             }
-          }
-        });
 
-        trashEls.forEach(function (el, index, array) {
-          unravelAgent.$(el).remove();
-        });
-
-        unravelAgent.$('*').each(function (i, el) {
-          if (el.src) {
-            unravelAgent.$(el).attr("src", el.src);
+            allDescendants(el);
           }
+        };
+
+        allDescendants(document.getElementsByTagName("html")[0]);
+
+        unravelAgent._(trashEls).each(function (el) {
+          el.remove();
         });
 
         return unravelAgent.$("html")[0].outerHTML;
