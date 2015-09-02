@@ -43,8 +43,6 @@ define([
 
     domPathsToKeep: [],
 
-    pathEvents: [],
-
     lastRecordingJS: "",
 
     activeCSS: "",
@@ -460,7 +458,6 @@ define([
     handleEventTrace: function (data) {
       this.eventTracePaths = _.union(this.eventTracePaths, [data.path]);
       this.addToDomPaths(data.path);
-      this.pathEvents.push(data);
     },
 
     handleJSTrace: function (traceEvent) {

@@ -9,16 +9,6 @@ define([],
           var unravelDelete = null; //Leave here for detection
 
           var args = [].splice.call(arguments, 0);
-          var handlerStr = "";
-          try {
-            handlerStr = args[1].toString();
-          } catch (err) {
-          }
-
-          var methodsArr = [];
-
-          methodsArr = methodsArr.reverse();
-
           var eventHandlerFn = args[1];
 
           args[1] = function () {
@@ -32,11 +22,7 @@ define([],
             if (path) {
               window.dispatchEvent(new CustomEvent("eventTrace", {
                 "detail": {
-                  bindingSource: JSON.stringify(methodsArr),
-                  path: window.unravelAgent.$(this).getPath(),
-                  selector: window.unravelAgent.$(this).getSelector(),
-                  type: JSON.stringify(args[0]),
-                  handler: handlerStr
+                  path: window.unravelAgent.$(this).getPath()
                 }
               }));
             }
