@@ -23,12 +23,6 @@ $("#test2").click(function () {
 
 $("#test3").click(function () {
   secondFunction("bim", "Bazz");
-
-  function fooBar(a, b) {
-    $(window).style(a, b);
-  }
-
-  fooBar();
 });
 
 var secondFunction = function (a, b) {

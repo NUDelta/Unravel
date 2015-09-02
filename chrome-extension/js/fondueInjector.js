@@ -57,7 +57,7 @@ define([], function () {
       getNodeInvocations: function () {
         var _tracerNodes = unravelAgent._(this.getTracerNodes());
 
-        var invocations = window.__tracer.logDelta(this.logHandle, 50);
+        var invocations = window.__tracer.logDelta(this.logHandle, 5000);
         unravelAgent._(invocations).each(function (invocation) {
           invocation.callStack = _(__tracer.backtrace({
             invocationId: invocation.invocationId,

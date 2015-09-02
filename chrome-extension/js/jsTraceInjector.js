@@ -16,19 +16,6 @@ define([],
           }
 
           var methodsArr = [];
-          //var nextFn = arguments.callee.caller;
-          //
-          //if (nextFn) {
-          //  do {
-          //    var currentFn = nextFn.toString();
-          //
-          //    if (currentFn.indexOf("unravelDelete") < 0) {
-          //      methodsArr.push(currentFn);
-          //    }
-          //
-          //    nextFn = nextFn["caller"];
-          //  } while (!!nextFn);
-          //}
 
           methodsArr = methodsArr.reverse();
 
@@ -87,35 +74,8 @@ define([],
                   } catch (ignored) {
                   }
 
-                  var methodsArr = [];
                   var stackTrace = error.stack.replace(/(?:\r\n|\r|\n)/g, '|||');
                   if (stackTrace.indexOf("getPath") < 0) {
-                    var nextFn = arguments.callee.caller;
-
-                    if (nextFn) {
-                      do {
-                        var currentFn = nextFn.toString();
-
-                        if (currentFn.indexOf("unravelDelete") < 0) {
-                          methodsArr.push(currentFn);
-                        }
-
-                        nextFn = nextFn["caller"];
-                      } while (!!nextFn);
-                    }
-
-                    methodsArr = methodsArr.reverse();
-
-                    var calledMethods = methodsArr.join("\n\n");
-
-                    if (window.unravelAgent.storedCalls[calledMethods]) {
-                      window.unravelAgent.storedCalls[calledMethods] += 1;
-                    } else {
-                      window.unravelAgent.storedCalls[calledMethods] = 1;
-                    }
-
-                    //console.log(calledMethods);
-
                     var traceObj = {
                       "detail": {
                         stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
