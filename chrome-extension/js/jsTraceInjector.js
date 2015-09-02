@@ -9,7 +9,6 @@ define([],
           var unravelDelete = null; //Leave here for detection
 
           var args = [].splice.call(arguments, 0);
-
           var eventHandlerFn = args[1];
 
           args[1] = function () {
@@ -23,9 +22,7 @@ define([],
             if (path) {
               window.dispatchEvent(new CustomEvent("eventTrace", {
                 "detail": {
-                  path: window.unravelAgent.$(this).getPath(),
-                  type: JSON.stringify(args[0]),
-                  event: JSON.stringify(wrapperArgs[0])
+                  path: window.unravelAgent.$(this).getPath()
                 }
               }));
             }
@@ -63,39 +60,16 @@ define([],
                   } catch (ignored) {
                   }
 
-                  var methodsArr = [];
                   var stackTrace = error.stack.replace(/(?:\r\n|\r|\n)/g, '|||');
                   if (stackTrace.indexOf("getPath") < 0) {
-                    var nextFn = arguments.callee.caller;
-                    do {
-                      var currentFn = nextFn.toString();
-
-                      if (currentFn.indexOf("unravelDelete") < 0) {
-                        methodsArr.push(currentFn);
-                      }
-
-                      nextFn = nextFn["caller"];
-                    } while (!!nextFn);
-
-                    methodsArr = methodsArr.reverse();
-
-                    var calledMethods = methodsArr.join("\n\n");
-
-                    if (window.unravelAgent.storedCalls[calledMethods]) {
-                      window.unravelAgent.storedCalls[calledMethods] += 1;
-                    } else {
-                      window.unravelAgent.storedCalls[calledMethods] = 1;
-                    }
-
-                    //console.log(calledMethods);
-
-                    window.dispatchEvent(new CustomEvent("JSTrace", {
+                    var traceObj = {
                       "detail": {
                         stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
                         functionName: functionName,
                         args: strArgs
                       }
-                    }));
+                    };
+                    window.dispatchEvent(new CustomEvent("JSTrace", traceObj));
                   }
                 }
 
