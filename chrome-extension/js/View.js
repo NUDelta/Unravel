@@ -347,36 +347,6 @@ define([
       var nodeLogs = o.nodeLogs;
       var tracerNodes = o.tracerNodes;
 
-      //Ugh what a bad-performance mess!
-      var nodeLogIds = _(nodeLogs).keys();
-      _(nodeLogIds).each(function (id) {
-        _(nodeLogs[id]).each(function (log) {
-          if (!log.parents || log.parents.length < 1) {
-            return;
-          }
-
-          var parentInvocationId = log.parents[0].invocationId;
-
-          if (!parentInvocationId) {
-            return;
-          }
-
-          var parentNodeId = _(nodeLogIds).find(function (innerId) {
-            return _(nodeLogs[innerId]).find(function (innerLog) {
-              if (innerLog.invocationId = parentInvocationId) {
-                return true;
-              }
-            });
-          });
-
-          if (parentNodeId) {
-            log.parentNode = _(tracerNodes).find(function (node) {
-              return node.id === parentNodeId;
-            });
-          }
-        });
-      });
-
       this.arrHitLines = _(tracerNodes).reduce(function (memo, node) {
         var idArr = node.id.split("-");
 

@@ -31,8 +31,8 @@ define([], function () {
       getHitsAndInvokes: function () {
         var nodeHits = window.__tracer.hitCountDeltas(this.hitsHandle);
         var invokes = this.getNodeInvocations();
-        var nodeLogs = window.unravelAgent._(invokes).reduce(function(memo, invoke){
-          if(memo[invoke.nodeId]){
+        var nodeLogs = window.unravelAgent._(invokes).reduce(function (memo, invoke) {
+          if (memo[invoke.nodeId]) {
             memo[invoke.nodeId].push(invoke);
           } else {
             memo[invoke.nodeId] = [invoke];
@@ -55,7 +55,25 @@ define([], function () {
       },
 
       getNodeInvocations: function () {
-        return window.__tracer.logDelta(this.logHandle, 50);
+        var _tracerNodes = unravelAgent._(this.getTracerNodes());
+
+        var invocations = window.__tracer.logDelta(this.logHandle, 50);
+        unravelAgent._(invocations).each(function (invocation) {
+          invocation.callStack = _(__tracer.backtrace({
+            invocationId: invocation.invocationId,
+            range: [0, 10]
+          })).reverse();
+
+          unravelAgent._(invocation.callStack).each(function(call){
+            var node = _tracerNodes.find(function(node){
+              return node.id === call.nodeId;
+            });
+
+            call.nodeName = node && node.name ? node.name : "";
+          });
+        });
+
+        return invocations;
       }
     };
 
