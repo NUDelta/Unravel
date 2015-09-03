@@ -154,15 +154,16 @@ define([
         this.reloadInjecting();
       }, this);
 
+      var unravelHits = _(this.arrDomHitLines).uniq(false, function (hitLine) {
+        return hitLine.scriptPath + hitLine.lineNumber
+      }, this);
+
+      unravelHits = _(unravelHits).reject(function (hitLine) {
+        return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
+      });
+
       var postToBin = _.bind(function () {
-        var unravelHits = _(this.arrDomHitLines).uniq(false, function(hitLine){
-          return hitLine.scriptPath + hitLine.lineNumber
-        }, this);
-
-        unravelHits = _(unravelHits).reject(function(hitLine){
-          return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
-        });
-
+        debugger;
         $.ajax({
           url: "http://localhost:8080/api/save",
           data: {
@@ -192,52 +193,86 @@ define([
         return o.order
       }).value();
 
-      var getScriptsFromHTML = _.bind(function (callback) {
-        this.corsGet(this.location.href + "?theseus=no", _.bind(function (http) {
-          var $html = $(http.responseText);
-          var arrEl = [];
-          $html.each(function (i, el) {
-            if (el.tagName === "SCRIPT" && !el.getAttribute("src") && el.innerHTML.indexOf("__tracer") === -1) {
-              arrEl.push(el.innerHTML);
-            }
-          });
-          _(arrEl).each(function (srcJS, i) {
+      var fetchNonFondueSources = _.bind(function () {
+        var scriptHTMLCallback = function (arrJs) {
+          _(arrJs).each(function (srcJS, i) {
             internalScripts[i].js = srcJS; //need a better way to tie
           });
+        };
 
-          callback();
+        if (internalScripts.length > 0) {
+          if (externalScripts.length > 0) {
+            this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
+              scriptHTMLCallback(arrJs);
+              this.getScriptsFromExternal(externalScripts, postToBin);
+            }, this));
+          } else {
+            this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
+              scriptHTMLCallback(arrJs);
+              postToBin();
+            }, this));
+          }
+        } else if (externalScripts.length > 0) {
+          this.getScriptsFromExternal(externalScripts, postToBin);
+        }
+      }, this);
+
+      if (unravelHits.length > 0) {
+        //todo map inline theseus tracer code to regular code
+        var localUnravelHits = _(unravelHits).where({scriptType:"local"});
+        _(unravelHits).each(function(o){o.url = o.script});
+        this.getScriptsFromExternal(localUnravelHits, function(){
+          _(localUnravelHits).each(function(hit){
+            try{
+              hit.lineNumberNative = hit.js.split(/\r?\n/)[hit.lineNumber].split(hit.scriptPath)[1].split("-")[2];
+            } catch(ignored){
+            }
+          });
+          fetchNonFondueSources();
+        });
+      } else {
+        fetchNonFondueSources();
+      }
+    },
+
+    getScriptsFromInlineHTML: function (htmlUrl, noTheseus, callback) {
+      var param = noTheseus ? "?theseus=no" : "";
+      this.corsGet(htmlUrl + param, _.bind(function (http) {
+        var $html = $(http.responseText);
+        var arrEl = [];
+        $html.each(function (i, el) {
+          if (el.tagName !== "SCRIPT"){
+            return;
+          }
+
+          var theseusExclusion = noTheseus ? el.innerHTML.indexOf("__tracer") === -1 : true;
+          var theseusInclusion = !noTheseus ? el.innerHTML.indexOf("__tracer.add(\"/") : true;
+
+          if (!el.getAttribute("src") && theseusExclusion && theseusInclusion) {
+            arrEl.push(el.innerHTML);
+          }
+        });
+
+        callback = _.bind(callback, this);
+        callback(arrEl);
+      }, this));
+    },
+
+    getScriptsFromExternal: function (externalScripts, callback) {
+      var tries = 0;
+      _(externalScripts).each(function (fileObj) {
+        this.corsGet(fileObj.url, _.bind(function (http) {
+          var fileObj = _(externalScripts).find(function (file) {
+            return file.url === http.responseURL;
+          });
+          fileObj.js = http.responseText;
+
+          tries++;
+          if (tries == externalScripts.length) {
+            callback();
+          }
         }, this));
       }, this);
-
-      var getScriptsFromExternal = _.bind(function (callback) {
-        //Get external scripts
-        var tries = 0;
-        _(externalScripts).each(function (fileObj) {
-          this.corsGet(fileObj.url, _.bind(function (http) {
-            var fileObj = _(externalScripts).find(function (file) {
-              return file.url === http.responseURL;
-            });
-            fileObj.js = http.responseText;
-
-            tries++;
-            if (tries == externalScripts.length) {
-              callback();
-            }
-          }, this));
-        }, this);
-      }, this);
-
-      if (internalScripts.length > 0) {
-        if (externalScripts.length > 0) {
-          getScriptsFromHTML(_.bind(function () {
-            getScriptsFromExternal(postToBin);
-          }, this));
-        } else {
-          getScriptsFromHTML(postToBin);
-        }
-      } else if (externalScripts.length > 0) {
-        getScriptsFromExternal(postToBin);
-      }
     },
 
     toggleFilterSVG: function () {
