@@ -154,16 +154,19 @@ define([
         this.reloadInjecting();
       }, this);
 
-      var unravelHits = _(this.arrDomHitLines).uniq(false, function (hitLine) {
-        return hitLine.scriptPath + hitLine.lineNumber
-      }, this);
-
-      unravelHits = _(unravelHits).reject(function (hitLine) {
-        return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
-      });
+      //var unravelHits = _(this.arrDomHitLines).uniq(false, function (hitLine) {
+      //  return hitLine.scriptPath + hitLine.lineNumber
+      //}, this);
+      //
+      //unravelHits = _(unravelHits).reject(function (hitLine) {
+      //  return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
+      //});
 
       var postToBin = _.bind(function () {
-        debugger;
+        //_(unravelHits).each(function(hit){
+        //  delete hit.js;
+        //});
+
         $.ajax({
           url: "http://localhost:8080/api/save",
           data: {
@@ -173,7 +176,7 @@ define([
             fondue: {
               traces: this.arrHitLines,
               scripts: hitScripts,
-              unravelHits: unravelHits
+              //unravelHits: unravelHits
             }
           },
           datatype: "json",
@@ -217,22 +220,22 @@ define([
         }
       }, this);
 
-      if (unravelHits.length > 0) {
-        //todo map inline theseus tracer code to regular code
-        var localUnravelHits = _(unravelHits).where({scriptType:"local"});
-        _(unravelHits).each(function(o){o.url = o.script});
-        this.getScriptsFromExternal(localUnravelHits, function(){
-          _(localUnravelHits).each(function(hit){
-            try{
-              hit.lineNumberNative = hit.js.split(/\r?\n/)[hit.lineNumber].split(hit.scriptPath)[1].split("-")[2];
-            } catch(ignored){
-            }
-          });
-          fetchNonFondueSources();
-        });
-      } else {
-        fetchNonFondueSources();
-      }
+      //if (unravelHits.length > 0) {
+      //  //todo map inline theseus tracer code to regular code
+      //  var localUnravelHits = _(unravelHits).where({scriptType:"local"});
+      //  _(unravelHits).each(function(o){o.url = o.script});
+      //  this.getScriptsFromExternal(localUnravelHits, function(){
+      //    _(localUnravelHits).each(function(hit){
+      //      try{
+      //        hit.lineNumberNative = hit.js.split(/\r?\n/)[hit.lineNumber].split(hit.scriptPath)[1].split("-")[2];
+      //      } catch(ignored){
+      //      }
+      //    });
+      //    fetchNonFondueSources();
+      //  });
+      //} else {
+      fetchNonFondueSources();
+      //}
     },
 
     getScriptsFromInlineHTML: function (htmlUrl, noTheseus, callback) {
