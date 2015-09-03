@@ -74,7 +74,21 @@ define([],
                   }
                 }
 
-                return window.unravelAgent.functionPool[functionName].apply(document, args);
+                var apiReturnVal = window.unravelAgent.functionPool[functionName].apply(document, args);
+
+                try {
+                  var path = window.unravelAgent.$(apiReturnVal).getPath();
+                  if (path && functionName !== "createElement") {
+                    window.dispatchEvent(new CustomEvent("eventTrace", {
+                      "detail": {
+                        path: path
+                      }
+                    }));
+                  }
+                } catch (ignored) {
+                }
+
+                return apiReturnVal;
               }
             })();
           }

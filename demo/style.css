@@ -21,13 +21,13 @@ optgroup,
 select,
 textarea {
   color: inherit;
-  font-family: inherit;
-  font-size: inherit;
   font-style: inherit;
   font-variant: inherit;
   font-weight: inherit;
   font-stretch: inherit;
+  font-size: inherit;
   line-height: inherit;
+  font-family: inherit;
   margin: 0px;
 }
 
@@ -245,11 +245,11 @@ h4,
 }
 
 .col-xs-4 {
-  width: 33.33333333%;
+  width: 33.3333%;
 }
 
 .col-xs-1 {
-  width: 8.33333333%;
+  width: 8.33333%;
 }
 
 .btn {
