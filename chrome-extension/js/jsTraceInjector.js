@@ -66,7 +66,8 @@ define([],
                       "detail": {
                         stack: error.stack.replace(/(?:\r\n|\r|\n)/g, '|||'),
                         functionName: functionName,
-                        args: strArgs
+                        args: strArgs,
+                        pageOrigin: window.location.origin
                       }
                     };
                     window.dispatchEvent(new CustomEvent("JSTrace", traceObj));

@@ -25,9 +25,6 @@ define([
       "click #fiddle": "fiddle"
     },
 
-    currentPath: "",
-
-    elementMap: {},
 
     dataTable: null,
 
@@ -35,23 +32,25 @@ define([
 
     pathsJSRows: [],
 
-    filterSVG: true,
+    domPathsToKeep: [],
 
-    eventTracePaths: [],
+    arrHitLines: [],
+
+    arrDomHitLines: [],
 
     constrainToPath: false,
 
-    domPathsToKeep: [],
+    filterSVG: true,
+
+    whittled: false,
+
+    currentPath: "",
 
     lastRecordingJS: "",
 
     activeCSS: "",
 
     activeHTML: "",
-
-    arrHitLines: [],
-
-    whittled: false,
 
     initialize: function () {
       this.parseFondue = _.bind(this.parseFondue, this);
@@ -131,7 +130,7 @@ define([
       }
 
       var hitScripts = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
-        var meta = _.find(this.metaScripts, function(s){
+        var meta = _.find(this.metaScripts, function (s) {
           return s.path === path;
         }, this);
 
@@ -156,6 +155,14 @@ define([
       }, this);
 
       var postToBin = _.bind(function () {
+        var unravelHits = _(this.arrDomHitLines).uniq(false, function(hitLine){
+          return hitLine.scriptPath + hitLine.lineNumber
+        }, this);
+
+        unravelHits = _(unravelHits).reject(function(hitLine){
+          return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
+        });
+
         $.ajax({
           url: "http://localhost:8080/api/save",
           data: {
@@ -164,7 +171,8 @@ define([
             javascript: "",
             fondue: {
               traces: this.arrHitLines,
-              scripts: hitScripts
+              scripts: hitScripts,
+              unravelHits: unravelHits
             }
           },
           datatype: "json",
@@ -173,14 +181,14 @@ define([
       }, this);
 
       var externalScripts = _(hitScripts).chain().where({
-        inline:false
-      }).sortBy(function(o){
+        inline: false
+      }).sortBy(function (o) {
         return o.order
       }).value();
 
       var internalScripts = _(hitScripts).chain().where({
-        inline:true
-      }).sortBy(function(o){
+        inline: true
+      }).sortBy(function (o) {
         return o.order
       }).value();
 
@@ -230,26 +238,6 @@ define([
       } else if (externalScripts.length > 0) {
         getScriptsFromExternal(postToBin);
       }
-    },
-
-    __fiddle: function () {
-      $.ajax({
-        url: "http://localhost:8080/api/save",
-        data: {
-          html: this.activeHTML,
-          css: this.activeCSS,
-          javascript: "",
-          fondue: foo
-        },
-        datatype: "json",
-        method: "post"
-      }).done(_.bind(function (response) {
-        var binUrl = response.url;
-        var tabUrl = "http://localhost:8080/" + binUrl + "/edit?html,css,js,output";
-        console.log(tabUrl);
-        window.open(tabUrl);
-        this.reloadInjecting();
-      }, this));
     },
 
     toggleFilterSVG: function () {
@@ -327,6 +315,9 @@ define([
     reset: function () {
       this.domDataTable.row().remove().draw(false);
       this.jsDataTable.row().remove().draw(false);
+      this.domPathsToKeep = [];
+      this.arrHitLines = [];
+      this.arrDomHitLines = [];
       this.pathsDomRows = [];
       this.pathsJSRows = [];
       this.activeHTML = "";
@@ -456,12 +447,11 @@ define([
     },
 
     handleEventTrace: function (data) {
-      this.eventTracePaths = _.union(this.eventTracePaths, [data.path]);
       this.addToDomPaths(data.path);
     },
 
     handleJSTrace: function (traceEvent) {
-      var callStack = this.parseError(traceEvent.stack);
+      var callStack = this.parseError(traceEvent.stack, traceEvent.pageOrigin);
 
       var formattedArgs = traceEvent.args.replace("[", "");
       formattedArgs = formattedArgs.replace("]", "");
@@ -469,10 +459,11 @@ define([
       var formattedTrace = "";
       callStack = _(callStack).reverse();
       _(callStack).each(function (frame) {
-        var cleanedScriptName = frame.script.replace("http://54.175.112.172", "");
+        var cleanedScriptName = frame.script;
         var sourceUrl = "<a href='#' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (cleanedScriptName || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
-      });
+        this.arrDomHitLines.push(frame)
+      }, this);
 
       //TODO - add different arguments here
       var path = formattedTrace;
@@ -492,7 +483,7 @@ define([
       this.jsDataTable.draw()
     },
 
-    parseError: function (error) {
+    parseError: function (error, pageOrigin) {
       var frames = error.split('|||').slice(1).map(function (line) {
         if (line.indexOf("yimg.com") > -1) {
           return "remove";
@@ -535,9 +526,35 @@ define([
           return "remove";
         }
 
+        var scriptType = "";
+        var path = "";
+        var scriptOrigin = "";
+        var scriptHref = locationParts[0];
+        if (scriptHref && scriptHref.split(pageOrigin)[1] === "/") {
+          scriptType = "inline";
+          scriptOrigin = pageOrigin;
+          path = "/";
+        } else if (scriptHref && scriptHref.indexOf(pageOrigin) > -1) {
+          scriptType = "local";
+          scriptOrigin = pageOrigin;
+          path = scriptHref.split(pageOrigin)[1];
+        } else if (scriptHref && scriptHref.indexOf("http") > -1) {
+          scriptType = "external";
+          var urlObj = new URL(scriptHref);
+          path = urlObj.pathname;
+          scriptOrigin = urlObj.origin;
+        } else {
+          scriptType = "unknown";
+          scriptOrigin = "unknown"
+          path = "unknown";
+        }
+
         return {
           functionName: functionName,
-          script: locationParts[0],
+          script: scriptHref,
+          scriptOrigin: scriptOrigin,
+          scriptType: scriptType,
+          scriptPath: path,
           lineNumber: locationParts[1],
           charNumber: locationParts[2]
         };
