@@ -116,7 +116,12 @@ define([
 
       http.onreadystatechange = function () {
         if (http.readyState == 4 && http.status == 200) {
-          callback(http);
+          try {
+            callback(http);
+          } catch (err) {
+            debugger;
+          }
+
         }
       };
 
@@ -154,34 +159,25 @@ define([
         this.reloadInjecting();
       }, this);
 
-      //var unravelHits = _(this.arrDomHitLines).uniq(false, function (hitLine) {
-      //  return hitLine.scriptPath + hitLine.lineNumber
-      //}, this);
-      //
-      //unravelHits = _(unravelHits).reject(function (hitLine) {
-      //  return hitLine.scriptType !== "inline" && hitLine.scriptType !== "local"
-      //});
-
       var postToBin = _.bind(function () {
-        //_(unravelHits).each(function(hit){
-        //  delete hit.js;
-        //});
-
-        $.ajax({
-          url: "http://localhost:8080/api/save",
-          data: {
-            html: this.activeHTML,
-            css: this.activeCSS,
-            javascript: "",
-            fondue: {
-              traces: this.arrHitLines,
-              scripts: hitScripts,
-              //unravelHits: unravelHits
-            }
-          },
-          datatype: "json",
-          method: "post"
-        }).done(jsBinCallback);
+        try {
+          $.ajax({
+            url: "http://localhost:8080/api/save",
+            data: {
+              html: this.activeHTML,
+              css: this.activeCSS,
+              javascript: "",
+              fondue: {
+                traces: JSON.stringify(this.arrHitLines),
+                scripts: JSON.stringify(hitScripts)
+              }
+            },
+            datatype: "json",
+            method: "post"
+          }).done(jsBinCallback);
+        } catch (err) {
+          debugger;
+        }
       }, this);
 
       var externalScripts = _(hitScripts).chain().where({
@@ -196,46 +192,27 @@ define([
         return o.order
       }).value();
 
-      var fetchNonFondueSources = _.bind(function () {
-        var scriptHTMLCallback = function (arrJs) {
-          _(arrJs).each(function (srcJS, i) {
-            internalScripts[i].js = srcJS; //need a better way to tie
-          });
-        };
+      var scriptHTMLCallback = function (arrJs) {
+        _(arrJs).each(function (srcJS, i) {
+          internalScripts[i].js = srcJS; //need a better way to tie
+        });
+      };
 
-        if (internalScripts.length > 0) {
-          if (externalScripts.length > 0) {
-            this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
-              scriptHTMLCallback(arrJs);
-              this.getScriptsFromExternal(externalScripts, postToBin);
-            }, this));
-          } else {
-            this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
-              scriptHTMLCallback(arrJs);
-              postToBin();
-            }, this));
-          }
-        } else if (externalScripts.length > 0) {
-          this.getScriptsFromExternal(externalScripts, postToBin);
+      if (internalScripts.length > 0) {
+        if (externalScripts.length > 0) {
+          this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
+            scriptHTMLCallback(arrJs);
+            this.getScriptsFromExternal(externalScripts, postToBin);
+          }, this));
+        } else {
+          this.getScriptsFromInlineHTML(this.location.href, true, _.bind(function (arrJs) {
+            scriptHTMLCallback(arrJs);
+            postToBin();
+          }, this));
         }
-      }, this);
-
-      //if (unravelHits.length > 0) {
-      //  //todo map inline theseus tracer code to regular code
-      //  var localUnravelHits = _(unravelHits).where({scriptType:"local"});
-      //  _(unravelHits).each(function(o){o.url = o.script});
-      //  this.getScriptsFromExternal(localUnravelHits, function(){
-      //    _(localUnravelHits).each(function(hit){
-      //      try{
-      //        hit.lineNumberNative = hit.js.split(/\r?\n/)[hit.lineNumber].split(hit.scriptPath)[1].split("-")[2];
-      //      } catch(ignored){
-      //      }
-      //    });
-      //    fetchNonFondueSources();
-      //  });
-      //} else {
-      fetchNonFondueSources();
-      //}
+      } else if (externalScripts.length > 0) {
+        this.getScriptsFromExternal(externalScripts, postToBin);
+      }
     },
 
     getScriptsFromInlineHTML: function (htmlUrl, noTheseus, callback) {
@@ -244,7 +221,7 @@ define([
         var $html = $(http.responseText);
         var arrEl = [];
         $html.each(function (i, el) {
-          if (el.tagName !== "SCRIPT"){
+          if (el.tagName !== "SCRIPT") {
             return;
           }
 
@@ -341,6 +318,7 @@ define([
       UnravelAgent.runInPage(function () {
         var tracerNodes = unravelAgent.fondueBridge.getTracerNodes();
         var hitsAndInvokes = unravelAgent.fondueBridge.getHitsAndInvokes();
+        hitsAndInvokes = JSON.parse(hitsAndInvokes);
 
         return {
           tracerNodes: tracerNodes,

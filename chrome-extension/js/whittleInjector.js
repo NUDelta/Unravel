@@ -14,12 +14,6 @@ define([],
         var scripts = unravelAgent.$("script");
 
         unravelAgent._(scripts).each(function (scriptEl, h) {
-          //If its the tracer installer or untraced code, we don't want it
-          if (scriptEl.innerHTML.indexOf("__tracer") === -1 ||
-            scriptEl.innerHTML.indexOf("__tracer = new (function ()") !== -1) {
-            return;
-          }
-
           var path = "";
           var url = "";
 
@@ -28,7 +22,11 @@ define([],
             $scriptEl.attr("src", scriptEl.src);
             url = scriptEl.src;
           } else {
-            path = scriptEl.innerHTML.split("__tracer.add(\"")[1].split("\"")[0];
+            try{
+              path = scriptEl.innerHTML.split("__tracer.add(\"")[1].split("\"")[0];
+            } catch (err){
+              return;
+            }
           }
 
           metaScripts.push({

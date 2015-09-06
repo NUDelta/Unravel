@@ -46,9 +46,13 @@ define([],
             }
           },
           {
-            lib: "Require",
+            lib: "RequireJS",
             testFn: function () {
-              return (typeof require === 'function') ? require.version : undefined;
+              if (typeof require === 'function') {
+                return require.version || '1.0+'
+              } else {
+                return undefined;
+              }
             }
           },
           {
