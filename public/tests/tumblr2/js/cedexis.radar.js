@@ -1754,7 +1754,7 @@
                     }
                 }
                 W.timeout = X || 10000;
-                W.send()
+                //W.send()
             } catch (Y) {}
         }
     };

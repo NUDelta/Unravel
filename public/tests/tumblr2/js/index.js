@@ -19488,7 +19488,7 @@ require = function e(t, n, r) {
                     return this.domManip(arguments, function(e) {
                         if (1 === this.nodeType || 11 === this.nodeType || 9 === this.nodeType) {
                             var t = d(this, e);
-                            t.appendChild(e)
+                            //t.appendChild(e)
                         }
                     })
                 },
@@ -20391,7 +20391,7 @@ require = function e(t, n, r) {
                             }
                         }, o.onload = t(), o.onerror = t("error"), t = Ft[s] = t("abort");
                         try {
-                            o.send(e.hasContent && e.data || null)
+                            //o.send(e.hasContent && e.data || null)
                         } catch (a) {
                             if (t) throw a
                         }

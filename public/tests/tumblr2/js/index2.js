@@ -27621,7 +27621,7 @@ require = function t(e, i, s) {
         }
 
         function o(t, e, i) {
-            var o = window.navigator.sendBeacon(t, JSON.stringify(e));
+            //var o = window.navigator.sendBeacon(t, JSON.stringify(e));
             return o || (o = s(t, e, i)), o
         }
         var n, a = t("jquery");

@@ -804,7 +804,7 @@ YAHOO.i13n.Rapid = function(E) {
                     }
                 }
             }
-            aV.send(aW)
+            //aV.send(aW)
         }
         var aD = function(aU) {
             var aW = {
