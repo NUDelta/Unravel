@@ -134,20 +134,50 @@ define([
         return;
       }
 
-      var hitScripts = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
+      //var hitScripts = _.chain(this.arrHitLines).pluck("path").unique().map(function (path) {
+      //  var meta = _.find(this.metaScripts, function (s) {
+      //    return s.path === path;
+      //  }, this);
+      //
+      //  return {
+      //    path: path,
+      //    url: meta.url + "?theseus=no",
+      //    inline: meta.inline,
+      //    domPath: meta.domPath,
+      //    order: meta.order,
+      //    js: ""
+      //  };
+      //}, this).value();
+
+
+      var hitScripts = _.chain(this.tracerNodes).pluck("path").unique().map(function (path) {
         var meta = _.find(this.metaScripts, function (s) {
           return s.path === path;
         }, this);
 
+        if (!meta) {
+          return {
+            path: path,
+            builtIn: true,
+            url: null,
+            inline: null,
+            domPath: null,
+            order: null,
+            js: ""
+          };
+        }
+
         return {
           path: path,
           url: meta.url.split("#")[0] + "?theseus=no", //ignore hash parts
+          builtIn: false,
           inline: meta.inline,
           domPath: meta.domPath,
           order: meta.order,
           js: ""
         };
       }, this).value();
+
 
       var jsBinCallback = _.bind(function (response) {
         var binUrl = response.url;
@@ -354,6 +384,7 @@ define([
       var nodeHits = o.nodeHits;
       var nodeLogs = o.nodeLogs;
       var tracerNodes = o.tracerNodes;
+      this.tracerNodes = tracerNodes;
 
       this.arrHitLines = _(tracerNodes).reduce(function (memo, node) {
         var idArr = node.id.split("-");
