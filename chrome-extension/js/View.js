@@ -141,7 +141,7 @@ define([
 
         return {
           path: path,
-          url: meta.url + "?theseus=no",
+          url: meta.url.split("#")[0] + "?theseus=no", //ignore hash parts
           inline: meta.inline,
           domPath: meta.domPath,
           order: meta.order,
@@ -217,6 +217,9 @@ define([
 
     getScriptsFromInlineHTML: function (htmlUrl, noTheseus, callback) {
       var param = noTheseus ? "?theseus=no" : "";
+
+      htmlUrl = htmlUrl.split("#")[0] + param;  //ignoring after hashes because server doesn't get them
+
       this.corsGet(htmlUrl + param, _.bind(function (http) {
         var $html = $(http.responseText);
         var arrEl = [];
