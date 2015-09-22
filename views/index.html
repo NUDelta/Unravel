@@ -2,9 +2,18 @@
 <html lang="en">
   <head>
     <title>API Demo</title>
-    <script src="/javascripts/lib/jquery-2.1.4.js"></script>
-    <script src="/javascripts/lib/underscore-min.js"></script>
-    <script src="/javascripts/lib/moment.js"></script>
+    <script src="/javascripts/lib/LAB.js"></script>
+    <script type="text/javascript">
+      $LAB
+       .script("/javascripts/lib/jquery-2.1.4.js").wait()
+       .script("/javascripts/lib/underscore-min.js").wait()
+       .script("/javascripts/lib/moment.js").wait()
+      
+    </script>
+    <!--script(src='/javascripts/lib/jquery-2.1.4.js')-->
+    <!--script(src='/javascripts/lib/underscore-min.js')-->
+    <!--script(src='/javascripts/lib/moment.js')-->
+    
     <!--script(src='//localhost:35729/livereload.js')-->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet"/>
     <link href="/stylesheets/style.css" rel="stylesheet"/>
@@ -62,5 +71,9 @@
       <!--  img(id="effect3", src="/img/ship.jpg", height="200px", style="display:none;")-->
     </div>
   </body>
-  <script src="/javascripts/home.js"></script>
+  <!--script(src='/javascripts/home.js')-->
+  <script type="text/javascript">
+    $LAB
+      .script("/javascripts/home.js").wait()
+  </script>
 </html>
