@@ -335,30 +335,31 @@ define([
 
       var formattedArgs = traceEvent.args.replace("[", "");
       formattedArgs = formattedArgs.replace("]", "");
-      var domCall = "document." + traceEvent.functionName + "(" + formattedArgs + ")<br/>";
+      var domCall = "<span>document." + traceEvent.functionName + "(" + formattedArgs + ")</span><br/>";
       var formattedTrace = "";
       callStack = _(callStack).reverse();
       _(callStack).each(function (frame) {
-        var cleanedScriptName = frame.script.replace("http://54.175.112.172", "");
+        var cleanedScriptName = frame.script;
+        //var cleanedScriptName = frame.script.replace("http://54.175.112.172", "");
         var sourceUrl = "<a href='#' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (cleanedScriptName || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
       });
 
-      //TODO - add different arguments here
-      var path = formattedTrace;
-
-      if (this.pathsJSRows[path]) {
-        var data = this.pathsJSRows[path].data();
+      if (this.pathsJSRows[formattedTrace]) {
+        var data = this.pathsJSRows[formattedTrace].data();
         data[0] = data[0] + 1;
-        this.pathsJSRows[path].data(data);
+        data[2] = "<div class='inlay'>" + $(data[2]).html() + domCall + "</div>";
+
+        this.pathsJSRows[formattedTrace].data(data);
       } else {
         var dt = this.jsDataTable.row.add([
           1,
           formattedTrace,
-          domCall
+          "<div class='inlay'>" + domCall + "</div>"
         ]);
-        this.pathsJSRows[path] = dt.row(dt.index());
+        this.pathsJSRows[formattedTrace] = dt.row(dt.index());
       }
+
       this.jsDataTable.draw()
     },
 
