@@ -29,6 +29,12 @@ chrome.extension.onMessage.addListener(function (message, sender, sendResponse) 
     if (port) {
       //Send the message to the panel
       port.postMessage(message);
+
+      if (message.name && message.name === "REWRITE") {
+        setTimeout(function () {
+          chrome.tabs.executeScript(sender.tab.id, {file: "contentscript.js"});
+        }, 1000)
+      }
     }
   }
 });

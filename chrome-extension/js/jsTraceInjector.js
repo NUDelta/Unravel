@@ -93,5 +93,141 @@ define([],
 
         window.unravelAgent.traceJsActive = false;
       };
+
+      window.unravelAgent.beautifyJS = function () {
+        var keepKeys = [
+          "applicationCache",
+          "caches",
+          "closed",
+          "Components",
+          "console",
+          "content",
+          "controllers",
+          "crypto",
+          "defaultStatus",
+          "devicePixelRatio",
+          "dialogArguments",
+          "directories",
+          "document",
+          "frameElement",
+          "frames",
+          "fullScreen",
+          "globalStorage",
+          "history",
+          "innerHeight",
+          "innerWidth",
+          "length",
+          "location",
+          "locationbar",
+          "localStorage",
+          "menubar",
+          "messageManager",
+          "mozAnimationStartTime",
+          "mozInnerScreenX",
+          "mozInnerScreenY",
+          "mozPaintCount",
+          "name",
+          "navigator",
+          "opener",
+          "outerHeight",
+          "outerWidth",
+          "pageXOffset",
+          "pageYOffset",
+          "sessionStorage",
+          "parent",
+          "performance",
+          "personalbar",
+          "pkcs11",
+          "returnValue",
+          "screen",
+          "screenX",
+          "screenY",
+          "scrollbars",
+          "scrollMaxX",
+          "scrollMaxY",
+          "scrollX",
+          "scrollY",
+          "self",
+          "sessionStorage",
+          "sidebar",
+          "status",
+          "statusbar",
+          "toolbar",
+          "top",
+          "window",
+          "external",
+          "console",
+          "chrome",
+          "unravelAgent"
+        ];
+
+        var http = new XMLHttpRequest();
+        http.open("POST", "https://localhost:9001/htmlUrl/" + encodeURIComponent(window.location.href) + "/basePath/" + encodeURIComponent(window.location.origin + window.location.pathname), true);
+
+        http.onreadystatechange = function () {
+          if (http.readyState == 4 && http.status == 200) {
+            try {
+              window.unravelAgent.response = http.responseText;
+
+              var deleteKeys = [];
+
+              for (var key in window) {
+                if (window.hasOwnProperty(key)) {
+                  if (!window.unravelAgent._(keepKeys).contains(key)) {
+                    deleteKeys.push(key);
+                  }
+                }
+              }
+
+              window.dispatchEvent(new CustomEvent("REWRITE", {detail: "foo"}));
+              //console.log("Deleting", JSON.stringify(deleteKeys));
+
+              var wontDeleteKeys = [];
+              window.unravelAgent._(deleteKeys).each(function (key) {
+                var wasDeleted = delete window[key];
+                if (!wasDeleted) {
+                  wontDeleteKeys.push(key);
+                }
+              });
+
+              window.unravelAgent._(wontDeleteKeys).each(function (key) {
+                window[key] = undefined;
+                delete window[key];
+                if (window[key]) {
+                  console.log("Secondary delete didn't work:", key);
+                }
+              });
+
+              if (window.localStorage && window.localStorage.clear) {
+                window.localStorage.clear();
+              }
+
+              document.open('text/html');
+              document.write("<html><head></head><body></body></html>");
+              document.close();
+
+              document.open('text/html');
+              document.write(http.responseText);
+              document.close();
+            } catch (err) {
+              //debugger;
+            }
+          }
+        };
+
+        http.setRequestHeader('Content-Type', 'application/json');
+        http.send(JSON.stringify({
+          originalHTML: window.unravelAgent.$("html")[0].outerHTML
+        }));
+        //
+        //window.unravelAgent.$.ajax("https://localhost:9001/htmlUrl/" + encodeURIComponent(window.location.href) + "/basePath/" + encodeURIComponent(window.location.origin + window.location.pathname), {
+        //  data: JSON.stringify({
+        //    originalHTML: window.unravelAgent.$("html")[0].outerHTML
+        //  }),
+        //  contentType: 'application/json',
+        //  type: 'POST'
+        //});
+      };
+
     };
   });

@@ -22,7 +22,8 @@ define([
       "click #constrain": "toggleConstrain",
       "click #whittle": "whittle",
       "click #reload": "reloadInjecting",
-      "click #fiddle": "fiddle"
+      "click #fiddle": "fiddle",
+      "click #beautifyJS": "beautifyJS"
     },
 
     currentPath: "",
@@ -44,7 +45,6 @@ define([
     domPathsToKeep: [],
 
     initialize: function (options) {
-
     },
 
     render: function (unravelAgentActive) {
@@ -340,6 +340,12 @@ define([
       callStack = _(callStack).reverse();
       _(callStack).each(function (frame) {
         var cleanedScriptName = frame.script;
+
+        if(cleanedScriptName.indexOf("theseus")){
+          cleanedScriptName = decodeURIComponent(cleanedScriptName).replace("https://localhost:9001/?url=", "");
+          cleanedScriptName = cleanedScriptName.split(".js")[0];
+        }
+
         //var cleanedScriptName = frame.script.replace("http://54.175.112.172", "");
         var sourceUrl = "<a href='#' title='Inspect Element' class='inspectSource' data-path='" + frame.script + "|||" + frame.lineNumber + "'>" + (cleanedScriptName || 'none') + ":" + (frame.lineNumber || "none") + ":" + (frame.charNumber || "none") + "</a>";
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
@@ -468,6 +474,12 @@ define([
 
     reloadInjecting: function () {
       UnravelAgent.reloadInjecting();
+    },
+
+    beautifyJS: function(){
+      UnravelAgent.runInPage(function () {
+        unravelAgent.beautifyJS();
+      });
     }
   });
 });

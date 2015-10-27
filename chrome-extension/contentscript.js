@@ -54,3 +54,11 @@ window.addEventListener('DOMContentLoaded', function () {
     name: 'ready'
   });
 }, false);
+
+window.addEventListener("REWRITE", function (event) {
+  chrome.extension.sendMessage({
+    target: "page",
+    name: "REWRITE",
+    data: event.detail
+  });
+}, false);
