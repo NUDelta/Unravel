@@ -351,6 +351,12 @@ define([
         formattedTrace += sourceUrl + " (" + frame.functionName + ")<br/>";
       });
 
+      if (formattedTrace.indexOf("Subscriber._notify") > -1 ||
+        formattedTrace.indexOf("Object.F.util.getElementById") > -1
+      ){
+        return;
+      }
+
       if (this.pathsJSRows[formattedTrace]) {
         var data = this.pathsJSRows[formattedTrace].data();
         data[0] = data[0] + 1;

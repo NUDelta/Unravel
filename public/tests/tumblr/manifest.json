@@ -1,0 +1,40 @@
+{
+  "name": "Tumblr",
+  "short_name": "Tumblr",
+  "icons": [
+    {
+      "src": "https://secure.assets.tumblr.com/images/apple-touch-icon-60x-60.png",
+      "sizes": "60x60",
+      "type": "image/png"
+    },
+    {
+      "src": "https://secure.assets.tumblr.com/images/apple-touch-icon-76x76.png",
+      "sizes": "76x76",
+      "type": "image/png"
+    },
+    {
+      "src": "https://secure.assets.tumblr.com/images/apple-touch-icon-120x120.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "https://secure.assets.tumblr.com/images/web-app-icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "https://secure.assets.tumblr.com/images/apple-touch-icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.tumblr"
+    }
+  ]
+}

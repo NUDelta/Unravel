@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+<ShortName>Flickr</ShortName>
+<Description>Flickr</Description>
+<Image height="16" width="16" type="image/x-icon">http://www.flickr.com/favicon.ico</Image>
+<Url type="text/html" method="get" template="http://www.flickr.com/search/?q={searchTerms}"/>
+</OpenSearchDescription>

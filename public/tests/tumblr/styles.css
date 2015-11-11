@@ -1,0 +1,1103 @@
+@charset "UTF-8";
+.showcase .create-section .create-graphic .text-icon:before, .showcase .create-section .create-graphic .photo-icon:before, .showcase .create-section .create-graphic .quote-icon:before, .showcase .create-section .create-graphic .link-icon:before, .showcase .create-section .create-graphic .chat-icon:before, .showcase .create-section .create-graphic .audio-icon:before, .showcase .create-section .create-graphic .video-icon:before {
+  font-family: "tumblr-icons", "Blank";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  text-decoration: none;
+  text-transform: none
+}
+
+html.show-about-tumblr {
+  height: 100%
+}
+
+html.show-about-tumblr body {
+  height: 100%;
+  overflow: auto
+}
+
+html.show-about-tumblr .about-tumblr-showcase.ready, html.show-about-tumblr .about-tumblr-showcase.ready + .l-header-container .logged-out-header {
+  min-width: 540px
+}
+
+html.show-about-tumblr .logged-out-header .logo {
+  cursor: pointer
+}
+
+.about-tumblr-showcase {
+  font-size: 16px;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  -webkit-animation: aboutTumblrIntro .7s ease-out .5s;
+  animation: aboutTumblrIntro .7s ease-out .5s;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards
+}
+
+.about-tumblr-showcase .showcase {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 1
+}
+
+.about-tumblr-showcase .section-title {
+  color: #fff;
+  font-family: "Gibson", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-size: 60px;
+  line-height: 1;
+  margin-bottom: 15px
+}
+
+.about-tumblr-showcase .section {
+  color: #fff;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  transition: -webkit-transform .7s cubic-bezier(.825, 0, .5, 1);
+  transition: transform .7s cubic-bezier(.825, 0, .5, 1)
+}
+
+.about-tumblr-showcase .section .section-content {
+  line-height: 1.4
+}
+
+.about-tumblr-showcase .section.login-section {
+  color: inherit;
+  padding-top: 0;
+  z-index: 90210
+}
+
+.about-tumblr-showcase .section.old-hat {
+  -webkit-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%)
+}
+
+.login-with-about .drawer {
+  z-index: 92
+}
+
+.login-with-about .ui_peepr_glass {
+  z-index: 91
+}
+
+.layout_onboarding .l-header-container {
+  box-shadow: none
+}
+
+.l-header-container .login-button {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all .25s cubic-bezier(.165, .84, .44, 1), opacity 1ms linear
+}
+
+.l-header-container .signup-button {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all .25s cubic-bezier(.165, .84, .44, 1), color .7s ease-out, opacity 1ms linear;
+  margin-right: 0
+}
+
+.show-about + .l-header-container .signup-button {
+  color: #56bc8a
+}
+
+.show-blogs + .l-header-container .signup-button {
+  color: #a77dc2
+}
+
+.show-dashboard + .l-header-container .signup-button {
+  color: #36465d
+}
+
+.show-create + .l-header-container .signup-button {
+  color: #f2992e
+}
+
+.signup_account .l-header-container .hide-logo .signup-button {
+  color: #56bc8a
+}
+
+.l-header-container .hide-logo .signup_link {
+  margin-right: 0
+}
+
+.signup_account .l-header-container .hide-logo .signup-button, .signup_login .l-header-container .hide-logo .login-button {
+  margin-right: 0;
+  max-width: 0;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  pointer-events: none
+}
+
+@media only screen and (max-width: 1100px), only screen and (max-height: 800px) {
+  .about-tumblr-showcase .section-title {
+    font-size: 42px
+  }
+}
+
+@media only screen and (max-width: 900px), only screen and (max-height: 540px) {
+  .about-tumblr-showcase .section-title {
+    font-size: 34px
+  }
+}
+
+@-webkit-keyframes aboutTumblrIntro {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+@keyframes aboutTumblrIntro {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+.showcase-pagination {
+  left: 40px;
+  position: absolute;
+  top: 50%;
+  z-index: 2147483643;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%)
+}
+
+.showcase-pagination .dot {
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px #fff;
+  cursor: pointer;
+  height: 16px;
+  margin-bottom: 10px;
+  opacity: .4;
+  position: relative;
+  width: 16px;
+  box-sizing: border-box
+}
+
+.showcase-pagination .dot:hover {
+  opacity: 1
+}
+
+.showcase-pagination .dot.active {
+  background: #fff;
+  box-shadow: none;
+  opacity: 1
+}
+
+@media only screen and (max-width: 540px) {
+  .showcase-pagination {
+    left: 20px
+  }
+}
+
+.about-tumblr-showcase .recaptcha2_captcha.signup_view {
+  max-height: 78px
+}
+
+.about-tumblr-showcase .recaptcha2_captcha.signup_view .form_row {
+  background: 0 0
+}
+
+.about-tumblr-showcase .dash_b_form_container {
+  display: none;
+  left: 50%;
+  margin-left: -400px;
+  position: absolute;
+  top: 50%;
+  width: 800px;
+  box-sizing: border-box
+}
+
+.about-tumblr-showcase .dash_b_form_container .signup_forms_container {
+  background: 0 0
+}
+
+.about-tumblr-showcase .dash_b_form_container .form-header-welcome {
+  display: none
+}
+
+.about-tumblr-showcase .dash_b_form_container .form-header-welcome .section-title {
+  text-align: center
+}
+
+.about-tumblr-showcase .dash_b_form_container .form_row {
+  background: #fff;
+  z-index: 2
+}
+
+.about-tumblr-showcase .dash_b_form_container .form_row .signup_view.captcha {
+  background-color: #fff
+}
+
+.about-tumblr-showcase .dash_b_form_container .signup_forms_submit {
+  z-index: 1
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps {
+  color: #fff;
+  display: none;
+  margin-top: 25px;
+  text-align: center
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps .apps {
+  list-style: none;
+  margin: 90px 0 0
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps .apps .app-item {
+  display: inline-block
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps .app-link {
+  display: block;
+  height: 40px;
+  width: 135px
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps .app-ios {
+  background: url('/images/mobile-install-apple.png?v=13b72b384d00de5d16981a99447beb91') no-repeat;
+  margin-right: 10px
+}
+
+.about-tumblr-showcase .dash_b_form_container .mobile-apps .app-android {
+  background: url('/images/mobile-install-google.png?v=fd65e68a642485cbfc865a803adb4527') no-repeat
+}
+
+.about-tumblr-showcase.show-login .dash_b_form_container, .about-tumblr-showcase.show-welcome .dash_b_form_container {
+  display: block;
+  -webkit-animation: signupFormIntro .3s ease-out .7s;
+  animation: signupFormIntro .3s ease-out .7s;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards
+}
+
+.about-tumblr-showcase.show-login .mobile-apps, .about-tumblr-showcase.show-welcome .mobile-apps {
+  display: block
+}
+
+.about-tumblr-showcase.show-welcome .dash_b_form_container.no_subheading {
+  margin-top: -230px
+}
+
+.about-tumblr-showcase.show-welcome .form-header-welcome {
+  display: block
+}
+
+.about-tumblr-showcase.show-welcome .dash_b_form_header {
+  display: none
+}
+
+.no-js .about-tumblr-showcase .dash_b_form_container, .is_mobile .about-tumblr-showcase .dash_b_form_container {
+  display: block
+}
+
+@-webkit-keyframes signupFormIntro {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(25px);
+    transform: translateY(25px)
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0)
+  }
+}
+
+@keyframes signupFormIntro {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(25px);
+    transform: translateY(25px)
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0)
+  }
+}
+
+@media screen and (max-height: 650px) {
+  .mobile-apps {
+    opacity: 0;
+    pointer-events: none
+  }
+}
+
+@media only screen and (max-width: 900px), only screen and (max-height: 800px) {
+  .about-tumblr-showcase.show-welcome .dash_b_form_container.has_subheading {
+    margin-top: -210px
+  }
+
+  .about-tumblr-showcase .mobile-apps {
+    display: none
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .about-tumblr-showcase .dash_b_form_container {
+    width: 540px;
+    margin-left: -270px
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .about-tumblr-showcase .dash_b_form_container .mobile-apps .app-ios {
+    background: url('/images/mobile-install-apple@2x.png?v=a9db0db5725a4aa27041f2e91f85f014') no-repeat;
+    background-size: 135px 40px
+  }
+
+  .about-tumblr-showcase .dash_b_form_container .mobile-apps .app-android {
+    background: url('/images/mobile-install-google@2x.png?v=d7e402730c4670d317726da0fb0fc7a2') no-repeat;
+    background-size: 135px 40px
+  }
+}
+
+.showcase .login-section .fullscreen_post_bg, .showcase .login-section .fullscreen_post_footer {
+  bottom: 0;
+  position: absolute;
+  transition: bottom .3s ease-out 1.7s
+}
+
+.showcase .login-section .fullscreen_post_bg {
+  background-color: #36465d
+}
+
+.showcase .login-section .fullscreen_post_bg:before {
+  position: absolute
+}
+
+.showcase .login-section .about-tumblr-btn {
+  background: #56bc8a;
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, .1);
+  bottom: -45px;
+  color: #fff;
+  cursor: pointer;
+  height: 45px;
+  font-weight: 700;
+  left: 0;
+  line-height: 45px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+  transition: bottom .3s ease-out 1.7s
+}
+
+.ready .showcase .login-section .fullscreen_post_bg, .ready .showcase .login-section .fullscreen_post_footer {
+  bottom: 45px
+}
+
+.ready .showcase .login-section .about-tumblr-btn {
+  bottom: 0
+}
+
+.showcase .about-section {
+  background: #56bc8a;
+  display: table;
+  text-align: center
+}
+
+.showcase .about-section .section-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%
+}
+
+.showcase .about-section .section-content {
+  margin: 0 auto;
+  width: 700px
+}
+
+.showcase .about-section .about-graphic {
+  height: 440px;
+  margin: 0 auto 20px;
+  opacity: 0;
+  overflow: visible;
+  position: relative;
+  box-sizing: border-box;
+  -webkit-transform: scale(.8);
+  -ms-transform: scale(.8);
+  transform: scale(.8)
+}
+
+.showcase .about-section.active .about-graphic {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  transition: opacity .5s cubic-bezier(.165, .84, .44, 1), -webkit-transform .5s cubic-bezier(.165, .84, .44, 1);
+  transition: opacity .5s cubic-bezier(.165, .84, .44, 1), transform .5s cubic-bezier(.165, .84, .44, 1)
+}
+
+@media only screen and (max-width: 1100px), only screen and (max-height: 800px) {
+  .showcase .about-section .about-graphic {
+    height: 320px
+  }
+
+  .showcase .about-section .section-content {
+    width: 600px
+  }
+}
+
+@media only screen and (max-width: 900px), only screen and (max-height: 600px) {
+  .showcase .about-section .about-graphic {
+    height: 220px
+  }
+
+  .showcase .about-section .section-content {
+    width: 540px
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .showcase .about-section .section-content {
+    width: 70%
+  }
+}
+
+.showcase .blogs-section {
+  background: #a77dc2;
+  overflow: hidden;
+  text-align: left
+}
+
+.showcase .blogs-section .section-wrapper {
+  margin-left: 180px;
+  margin-top: 150px
+}
+
+.showcase .blogs-section .section-content {
+  margin-bottom: 20px;
+  position: relative;
+  width: 500px;
+  z-index: 2
+}
+
+.showcase .blogs-section .blogs-graphic {
+  position: relative;
+  width: 1280px;
+  z-index: 1
+}
+
+.showcase .blogs-section .blogs-post-column {
+  float: left;
+  margin-right: 20px;
+  opacity: 0;
+  width: 300px;
+  -webkit-transform: translateX(100px);
+  -ms-transform: translateX(100px);
+  transform: translateX(100px)
+}
+
+.showcase .blogs-section .blogs-post {
+  background: #fff;
+  border-radius: 3px;
+  margin: 0 0 20px;
+  opacity: 0;
+  width: 300px;
+  -webkit-transform: translateX(200px);
+  -ms-transform: translateX(200px);
+  transform: translateX(200px)
+}
+
+.showcase .blogs-section .blogs-post .post-top, .showcase .blogs-section .blogs-post .post-bottom {
+  height: 45px;
+  padding: 10px;
+  position: relative;
+  box-sizing: border-box
+}
+
+.showcase .blogs-section .blogs-post .post-top .ui-avatar, .showcase .blogs-section .blogs-post .post-bottom .ui-avatar {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 3px;
+  height: 25px;
+  float: left;
+  margin-right: 10px;
+  width: 25px
+}
+
+.showcase .blogs-section .blogs-post .post-top .ui-username, .showcase .blogs-section .blogs-post .post-top .ui-notes, .showcase .blogs-section .blogs-post .post-bottom .ui-username, .showcase .blogs-section .blogs-post .post-bottom .ui-notes {
+  color: #a2a2a2;
+  float: left;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 25px;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  white-space: nowrap
+}
+
+.showcase .blogs-section .blogs-post .post-top .post_controls, .showcase .blogs-section .blogs-post .post-bottom .post_controls {
+  display: block;
+  float: right;
+  pointer-events: none;
+  text-align: right;
+  vertical-align: top;
+  width: auto
+}
+
+.showcase .blogs-section .blogs-post .post-top .post_controls .post_controls_inner, .showcase .blogs-section .blogs-post .post-bottom .post_controls .post_controls_inner {
+  height: 25px
+}
+
+.showcase .blogs-section .blogs-post .post-top .post_controls .post_control, .showcase .blogs-section .blogs-post .post-bottom .post_controls .post_control {
+  color: #a2a2a2;
+  margin: 0 0 0 5px
+}
+
+.showcase .blogs-section .blogs-post .post-top .post_controls .post_control.reblog, .showcase .blogs-section .blogs-post .post-bottom .post_controls .post_control.reblog {
+  margin-left: 12px
+}
+
+.showcase .blogs-section .blogs-post .post-image {
+  display: block;
+  height: auto;
+  width: 100%
+}
+
+.showcase .blogs-section.active .blogs-post-column, .showcase .blogs-section.active .blogs-post {
+  opacity: 1;
+  -webkit-transform: translateX(0);
+  -ms-transform: translateX(0);
+  transform: translateX(0);
+  transition: opacity .7s cubic-bezier(.165, .84, .44, 1), -webkit-transform .7s cubic-bezier(.165, .84, .44, 1);
+  transition: opacity .7s cubic-bezier(.165, .84, .44, 1), transform .7s cubic-bezier(.165, .84, .44, 1)
+}
+
+.showcase .blogs-section.active .blogs-post-column:nth-child(1), .showcase .blogs-section.active .blogs-post:nth-child(1) {
+  transition-delay: .08s
+}
+
+.showcase .blogs-section.active .blogs-post-column:nth-child(2), .showcase .blogs-section.active .blogs-post:nth-child(2) {
+  transition-delay: .16s
+}
+
+.showcase .blogs-section.active .blogs-post-column:nth-child(3), .showcase .blogs-section.active .blogs-post:nth-child(3) {
+  transition-delay: .24s
+}
+
+.showcase .blogs-section.active .blogs-post-column:nth-child(4), .showcase .blogs-section.active .blogs-post:nth-child(4) {
+  transition-delay: .32s
+}
+
+@media only screen and (min-width: 1600px) {
+  .showcase .blogs-section .section-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    overflow: visible;
+    width: 1260px
+  }
+}
+
+@media only screen and (max-height: 810px) {
+  .showcase .blogs-section .section-wrapper {
+    margin-left: 160px;
+    margin-top: 120px
+  }
+
+  .showcase .blogs-section .blogs-graphic {
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scale(.85);
+    -ms-transform: scale(.85);
+    transform: scale(.85)
+  }
+}
+
+@media only screen and (max-width: 1100px), only screen and (max-height: 700px) {
+  .showcase .blogs-section .section-wrapper {
+    margin-left: 140px;
+    margin-top: 120px
+  }
+
+  .showcase .blogs-section .blogs-graphic {
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scale(.75);
+    -ms-transform: scale(.75);
+    transform: scale(.75)
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .showcase .blogs-section .section-content {
+    width: 80%
+  }
+}
+
+.showcase .dashboard-section {
+  background: #36465d;
+  text-align: left
+}
+
+.showcase .dashboard-section .section-wrapper {
+  display: table;
+  height: 100%;
+  width: 100%
+}
+
+.showcase .dashboard-section .section-content {
+  display: table-cell;
+  vertical-align: middle
+}
+
+.showcase .dashboard-section .dashboard-content {
+  left: 50%;
+  margin-left: 140px;
+  position: relative;
+  width: 370px
+}
+
+.showcase .dashboard-section .dashboard-graphic {
+  left: 50%;
+  margin-left: -440px;
+  position: absolute;
+  top: 110px
+}
+
+.showcase .dashboard-section .dashboard-graphic .post_avatar, .showcase .dashboard-section .dashboard-graphic .post_content, .showcase .dashboard-section .dashboard-graphic .post_footer, .showcase .dashboard-section .dashboard-graphic .notification, .showcase .dashboard-section .dashboard-graphic .new_post_buttons_container {
+  pointer-events: none
+}
+
+.showcase .dashboard-section .notification, .showcase .dashboard-section .new_post_buttons_container, .showcase .dashboard-section .post-top-wrapper, .showcase .dashboard-section .post-bottom-wrapper {
+  opacity: 0;
+  -webkit-transform: translateY(400px);
+  -ms-transform: translateY(400px);
+  transform: translateY(400px)
+}
+
+.showcase .dashboard-section .notification, .showcase .dashboard-section .post {
+  margin-bottom: 10px
+}
+
+.showcase .dashboard-section .notification.new_post_buttons, .showcase .dashboard-section .post.new_post_buttons {
+  margin-bottom: 20px
+}
+
+.showcase .dashboard-section .post .post_avatar:after {
+  display: none
+}
+
+.showcase .dashboard-section .post .post_media_photo {
+  height: auto;
+  width: 100%
+}
+
+.showcase .dashboard-section .post .post_media {
+  margin-bottom: 0
+}
+
+.showcase .dashboard-section.active .notification, .showcase .dashboard-section.active .new_post_buttons_container, .showcase .dashboard-section.active .post-top-wrapper, .showcase .dashboard-section.active .post-bottom-wrapper {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  transition: -webkit-transform .7s cubic-bezier(.165, .84, .44, 1), opacity .7s cubic-bezier(.165, .84, .44, 1);
+  transition: transform .7s cubic-bezier(.165, .84, .44, 1), opacity .7s cubic-bezier(.165, .84, .44, 1)
+}
+
+.showcase .dashboard-section.active .notification.post-top-wrapper, .showcase .dashboard-section.active .new_post_buttons_container.post-top-wrapper, .showcase .dashboard-section.active .post-top-wrapper.post-top-wrapper, .showcase .dashboard-section.active .post-bottom-wrapper.post-top-wrapper {
+  transition-delay: .1s
+}
+
+.showcase .dashboard-section.active .notification.notification, .showcase .dashboard-section.active .new_post_buttons_container.notification, .showcase .dashboard-section.active .post-top-wrapper.notification, .showcase .dashboard-section.active .post-bottom-wrapper.notification {
+  transition-delay: .2s
+}
+
+.showcase .dashboard-section.active .notification.post-bottom-wrapper, .showcase .dashboard-section.active .new_post_buttons_container.post-bottom-wrapper, .showcase .dashboard-section.active .post-top-wrapper.post-bottom-wrapper, .showcase .dashboard-section.active .post-bottom-wrapper.post-bottom-wrapper {
+  transition-delay: .3s
+}
+
+@media only screen and (max-width: 1100px) {
+  .showcase .dashboard-section .dashboard-content {
+    margin-left: 80px
+  }
+
+  .showcase .dashboard-section .dashboard-graphic {
+    -webkit-transform-origin: 70% 0;
+    -ms-transform-origin: 70% 0;
+    transform-origin: 70% 0;
+    -webkit-transform: scale(.7);
+    -ms-transform: scale(.7);
+    transform: scale(.7)
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .showcase .dashboard-section .dashboard-content {
+    margin-left: 50px;
+    width: 250px
+  }
+
+  .showcase .dashboard-section .dashboard-graphic {
+    -webkit-transform: scale(.5);
+    -ms-transform: scale(.5);
+    transform: scale(.5)
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .showcase .dashboard-section .dashboard-graphic {
+    -webkit-transform: scale(.4);
+    -ms-transform: scale(.4);
+    transform: scale(.4)
+  }
+
+  .showcase .dashboard-section .dashboard-content {
+    width: 35%
+  }
+}
+
+.showcase .create-section {
+  background: #f2992e;
+  display: table;
+  text-align: center
+}
+
+.showcase .create-section .section-wrapper {
+  display: table-cell;
+  vertical-align: middle
+}
+
+.showcase .create-section .section-content {
+  margin: 0 auto;
+  width: 600px
+}
+
+.showcase .create-section .create-graphic {
+  margin: 30px auto;
+  width: 800px
+}
+
+.showcase .create-section .create-graphic .post-icon {
+  background: #fff;
+  border-radius: 50%;
+  color: #f2992e;
+  cursor: default;
+  display: inline-block;
+  font-size: 90px;
+  height: 170px;
+  line-height: 165px;
+  margin: 0 15px 30px;
+  opacity: 0;
+  position: relative;
+  vertical-align: top;
+  width: 170px;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  transition: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+.showcase .create-section .create-graphic .post-icon .icon-label {
+  color: #fff;
+  font-size: 16px;
+  left: 0;
+  line-height: 1;
+  margin-top: 15px;
+  position: absolute;
+  top: 100%;
+  width: 100%
+}
+
+.showcase .create-section .create-graphic .text-icon {
+  transition-delay: 0
+}
+
+.showcase .create-section .create-graphic .text-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .photo-icon {
+  transition-delay: .1s
+}
+
+.showcase .create-section .create-graphic .photo-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .quote-icon {
+  transition-delay: .2s
+}
+
+.showcase .create-section .create-graphic .quote-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .link-icon {
+  font-size: 130px;
+  transition-delay: .3s
+}
+
+.showcase .create-section .create-graphic .link-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .chat-icon {
+  font-size: 120px;
+  transition-delay: .4s
+}
+
+.showcase .create-section .create-graphic .chat-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .audio-icon {
+  transition-delay: .5s
+}
+
+.showcase .create-section .create-graphic .audio-icon:before {
+  content: ""
+}
+
+.showcase .create-section .create-graphic .video-icon {
+  transition-delay: .6s
+}
+
+.showcase .create-section .create-graphic .video-icon:before {
+  content: ""
+}
+
+.showcase .create-section.active .post-icon {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  transition-property: -webkit-transform;
+  transition-property: transform;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(.19, 1, .22, 1)
+}
+
+@media only screen and (max-width: 1100px), only screen and (max-height: 800px) {
+  .showcase .create-section .create-graphic {
+    margin-top: 30px;
+    width: 600px
+  }
+
+  .showcase .create-section .create-graphic .post-icon {
+    font-size: 40px;
+    height: 100px;
+    line-height: 95px;
+    width: 100px
+  }
+
+  .showcase .create-section .create-graphic .post-icon .icon-label {
+    margin-top: 10px
+  }
+
+  .showcase .create-section .create-graphic .link-icon {
+    font-size: 70px
+  }
+
+  .showcase .create-section .create-graphic .chat-icon {
+    font-size: 60px
+  }
+}
+
+@media only screen and (max-width: 900px), only screen and (max-height: 540px) {
+  .showcase .create-section .create-graphic {
+    width: 500px
+  }
+
+  .showcase .create-section .create-graphic .post-icon {
+    font-size: 30px;
+    height: 80px;
+    line-height: 75px;
+    width: 80px
+  }
+
+  .showcase .create-section .create-graphic .post-icon .icon-label {
+    font-size: 14px;
+    margin-top: 8px
+  }
+
+  .showcase .create-section .create-graphic .link-icon {
+    font-size: 50px
+  }
+
+  .showcase .create-section .create-graphic .chat-icon {
+    font-size: 42px
+  }
+
+  .showcase .create-section .section-content {
+    width: 540px
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .showcase .create-section .section-content {
+    width: 70%
+  }
+}
+
+.showcase .welcome-section .section-wrapper {
+  display: table;
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+  -webkit-animation: none;
+  animation: none
+}
+
+.showcase .welcome-section .section-content {
+  display: table-cell;
+  vertical-align: middle
+}
+
+.showcase .welcome-section .fullscreen_post_footer {
+  z-index: 3
+}
+
+.showcase .welcome-section .fullscreen_post_bg {
+  z-index: 1
+}
+
+.showcase .welcome-section .fullscreen_post_bg:before {
+  background-color: rgba(0, 0, 0, .7)
+}
+
+.dash_b_form .explore_icon:before {
+  font-family: "tumblr-icons", "Blank";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  text-decoration: none;
+  text-transform: none
+}
+
+.dash_b_form .explore {
+  font-size: 16px;
+  line-height: 22px white-space nowrap;
+  display: block;
+  margin-top: 17px;
+  margin-left: -6px;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  transition: opacity .25s linear, padding .25s linear
+}
+
+.dash_b_form .explore.disabled {
+  opacity: 0
+}
+
+.dash_b_form .explore_icon {
+  font-size: 22px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -2px;
+  cursor: pointer;
+  width: 38px
+}
+
+.dash_b_form .explore_icon:before {
+  content: ""
+}
+
+.logged_out .l-header.logged_out_header #logo {
+  background: 0 0;
+  position: absolute;
+  width: 187px;
+  margin: 14px 13px 0 15px;
+  float: left;
+  top: 0;
+  left: 0;
+  transition: top .25s ease, left .25s ease, margin-left .25s ease
+}
+
+.logged_out .outter_wrapper {
+  width: 100%
+}
+
+.logged_out .logged_out img.content_top, .logged_out .logged_out img.content_bottom {
+  transition: left .25s ease
+}
+
+.logged_out .l-content #search_form {
+  margin-top: 0
+}
+
+.logged_out #auto_pagination_loader {
+  position: relative;
+  z-index: 40
+}
+
+.logged_out img.content_top {
+  position: absolute;
+  bottom: 100%;
+  left: 0
+}
+
+.logged_out.main_themes img.content_top, .logged_out.dashboard_directory img.content_top, .logged_out.main_why img.content_top, .logged_out.main_why img.content_bottom, .logged_out.main_policy img.content_top, .logged_out.main_meetups img.content_top, .signup_login .password_strength_meter {
+  display: none
+}
+
+.signup_account .password_strength_meter {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -8px
+}
+
+.has_login_captcha.logged_out.show_form .signup_view, .has_login_captcha.logged_out.show_form.signup_account.signup_birthday .signup_view.account, .has_login_captcha.logged_out.show_form.signup_birthday.signup_register .signup_view.birthday, .has_login_captcha.logged_out.show_form.signup_account.signup_birthday.signup_register .signup_view.birthday, .has_login_captcha.logged_out.show_form:not(.signup_register) .signup_view.captcha, .has_login_captcha.logged_out.show_form.signup_login .signup_view.login, .has_login_tfa.logged_out.show_form .signup_view.login {
+  max-height: 500px !important
+}
+
+.has_login_captcha #recaptcha_widget .recaptcha_overlay, .has_login_captcha #recaptcha_widget .image_and_buttons, .has_login_captcha #recaptcha_image {
+  border-radius: 0;
+  box-shadow: none
+}
+
+.ie .logged_out.show_form .signup_subhead {
+  visibility: hidden
+}
+
+.logged_out input:-webkit-autofill {
+  background: none !important
+}
